@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Yönetim Paneli</div>
+
+   <div class="panel-secici">
+     <button class="aktif">Fabrika</button>
+     <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
+   </div>
+
+   <ul>
+    <li><a class="aktif" href="index.html">Ana Sayfa</a></li> 
+    <li><a href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
+    <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
+    <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
+    <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+    <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
+  </ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Fabrika Yönetim Paneli</h1>
+        <p>Ana Sayfa</p> </div>
+      <div class="kullanici-bilgisi">
+        Yönetici
+        <span>9 Kasım 2025 Pazar</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Hoş Geldiniz</h2>
+        <p>Genel durumu ve performans metriklerini buradan takip edebilirsiniz</p>
+      </div>
+    </div>
+
+    <div class="kart-grid">
+      
+      <div class="info-card purple">
+        <span class="kart-baslik">Toplam Sipariş</span>
+        <span class="kart-deger">1,247</span>
+        <span class="kart-trend artış">↑ 12% bu ay</span>
+      </div>
+
+      <div class="info-card blue">
+        <span class="kart-baslik">Aktif Bayiler</span>
+        <span class="kart-deger">68</span>
+        <span class="kart-trend artış">↑ 5 yeni bayi</span>
+      </div>
+
+      <div class="info-card orange">
+        <span class="kart-baslik">Kritik Stoklar</span>
+        <span class="kart-deger">7</span>
+        <span class="kart-trend azalış">↓ 2 hammadde</span>
+      </div>
+
+      <div class="info-card green">
+        <span class="kart-baslik">Sevkiyat Durumu</span>
+        <span class="kart-deger">85</span>
+        <span class="kart-trend">Aktif sevkiyat</span>
+      </div>
+
+    </div>
+
+    <div class="grafik-grid">
+      
+      <div class="chart-card">
+        <h3>Şehir Bazlı Sipariş Dağılımı</h3>
+        <canvas id="sehirBazliGrafik"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3>Aylık Satış Trendleri</h3>
+        <canvas id="aylikSatisGrafik"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>Sevkiyat Durumu</h3>
+        <canvas id="sevkiyatDurumGrafik"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3>Bayi Aktivitesi</h3>
+        <canvas id="bayiAktiviteGrafik"></canvas>
+      </div>
+
+    </div> </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script> 
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Yönetim Paneli</div>
+
+    <div class="panel-secici">
+      <button class="aktif">Fabrika</button>
+      <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
+    </div>
+
+    <ul>
+      <li><a href="index.html">Ana Sayfa</a></li> 
+      <li><a href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
+      <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
+      <li><a class="aktif" href="uretim-planlama.html">Üretim Planlama</a></li> <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+      <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
+    </ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Fabrika Yönetim Paneli</h1>
+        <p>Üretim Planlama</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Yönetici
+        <span>10 Kasım 2025 Pazartesi</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Üretim Planlama</h2>
+        <p>Aktif üretim emirlerini yönetin ve optimize edin</p>
+      </div>
+    </div>
+
+    <div class="kart-grid">
+      <div class="info-card purple">
+        <span class="kart-baslik">Aktif Üretim Emirleri</span>
+        <span class="kart-deger">4</span>
+      </div>
+      <div class="info-card green">
+        <span class="kart-baslik">Tamamlanan Üretimler</span>
+        <span class="kart-deger">1</span>
+      </div>
+      <div class="info-card blue">
+        <span class="kart-baslik">Toplam Üretim (Bu Ay)</span>
+        <span class="kart-deger">750</span>
+      </div>
+      <div class="info-card orange">
+        <span class="kart-baslik">Ortalama Verimlilik</span>
+        <span class="kart-deger">%78</span>
+        <span class="kart-trend">Son 30 gün</span>
+      </div>
+    </div>
+
+    <div class="tab-list" style="margin-top: 24px; width: auto;">
+      <button class="tab-button aktif" data-target="tab-uretim">Aktif Üretim Emirleri</button>
+      <button class="tab-button" data-target="tab-batching">Batching Optimization</button>
+    </div>
+
+    <div id="tab-uretim" class="tab-content aktif">
+      <div class="tablo-container">
+        <h3>Aktif Üretim Emirleri</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Emir No</th>
+              <th>Ürün</th>
+              <th>Miktar</th>
+              <th>İlerleme</th>
+              <th>Başlangıç</th>
+              <th>Bitiş</th>
+              <th>Kalan Gün</th>
+              <th>Öncelik</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ÜE-001</td>
+              <td>Gül Parfümü</td>
+              <td>350 / 500</td>
+              <td>
+                <div class="progress-bar">
+                  <div class="progress-bar-inner" style="width: 70%;">70%</div>
+                </div>
+              </td>
+              <td>2025-11-05</td>
+              <td>2025-11-12</td>
+              <td>2 gün</td>
+              <td><span class="badge yuksek">Yüksek</span></td>
+              <td><span class="badge uretimde">Devam Ediyor</span></td>
+            </tr>
+            <tr>
+              <td>ÜE-004</td>
+              <td>Papatya Özü</td>
+              <td>0 / 400</td>
+              <td>
+                <div class="progress-bar">
+                  <div class="progress-bar-inner" style="width: 0%;">0%</div>
+                </div>
+              </td>
+              <td>2025-11-09</td>
+              <td>2025-11-16</td>
+              <td>6 gün</td>
+              <td><span class="badge normal">Normal</span></td>
+              <td><span class="badge onay-bekliyor">Beklemede</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-batching" class="tab-content">
+      <div class="batch-container">
+        <h3>Batch Optimization Önerileri</h3>
+        <p class="batch-aciklama">Benzer siparişleri birleştirerek üretim maliyetlerini optimize edin</p>
+
+        <div class="batch-kart-grid">
+          <div class="batch-card">
+            <h4>Gül Parfümü <span class="badge tamamlandi">15% tasarruf</span></h4>
+            <p class="batch-parti">Önerilen Parti: Parti A</p>
+            <p class="batch-detay-baslik">Birleştirilebilir Siparişler:</p>
+            <div class="batch-tags">
+              <span class="badge purple-light">SP-001</span>
+              <span class="badge purple-light">SP-005</span>
+              <span class="badge purple-light">SP-012</span>
+            </div>
+            <p class="batch-detay-baslik">Toplam Miktar: 750 birim</p>
+            <div class="batch-card-actions">
+              <button class="btn-yeni-bayi parti-olustur-btn">Parti Oluştur</button>
+              <button class="btn-detay parti-detay-btn">Detayları Görüntüle</button>
+            </div>
+          </div>
+          
+          <div class="batch-card">
+            <h4>Lavanta Esansı <span class="badge tamamlandi">12% tasarruf</span></h4>
+            <p class="batch-parti">Önerilen Parti: Parti B</p>
+            <p class="batch-detay-baslik">Birleştirilebilir Siparişler:</p>
+            <div class="batch-tags">
+              <span class="badge purple-light">SP-002</span>
+              <span class="badge purple-light">SP-008</span>
+            </div>
+            <p class="batch-detay-baslik">Toplam Miktar: 330 birim</p>
+            <div class="batch-card-actions">
+              <button class="btn-yeni-bayi parti-olustur-btn">Parti Oluştur</button>
+              <button class="btn-detay parti-detay-btn">Detayları Görüntüle</button>
+            </div>
+          </div>
+          
+          <div class="batch-card">
+            <h4>Vanilya Kokusu <span class="badge tamamlandi">18% tasarruf</span></h4>
+            <p class="batch-parti">Önerilen Parti: Parti C</p>
+            <p class="batch-detay-baslik">Birleştirilebilir Siparişler:</p>
+            <div class="batch-tags">
+              <span class="badge purple-light">SP-003</span>
+              <span class="badge purple-light">SP-007</span>
+              <span class="badge purple-light">SP-011</span>
+            </div>
+            <p class="batch-detay-baslik">Toplam Miktar: 425 birim</p>
+            <div class="batch-card-actions">
+              <button class="btn-yeni-bayi parti-olustur-btn">Parti Oluştur</button>
+              <button class="btn-detay parti-detay-btn">Detayları Görüntüle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="uyari-kutusu blue" style="margin-top: 24px;">
+          <p><strong>Toplamda %15 üretim maliyeti tasarrufu sağlanabilir</strong></p>
+          <p style="color: #A0A0A0; font-size: 14px; margin-top: 4px;">
+            Bu öneriler, benzer ürünleri aynı partide üreterek hammadde israfını azaltır ve üretim verimliliğini artırır.
+          </p>
+        </div>
+        </div>
+    </div>
+    
+  </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script> 
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Yönetim Paneli</div>
+    <div class="panel-secici">
+      <button class="aktif">Fabrika</button>
+      <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
+    </div>
+    <ul>
+      <li><a href="index.html">Ana Sayfa</a></li> 
+      <li><a href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
+      <li><a class="aktif" href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
+      <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
+      <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+      <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
+    </ul>
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Fabrika Yönetim Paneli</h1>
+        <p>Sipariş Yönetimi</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Yönetici
+        <span>10 Kasım 2025 Pazartesi</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Sipariş Yönetimi</h2>
+        <p>Tüm siparişlerinizi takip edin ve yönetin</p>
+      </div>
+      <div class="header-butonlar">
+        <button id="rapor-indir-siparis" class="btn-rapor">Rapor İndir</button>
+      </div>
+    </div>
+
+    <div class="tablo-container">
+      <div class="filtre-grubu">
+        <button class="filtre aktif">Tümü</button>
+        <button class="filtre">🟡 Onay Bekliyor</button>
+        <button class="filtre">🔵 Üretimde</button>
+        <button class="filtre">🟠 Sevkiyatta</button>
+        <button class="filtre">🟢 Tamamlandı</button>
+        <button class="filtre">🔴 İptal</button>
+      </div>
+      <div class="arama-kutusu">
+        <input type="text" placeholder="Sipariş numarası veya bayi ara...">
+      </div>
+
+      <table id="siparis-tablosu">
+        <thead>
+          <tr>
+            <th>Sipariş No</th>
+            <th>Bayi Adı</th>
+            <th>Ürün</th>
+            <th>Miktar</th>
+            <th>Durum</th>
+            <th>Sipariş Tarihi</th>
+            <th>Tahmini Teslim</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SP-001</td>
+            <td>Marmara Parfüm</td>
+            <td>Gül Parfümü</td>
+            <td>50</td>
+            <td><span class="badge onay-bekliyor">Onay Bekliyor</span></td>
+            <td>2025-11-08</td>
+            <td>2025-11-15</td>
+            <td>
+              <button class="btn-detay"
+                      data-id="SP-001" data-bayi="Marmara Parfüm" data-urun="Gül Parfümü"
+                      data-miktar="50" data-durum="Onay Bekliyor" data-tarih="2025-11-08">Detay</button>
+            </td>
+          </tr>
+          </tbody>
+      </table>
+    </div> <div class="grafik-grid">
+      <div class="chart-card">
+        <h3>Son 7 Gün Sipariş Trendi</h3>
+        <canvas id="siparisTrendGrafik"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Durum Bazlı Sipariş Dağılımı</h3>
+        <canvas id="siparisDurumGrafik"></canvas>
+      </div>
+    </div>
+
+    <div id="siparis-detay-modal" class="modal-arkaplan">
+      <div class="modal-icerik">
+        <div class="modal-header">
+          <h2 id="modal-siparis-id">Sipariş Detayları - #ID</h2>
+          <button id="modal-kapat-btn-siparis" class="modal-kapat-btn">X</button>
+        </div>
+        <div class="modal-govde">
+          <div class="form-grup" style="margin-bottom: 20px;">
+            <label for="durum-guncelle">Durum Güncelle</label>
+            <select id="durum-guncelle">
+              <option value="Onay Bekliyor">Onay Bekliyor</option>
+              <option value="Üretimde">Üretimde</option>
+              <option value="Sevkiyatta">Sevkiyatta</option>
+              <option value="Tamamlandı">Tamamlandı</option>
+              <option value="İptal">İptal</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button id="modal-iptal-et-btn" class="btn-iptal-et">İptal Et</button>
+            <button id="modal-kaydet-btn-siparis" class="btn-onayla">Kaydet</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="iptal-nedeni-modal" class="modal-arkaplan">
+      <div class="modal-icerik">
+        <div class="modal-header">
+          <h2>Siparişi İptal Et</h2>
+          <button id="modal-kapat-btn-iptal" class="modal-kapat-btn">X</button>
+        </div>
+        <div class="modal-govde">
+          <form id="iptal-formu">
+            <div class="modal-footer">
+              <button type="button" id="modal-vazgec-btn-iptal" class="btn-detay">Vazgeç</button>
+              <button type="submit" class="btn-iptal-et">Onayla ve İptal Et</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script> 
+</body>
+</html>

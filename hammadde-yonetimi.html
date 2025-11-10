@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Yönetim Paneli</div>
+
+    <div class="panel-secici">
+      <button class="aktif">Fabrika</button>
+      <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
+    </div>
+
+    <ul>
+      <li><a href="index.html">Ana Sayfa</a></li> 
+      <li><a href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
+      <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
+      <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
+      <li><a class="aktif" href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li> <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
+    </ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Fabrika Yönetim Paneli</h1>
+        <p>Hammadde Yönetimi</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Yönetici
+        <span>10 Kasım 2025 Pazartesi</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Hammadde Yönetimi</h2>
+        <p>Hammadde stoklarını izleyin ve tedarik planlaması yapın</p>
+      </div>
+      <button id="yeni-hammadde-btn" class="btn-yeni-bayi">Yeni Hammadde Ekle</button>
+    </div>
+
+    <div class="kart-grid">
+      <div class="info-card purple">
+        <span class="kart-baslik">Toplam Hammadde Türü</span>
+        <span class="kart-deger">6</span>
+      </div>
+      <div class="info-card red">
+        <span class="kart-baslik">Kritik Stoktaki Hammaddeler</span>
+        <span class="kart-deger">2</span>
+        <span class="kart-trend azalış">↓ 2 kalem</span>
+      </div>
+      <div class="info-card blue">
+        <span class="kart-baslik">Aylık Ortalama Tüketim</span>
+        <span class="kart-deger">245 lt</span>
+        <span class="kart-trend artış">↑ +5% artış</span>
+      </div>
+      <div class="info-card orange">
+        <span class="kart-baslik">Tedarik İhtiyacı</span>
+        <span class="kart-deger">5</span>
+        <span class="kart-trend">1 hafta içinde</span>
+      </div>
+    </div>
+
+    <div class="tablo-container">
+      <h3>Hammadde Stok Tablosu</h3>
+      
+      <table id="hammadde-tablosu"> <thead>
+          <tr>
+            <th>Hammadde Adı</th>
+            <th>Mevcut Miktar</th>
+            <th>Kritik Seviye</th>
+            <th>Stok Durumu</th>
+            <th>Son Güncelleme</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gül Özü</td>
+            <td>450 lt</td>
+            <td>200 lt</td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 100%; background-color: #10B981;">100%+</div>
+              </div>
+            </td>
+            <td>2025-11-07</td>
+            <td><span class="badge tamamlandi">Normal</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Gül Özü" 
+                      data-stok="450 lt"
+                      data-kritik="200 lt"
+                      data-durum="Normal"
+                      data-tarih="2025-11-07">Detay</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Lavanta Esansı</td>
+            <td>180 lt</td>
+            <td>200 lt</td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 90%;">90%</div>
+              </div>
+            </td>
+            <td>2025-11-08</td>
+            <td><span class="badge gecikmis">Kritik</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Lavanta Esansı" 
+                      data-stok="180 lt"
+                      data-kritik="200 lt"
+                      data-durum="Kritik"
+                      data-tarih="2025-11-08">Detay</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Cam Şişe (50ml)</td>
+            <td>120 adet</td>
+            <td>300 adet</td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 40%; background-color: #EF4444;">40%</div>
+              </div>
+            </td>
+            <td>2025-11-07</td>
+            <td><span class="badge gecikmis">Kritik</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Cam Şişe (50ml)" 
+                      data-stok="120 adet"
+                      data-kritik="300 adet"
+                      data-durum="Kritik"
+                      data-tarih="2025-11-07">Detay</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Papatya Özü</td>
+            <td>90 lt</td>
+            <td>100 lt</td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: 90%;">90%</div>
+              </div>
+            </td>
+            <td>2025-11-08</td>
+            <td><span class="badge onay-bekliyor">Yakın</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Papatya Özü" 
+                      data-stok="90 lt"
+                      data-kritik="100 lt"
+                      data-durum="Yakın"
+                      data-tarih="2025-11-08">Detay</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grafik-grid">
+      <div class="chart-card">
+        <h3>Aylık Kullanım Grafiği</h3>
+        <canvas id="hammadeKullanimGrafik"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Kritik Stok Dağılımı</h3>
+        <canvas id="kritikStokGrafik"></canvas>
+      </div>
+    </div>
+
+    <div id="yeni-hammadde-modal" class="modal-arkaplan">
+      <div class="modal-icerik">
+        <div class="modal-header">
+          <h2>Yeni Hammadde Ekle</h2>
+          <button id="modal-kapat-btn-hammadde" class="modal-kapat-btn">X</button>
+        </div>
+        <div class="modal-govde">
+          <form id="yeni-hammadde-formu">
+            <div class="form-grid">
+              <div class="form-grup">
+                <label for="hammadde-adi">Hammadde Adı</label>
+                <input type="text" id="hammadde-adi" placeholder="Örn: Gül Özü">
+              </div>
+              <div class="form-grup">
+                <label for="hammadde-birim">Birim</label>
+                <input type="text" id="hammadde-birim" placeholder="Örn: lt veya adet">
+              </div>
+              <div class="form-grup">
+                <label for="hammadde-stok">Mevcut Miktar</label>
+                <input type="number" id="hammadde-stok" placeholder="Örn: 450">
+              </div>
+              <div class="form-grup">
+                <label for="hammadde-kritik">Kritik Seviye</label>
+                <input type="number" id="hammadde-kritik" placeholder="Örn: 200">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="modal-iptal-btn-hammadde" class="btn-detay">İptal</button>
+              <button type="submit" class="btn-onayla">Kaydet</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="hammadde-detay-modal" class="modal-arkaplan">
+      <div class="modal-icerik">
+        <div class="modal-header">
+          <h2 id="modal-hammadde-adi">Hammadde Detayları - ...</h2>
+          <button id="modal-kapat-btn-hammadde-detay" class="modal-kapat-btn">X</button>
+        </div>
+        <div class="modal-govde">
+          <div class="form-grid">
+            <div class="form-grup"><label>Mevcut Stok</label><p id="modal-hammadde-stok">...</p></div>
+            <div class="form-grup"><label>Kritik Seviye</label><p id="modal-hammadde-kritik">...</p></div>
+            <div class="form-grup"><label>Son Güncelleme</label><p id="modal-hammadde-tarih">...</p></div>
+            <div class="form-grup"><label>Durum</label><p><span id="modal-hammadde-durum-badge" class="badge">...</span></p></div>
+          </div>
+
+          <div class="chart-card" style="margin-top: 20px; background: none; border: none; padding: 0; height: 350px;">
+            <h4>Son 6 Ay Kullanım Trendi</h4>
+            <div style="height: 300px; width: 100%;">
+                <canvas id="modalHammaddeGrafik"></canvas>
+            </div>
+          </div>
+
+          <div id="modal-hammadde-uyari" class="uyari-kutusu orange" style="margin-top: 20px; display: none;">
+            <p><strong>Tedarik Önerisi:</strong> Bu hammadde 2 hafta içinde kritik seviyeye ulaşacak. Tedarik planlaması yapmanız önerilir.</p>
+          </div>
+          
+          <div class="form-grup" style="margin-top: 20px;">
+            <label>Tahmini Bitme Süresi</label>
+            <p id="modal-hammadde-bitme-suresi">14 gün (mevcut tüketim hızına göre)</p>
+          </div>
+
+          <div class="modal-footer">
+            <button id="modal-kapat-btn-hammadde-detay-2" class="btn-detay">Kapat</button>
+            <button class="btn-yeni-bayi">Sipariş Ver</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script> 
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü - Siparişlerim</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Bayi Paneli</div>
+
+    <div class="panel-secici">
+      <button onclick="window.location.href='index.html'">Fabrika</button>
+      <button class="aktif">Bayi</button>
+    </div>
+
+    <ul>
+      <li><a href="bayi-anasayfa.html">Ana Sayfa</a></li> 
+      <li><a href="bayi-siparis-ver.html">Sipariş Ver</a></li> 
+      <li><a class="aktif" href="bayi-siparislerim.html">Siparişlerim</a></li> <li><a href="bayi-trendler.html">Trendler / Raporlar</a></li>
+      <li><a href="bayi-katalog.html">Ürün Kataloğu</a></li>
+    </ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Bayi Paneli</h1>
+        <p>Siparişlerim</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Marmara Parfüm
+        <span>10 Kasım 2025 Pazartesi</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Siparişlerim</h2>
+        <p>Tüm geçmiş ve güncel siparişlerinizi görüntüleyin</p>
+      </div>
+      <div class="header-butonlar">
+        <button onclick="window.location.href='bayi-siparis-ver.html'" class="btn-yeni-bayi">Yeni Sipariş Ver</button>
+      </div>
+    </div>
+
+    <div class="kart-grid-3">
+      <div class="info-card gradient orange-gradient">
+        <span class="kart-baslik">Onay Bekleyen Siparişler</span>
+        <span class="kart-deger">2</span>
+      </div>
+      <div class="info-card gradient blue-gradient">
+        <span class="kart-baslik">Hazırlanan Siparişler</span>
+        <span class="kart-deger">1</span>
+      </div>
+      <div class="info-card gradient green-gradient">
+        <span class="kart-baslik">Tamamlanan Siparişler (Son 30 Gün)</span>
+        <span class="kart-deger">8</span>
+      </div>
+    </div>
+
+    <div class="tablo-container">
+      
+      <div class="tab-list" style="width: auto;">
+        <button class="tab-button aktif" data-target="tab-aktif-siparisler">Aktif Siparişler</button>
+        <button class="tab-button" data-target="tab-gecmis-siparisler">Geçmiş Siparişler</button>
+      </div>
+
+      <div id="tab-aktif-siparisler" class="tab-content aktif">
+        <div class="arama-kutusu">
+          <input type="text" placeholder="Aktif siparişlerde ara...">
+        </div>
+        <table id="bayi-aktif-siparis-tablosu"> <thead>
+            <tr>
+              <th>Sipariş No</th>
+              <th>Tarih</th>
+              <th>Ürünler</th>
+              <th>Tutar</th>
+              <th>Durum</th>
+              <th>Tahmini Teslim</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SP-001</td>
+              <td>2025-11-08</td>
+              <td>Gül Parfümü (+1)</td>
+              <td>₺4,250</td>
+              <td><span class="badge onay-bekliyor">Onay Bekliyor</span></td>
+              <td>2025-11-15</td>
+              <td>
+                <button class="btn-detay"
+                        data-id="SP-001"
+                        data-durum="Onay Bekliyor"
+                        data-tarih="2025-11-08"
+                        data-teslim="2025-11-15"
+                        data-tutar="₺4,250"
+                        data-urunler="Gül Parfümü (50 adet)">Detay</button>
+              </td>
+            </tr>
+            <tr>
+              <td>SP-002</td>
+              <td>2025-11-07</td>
+              <td>Lavanta Esansı</td>
+              <td>₺2,160</td>
+              <td><span class="badge uretimde">Üretimde</span></td>
+              <td>2025-11-14</td>
+              <td>
+                <button class="btn-detay"
+                        data-id="SP-002"
+                        data-durum="Üretimde"
+                        data-tarih="2025-11-07"
+                        data-teslim="2025-11-14"
+                        data-tutar="₺2,160"
+                        data-urunler="Lavanta Esansı (30 adet)">Detay</button>
+              </td>
+            </tr>
+            <tr>
+              <td>SP-003</td>
+              <td>2025-11-06</td>
+              <td>Vanilya Kokusu</td>
+              <td>₺1,700</td>
+              <td><span class="badge sevkiyatta">Sevkiyatta</span></td>
+              <td>2025-11-10</td>
+              <td>
+                <button class="btn-detay"
+                        data-id="SP-003"
+                        data-durum="Sevkiyatta"
+                        data-tarih="2025-11-06"
+                        data-teslim="2025-11-10"
+                        data-tutar="₺1,700"
+                        data-urunler="Vanilya Kokusu (25 adet)">Detay</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tab-gecmis-siparisler" class="tab-content">
+        <div class="arama-kutusu">
+          <input type="text" placeholder="Geçmiş siparişlerde ara...">
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Sipariş No</th>
+              <th>Tarih</th>
+              <th>Ürünler</th>
+              <th>Tutar</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody>
+             <tr>
+              <td>SP-004</td>
+              <td>2025-11-05</td>
+              <td>Papatya Özü</td>
+              <td>₺2,360</td>
+              <td><span class="badge tamamlandi">Tamamlandı</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div> <div id="bayi-siparis-detay-modal" class="modal-arkaplan">
+      <div class="modal-icerik">
+        <div class="modal-header">
+          <h2 id="modal-bayi-siparis-id">Sipariş Detayları - #ID</h2>
+          <button id="modal-kapat-btn-bayi-siparis" class="modal-kapat-btn">X</button>
+        </div>
+        <div class="modal-govde">
+          <p style="color: #A0A0A0; margin-top: -10px; margin-bottom: 20px;">Siparişinize ait detaylı bilgileri görüntüleyin</p>
+
+          <div class="form-grid">
+            <div class="form-grup"><label>Sipariş Numarası</label><p id="modal-bayi-siparis-no">...</p></div>
+            <div class="form-grup"><label>Sipariş Tarihi</label><p id="modal-bayi-siparis-tarih">...</p></div>
+            <div class="form-grup"><label>Ürün</label><p id="modal-bayi-siparis-urunler">...</p></div>
+            <div class="form-grup"><label>Miktar</label><p id="modal-bayi-siparis-miktar">...</p></div>
+            <div class="form-grup"><label>Toplam Tutar</label><p id="modal-bayi-siparis-tutar">...</p></div>
+            <div class="form-grup"><label>Tahmini Teslim</label><p id="modal-bayi-siparis-teslim">...</p></div>
+          </div>
+          
+          <div class="form-grup">
+            <label>Durum</label>
+            <p><span id="modal-bayi-siparis-durum-badge" class="badge">...</span></p>
+          </div>
+          
+          <div class="teslimat-bilgi-kutusu">
+            <h4>Teslimat Bilgileri</h4>
+            <p><strong>Adres:</strong> Merkez Depo - İstanbul</p>
+            <p><strong>Kargo Firması:</strong> Hızlı Kargo</p>
+            <p id="modal-bayi-siparis-takipno"><strong>Takip No:</strong> ...</p>
+          </div>
+
+          <div class="modal-footer">
+            <button id="modal-kapat-btn-bayi-siparis-2" class="btn-detay">Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script> 
+</body>
+</html>

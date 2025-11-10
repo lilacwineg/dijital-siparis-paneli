@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü - Ürün Kataloğu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Bayi Paneli</div>
+
+    <div class="panel-secici">
+      <button onclick="window.location.href='index.html'">Fabrika</button>
+      <button class="aktif">Bayi</button>
+    </div>
+
+    <ul>
+  <li><a href="bayi-anasayfa.html">Ana Sayfa</a></li> 
+  <li><a href="bayi-siparis-ver.html">Sipariş Ver</a></li>
+  <li><a href="bayi-siparislerim.html">Siparişlerim</a></li>
+  <li><a href="bayi-trendler.html">Trendler / Raporlar</a></li>
+  <li><a class="aktif" href="bayi-katalog.html">Ürün Kataloğu</a></li>
+</ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Bayi Paneli</h1>
+        <p>Ürün Kataloğu</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Marmara Parfüm
+        <span>9 Kasım 2025 Pazar</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Ürün Kataloğu</h2>
+        <p>Mevcut ürünleri inceleyin ve sipariş verin</p>
+      </div>
+    </div>
+
+    <div class="tablo-container">
+      <div class="filtre-barasi">
+        <div class="arama-kutusu" style="flex: 1; margin-bottom: 0;">
+          <input type="text" placeholder="Ürün ara...">
+        </div>
+        <div class="form-grup" style="margin-bottom: 0; width: 200px;">
+          <select id="kategori-sec">
+            <option>Tümü</option>
+            <option>Parfüm</option>
+            <option>Esans</option>
+            <option>Koku</option>
+            <option>Özler</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="urun-detay-grid">
+      
+      <div class="urun-detay-karti">
+        <div class="urun-detay-header">
+          <span class="urun-emoji">🌹</span>
+          <span class="badge onay-bekliyor">Popüler</span>
+        </div>
+        <div class="urun-detay-info">
+          <h3>Gül Parfümü</h3>
+          <span class="badge uretimde">Parfüm</span>
+          <p>Doğal gül yapraklarından elde edilen premium kalite parfüm. Uzun süreli koku verimi.</p>
+        </div>
+        <div class="urun-rating">⭐ 4.8 <span>(125 değerlendirme)</span></div>
+        <div class="urun-fiyat-stok">
+          <div>
+            <span class="label">Stok</span>
+            <span class="stok-durumu aktif">245 adet</span>
+          </div>
+          <div class="fiyat">
+            <span class="label">Fiyat / 50ml</span>
+            <span>₺450</span>
+          </div>
+        </div>
+        <div class="urun-aksiyonlar">
+          <button class="btn-detay">Detay</button>
+          <button class="btn-yeni-bayi">Sipariş Ver</button>
+        </div>
+      </div>
+
+      <div class="urun-detay-karti">
+        <div class="urun-detay-header">
+          <span class="urun-emoji">🌼</span>
+          <span class="badge gecikmis">Stokta Yok</span>
+        </div>
+        <div class="urun-detay-info">
+          <h3>Papatya Özü</h3>
+          <span class="badge normal">Özler</span>
+          <p>Doğal papatya özü ile ferahlatıcı ve temizleyici etki.</p>
+        </div>
+        <div class="urun-rating">⭐ 4.5 <span>(125 değerlendirme)</span></div>
+        <div class="urun-fiyat-stok">
+          <div>
+            <span class="label">Stok</span>
+            <span class="stok-durumu gecikmis">Tükendi</span>
+          </div>
+          <div class="fiyat">
+            <span class="label">Fiyat / 30ml</span>
+            <span>₺195</span>
+          </div>
+        </div>
+        <div class="urun-aksiyonlar">
+          <button class="btn-detay">Detay</button>
+          <button class="btn-yeni-bayi" disabled>Sipariş Ver</button>
+        </div>
+      </div>
+
+      </div>
+
+  </div>
+</div>
+</div> 
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="main.js"></script> 
+</body>
+</html>
+  <script src="main.js"></script> 
+</body>
+</html>
+</body>
+</html>

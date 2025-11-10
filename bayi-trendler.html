@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü - Trendler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Bayi Paneli</div>
+
+    <div class="panel-secici">
+      <button onclick="window.location.href='index.html'">Fabrika</button>
+      <button class="aktif">Bayi</button>
+    </div>
+
+    <ul>
+      <li><a href="bayi-anasayfa.html">Ana Sayfa</a></li> 
+      <li><a href="bayi-siparis-ver.html">Sipariş Ver</a></li>
+      <li><a href="bayi-siparislerim.html">Siparişlerim</a></li>
+      <li><a class="aktif" href="bayi-trendler.html">Trendler / Raporlar</a></li> <li><a href="bayi-katalog.html">Ürün Kataloğu</a></li>
+    </ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Bayi Paneli</h1>
+        <p>Trendler ve Raporlar</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Marmara Parfüm
+        <span>9 Kasım 2025 Pazar</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Trendler ve Raporlar</h2>
+        <p>Sipariş trendlerinizi ve analizlerinizi görüntüleyin</p>
+      </div>
+    </div>
+
+    <div class="kart-grid-3">
+      <div class="info-card gradient purple-gradient">
+        <span class="kart-baslik">Toplam Sipariş (Bu Yıl)</span>
+        <span class="kart-deger">145</span>
+        <span class="kart-trend artış">↑ %35 artış</span>
+      </div>
+      <div class="info-card gradient blue-gradient">
+        <span class="kart-baslik">Toplam Harcama</span>
+        <span class="kart-deger">₺1,234,500</span>
+        <span class="kart-trend artış">↑ %28 artış</span>
+      </div>
+      <div class="info-card gradient green-gradient">
+        <span class="kart-baslik">Ortalama Sipariş Değeri</span>
+        <span class="kart-deger">₺8,514</span>
+        <span class="kart-trend azalış">↓ %5 azalış</span>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-top: 24px;">
+      <h3>Aylık Sipariş ve Gelir Trendi</h3>
+      <canvas id="trendAylikGrafik" height="120"></canvas>
+    </div>
+
+    <div class="grafik-grid">
+      <div class="chart-card">
+        <h3>En Çok Sipariş Edilen Ürünler</h3>
+        <canvas id="trendEnCokUrunGrafik"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Ürün Bazlı Gelir Dağılımı</h3>
+        <canvas id="trendGelirDagilimGrafik"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Kategori Bazlı Sipariş Dağılımı</h3>
+        <canvas id="trendKategoriGrafik"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Bu Ayki Haftalık Siparişler</h3>
+        <canvas id="trendHaftalikGrafik"></canvas>
+      </div>
+    </div>
+
+  </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script> 
+</body>
+</html>
