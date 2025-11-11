@@ -2,12 +2,17 @@
 document.addEventListener("DOMContentLoaded", function() {
 
   // ===================================================
-  // === BÖLÜM 1: BAYİ DETAY MODALI (Dinamik, Sekmeli, Grafikli) ===
+  // === GLOBAL GRAFİK DEĞİŞKENLERİ ===
   // ===================================================
-  const bayiModal = document.getElementById('bayi-detay-modal');
   let bayiModalAylikChart = null;
   let bayiModalEnCokUrunChart = null;
+  let hammaddeModalChart = null;
 
+  // ===================================================
+  // === GRAFİK ÇİZME FONKSİYONLARI ===
+  // ===================================================
+
+  // Bayi Detay Modalı için Grafik Çizer (BÖLÜM 1)
   function cizBayiModalGrafikleri() {
       if (bayiModalAylikChart) { bayiModalAylikChart.destroy(); }
       if (bayiModalEnCokUrunChart) { bayiModalEnCokUrunChart.destroy(); }
@@ -28,6 +33,43 @@ document.addEventListener("DOMContentLoaded", function() {
       }
   }
 
+  // Hammadde Detay Modalı için Grafik Çizer (BÖLÜM 11)
+  function cizHammaddeModalGrafik() {
+      if (hammaddeModalChart) {
+          hammaddeModalChart.destroy();
+      }
+      const hammaddeCanvas = document.getElementById('modalHammaddeGrafik');
+      if (hammaddeCanvas) {
+          hammaddeModalChart = new Chart(hammaddeCanvas, {
+              type: 'line',
+              data: {
+                  labels: ["Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas"],
+                  datasets: [{
+                      label: 'Kullanım Miktarı',
+                      data: [80, 100, 90, 110, 100, 120], // Örnek veri
+                      borderColor: 'rgba(245, 158, 11, 1)',
+                      backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                      fill: true,
+                      tension: 0.3
+                  }]
+              },
+              options: { 
+                  responsive: true, 
+                  maintainAspectRatio: false,
+                  scales: { 
+                      y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, 
+                      x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } 
+                  },
+                  plugins: { legend: { display: false } } 
+              }
+          });
+      }
+  }
+
+  // ===================================================
+  // === BÖLÜM 1: BAYİ DETAY MODALI (bayi-yonetimi.html) ===
+  // ===================================================
+  const bayiModal = document.getElementById('bayi-detay-modal');
   if (bayiModal) {
     const modalKapatBtn = document.getElementById('modal-kapat-btn');
     const detayButonlari = document.querySelectorAll('#bayi-tablosu .btn-detay[data-adi]'); 
@@ -66,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 1.5: YENİ BAYİ MODALI (Boş Form) ===
+  // === BÖLÜM 1.5: YENİ BAYİ MODALI (bayi-yonetimi.html) ===
   // ===================================================
   const yeniBayiBtn = document.getElementById('yeni-bayi-btn');
   const yeniBayiModal = document.getElementById('yeni-bayi-modal');
@@ -83,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 2: FABRİKA DASHBOARD GRAFİKLERİ ===
+  // === BÖLÜM 2: FABRİKA DASHBOARD GRAFİKLERİ (index.html) ===
   // ===================================================
   const sehirGrafikTuvali = document.getElementById('sehirBazliGrafik');
   if (sehirGrafikTuvali) {
@@ -107,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   // ===================================================
-  // === BÖLÜM 3: SİPARİŞ YÖNETİMİ GRAFİKLERİ ===
+  // === BÖLÜM 3: SİPARİŞ YÖNETİMİ GRAFİKLERİ (siparis-yonetimi.html) ===
   // ===================================================
   const siparisTrendTuvali = document.getElementById('siparisTrendGrafik');
   if (siparisTrendTuvali) {
@@ -122,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
   // ===================================================
-  // === BÖLÜM 4: HAMMADDE YÖNETİMİ GRAFİKLERİ ===
+  // === BÖLÜM 4: HAMMADDE YÖNETİMİ GRAFİKLERİ (hammadde-yonetimi.html) ===
   // ===================================================
   const hammaddeKullanimTuvali = document.getElementById('hammadeKullanimGrafik');
   if (hammaddeKullanimTuvali) {
@@ -136,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 5: FİNANS YÖNETİMİ GRAFİKLERİ ===
+  // === BÖLÜM 5: FİNANS YÖNETİMİ GRAFİKLERİ (finans-yonetimi.html) ===
   // ===================================================
   const aylikGelirTuvali = document.getElementById('aylikGelirGrafik');
   if (aylikGelirTuvali) {
@@ -150,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 6: BAYİ ANA SAYFA GRAFİKLERİ ===
+  // === BÖLÜM 6: BAYİ ANA SAYFA GRAFİKLERİ (bayi-anasayfa.html) ===
   // ===================================================
   const bayiHaftalikTuvali = document.getElementById('bayiHaftalikGrafik');
   if (bayiHaftalikTuvali) {
@@ -169,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 7: BAYİ TRENDLER GRAFİKLERİ ===
+  // === BÖLÜM 7: BAYİ TRENDLER GRAFİKLERİ (bayi-trendler.html) ===
   // ===================================================
   const trendAylikTuvali = document.getElementById('trendAylikGrafik');
   if (trendAylikTuvali) {
@@ -233,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
   // ===================================================
-  // === BÖLÜM 9: SİPARİŞ DETAY MODALI (İPTAL BUTONLU) ===
+  // === BÖLÜM 9: SİPARİŞ DETAY MODALI (siparis-yonetimi.html) ===
   // ===================================================
   const siparisModal = document.getElementById('siparis-detay-modal');
   if (siparisModal) {
@@ -328,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 10: YENİ HAMMADDE MODALI ===
+  // === BÖLÜM 10: YENİ HAMMADDE MODALI (hammadde-yonetimi.html) ===
   // ===================================================
   const yeniHammaddeBtn = document.getElementById('yeni-hammadde-btn');
   const yeniHammaddeModal = document.getElementById('yeni-hammadde-modal');
@@ -358,43 +400,9 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 11: HAMMADDE DETAY MODALI (GRAFİKLİ) ===
+  // === BÖLÜM 11: HAMMADDE DETAY MODALI (hammadde-yonetimi.html) ===
   // ===================================================
   const hammaddeDetayModal = document.getElementById('hammadde-detay-modal');
-  let hammaddeModalChart = null; 
-
-  function cizHammaddeModalGrafik() {
-      if (hammaddeModalChart) {
-          hammaddeModalChart.destroy();
-      }
-      const hammaddeCanvas = document.getElementById('modalHammaddeGrafik');
-      if (hammaddeCanvas) {
-          hammaddeModalChart = new Chart(hammaddeCanvas, {
-              type: 'line',
-              data: {
-                  labels: ["Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas"],
-                  datasets: [{
-                      label: 'Kullanım Miktarı',
-                      data: [80, 100, 90, 110, 100, 120], // Örnek veri
-                      borderColor: 'rgba(245, 158, 11, 1)',
-                      backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                      fill: true,
-                      tension: 0.3
-                  }]
-              },
-              options: { 
-                  responsive: true, 
-                  maintainAspectRatio: false,
-                  scales: { 
-                      y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, 
-                      x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } 
-                  },
-                  plugins: { legend: { display: false } } 
-              }
-          });
-      }
-  }
-
   if (hammaddeDetayModal) {
     const hammaddeKapatBtn = document.getElementById('modal-kapat-btn-hammadde-detay');
     const hammaddeKapatBtn2 = document.getElementById('modal-kapat-btn-hammadde-detay-2');
@@ -407,6 +415,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalHammaddeBadge = document.getElementById('modal-hammadde-durum-badge');
     const modalHammaddeUyari = document.getElementById('modal-hammadde-uyari');
     const modalHammaddeBitmeSuresi = document.getElementById('modal-hammadde-bitme-suresi');
+    const siparisVerBtn = document.getElementById('modal-hammadde-siparis-ver-btn');
 
     function hammaddeModalAc(event) {
       const tiklananButon = event.currentTarget;
@@ -435,9 +444,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       
       modalHammaddeBitmeSuresi.textContent = "14 gün (mevcut tüketim hızına göre)";
-
       hammaddeDetayModal.style.display = 'flex';
-      
       setTimeout(cizHammaddeModalGrafik, 50);
     }
 
@@ -451,11 +458,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     hammaddeKapatBtn.addEventListener('click', hammaddeModalKapat);
     hammaddeKapatBtn2.addEventListener('click', hammaddeModalKapat); 
+    
+    siparisVerBtn.addEventListener('click', function() {
+        const hammaddeAdi = modalHammaddeAdi.textContent.split(' - ')[1] || "Seçilen Hammadde";
+        alert(`${hammaddeAdi} için tedarik siparişi oluşturuldu! (Simülasyon)`);
+        hammaddeModalKapat();
+    });
   }
 
 
   // ===================================================
-  // === BÖLÜM 12: YENİ FATURA MODALI ===
+  // === BÖLÜM 12: YENİ FATURA MODALI (finans-yonetimi.html) ===
   // ===================================================
   const yeniFaturaBtn = document.getElementById('yeni-fatura-btn');
   const yeniFaturaModal = document.getElementById('yeni-fatura-modal');
@@ -487,7 +500,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
   // ===================================================
-  // === BÖLÜM 13: FATURA DETAY MODALI ===
+  // === BÖLÜM 13: FATURA DETAY MODALI (finans-yonetimi.html) ===
   // ===================================================
   const faturaDetayModal = document.getElementById('fatura-detay-modal');
   
@@ -495,6 +508,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const faturaDetayButonlari = document.querySelectorAll('#fatura-tablosu .btn-detay'); 
     const faturaKapatBtn = document.getElementById('modal-kapat-btn-fatura');
     const faturaKapatBtn2 = document.getElementById('modal-kapat-btn-fatura-2');
+    const faturaIndirBtn = faturaDetayModal.querySelector('.btn-rapor'); 
     
     const modalFaturaId = document.getElementById('modal-fatura-id');
     const modalFaturaBayi = document.getElementById('modal-fatura-bayi');
@@ -538,11 +552,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     faturaKapatBtn.addEventListener('click', faturaModalKapat);
     faturaKapatBtn2.addEventListener('click', faturaModalKapat); 
+    
+    faturaIndirBtn.addEventListener('click', function() {
+        const faturaID = modalFaturaId.textContent.split(' - ')[1];
+        alert(`${faturaID} numaralı fatura indiriliyor... (Simülasyon)`);
+    });
   }
 
 
   // ===================================================
-  // === BÖLÜM 14: SİPARİŞ FİLTRELEME ===
+  // === BÖLÜM 14: SİPARİŞ FİLTRELEME (siparis-yonetimi.html) ===
   // ===================================================
   const siparisYonetimiTablo = document.getElementById('siparis-tablosu');
   
@@ -597,7 +616,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
   // ===================================================
-  // === BÖLÜM 15: CANLI SEPET HESAPLAMA (BAYİ SİPARİŞ VER) ===
+  // === BÖLÜM 15: CANLI SEPET HESAPLAMA (bayi-siparis-ver.html) ===
   // ===================================================
   const siparisVerKarti = document.querySelector('.urun-secim-karti'); // Sayfa kontrolü için
   
@@ -613,6 +632,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const urunSecBtnler = document.querySelectorAll('.urun-sec-btn'); 
 
     let sepetUrunleri = [];
+
+    // Sayfa yüklendiğinde katalogdan gelen ürünü kontrol et
+    const preSelectedProduct = localStorage.getItem('selectedProduct');
+    if (preSelectedProduct) {
+      urunSelect.value = preSelectedProduct; 
+      miktarInput.value = 1; 
+      localStorage.removeItem('selectedProduct');
+      
+      // Gecikmeli olarak sepeteEkle'yi çağır
+      setTimeout(sepeteEkle, 100); 
+    }
 
     function sepetiGuncelle() {
       let toplamUrunSayisi = sepetUrunleri.length;
@@ -772,7 +802,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ===================================================
-  // === BÖLÜM 18: ÜRETİM PLANLAMA BATCH BUTONLARI ===
+  // === BÖLÜM 18: ÜRETİM PLANLAMA BATCH BUTONLARI (uretim-planlama.html) ===
   // ===================================================
   const uretimTab = document.getElementById('tab-batching'); // Bu sekmenin varlığını kontrol et
   
@@ -796,7 +826,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   // ===================================================
-  // === BÖLÜM 19: BAYİ SİPARİŞ DETAY MODALI (YENİ) ===
+  // === BÖLÜM 19: BAYİ SİPARİŞ DETAY MODALI (bayi-siparislerim.html) ===
   // ===================================================
   const bayiSiparisModal = document.getElementById('bayi-siparis-detay-modal');
   
@@ -815,6 +845,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalDurumBadge = document.getElementById('modal-bayi-siparis-durum-badge');
     const modalNo = document.getElementById('modal-bayi-siparis-no');
     const modalTakipNo = document.getElementById('modal-bayi-siparis-takipno');
+    
+    // Stepper elemanları
+    const stepOnay = document.getElementById('step-onay');
+    const stepUretim = document.getElementById('step-uretim');
+    const stepSevkiyat = document.getElementById('step-sevkiyat');
+    const stepTamamlandi = document.getElementById('step-tamamlandi');
 
     function bayiSiparisModalAc(event) {
       const btn = event.currentTarget;
@@ -844,11 +880,36 @@ document.addEventListener("DOMContentLoaded", function() {
       modalDurumBadge.textContent = durum;
       modalDurumBadge.className = "badge"; // Önce sıfırla
       
-      if(durum === "Onay Bekliyor") modalDurumBadge.classList.add("onay-bekliyor");
-      else if(durum === "Üretimde") modalDurumBadge.classList.add("uretimde");
-      else if(durum === "Hazırlanıyor") modalDurumBadge.classList.add("uretimde"); // Eşleşme
-      else if(durum === "Sevkiyatta") modalDurumBadge.classList.add("sevkiyatta");
-      else if(durum === "Tamamlandı") modalDurumBadge.classList.add("tamamlandi");
+      // Stepper (adım takip) güncelle
+      if (stepOnay) { 
+          stepOnay.className = 'step-item';
+          stepUretim.className = 'step-item';
+          stepSevkiyat.className = 'step-item';
+          stepTamamlandi.className = 'step-item';
+
+          if(durum === "Onay Bekliyor") {
+            modalDurumBadge.classList.add("onay-bekliyor");
+            stepOnay.classList.add('aktif'); 
+          } 
+          else if(durum === "Üretimde" || durum === "Hazırlanıyor") {
+            modalDurumBadge.classList.add("uretimde");
+            stepOnay.classList.add('tamamlandi');
+            stepUretim.classList.add('aktif');
+          } 
+          else if(durum === "Sevkiyatta") {
+            modalDurumBadge.classList.add("sevkiyatta");
+            stepOnay.classList.add('tamamlandi');
+            stepUretim.classList.add('tamamlandi');
+            stepSevkiyat.classList.add('aktif');
+          } 
+          else if(durum === "Tamamlandı") {
+            modalDurumBadge.classList.add("tamamlandi");
+            stepOnay.classList.add('tamamlandi');
+            stepUretim.classList.add('tamamlandi');
+            stepSevkiyat.classList.add('tamamlandi');
+            stepTamamlandi.classList.add('tamamlandi');
+          }
+      }
 
       bayiSiparisModal.style.display = 'flex';
     }
@@ -861,5 +922,29 @@ document.addEventListener("DOMContentLoaded", function() {
     kapatBtn1.addEventListener('click', bayiSiparisModalKapat);
     kapatBtn2.addEventListener('click', bayiSiparisModalKapat);
   }
+
+  // ===================================================
+  // === BÖLÜM 20: BAYİ KATALOG BUTONLARI (bayi-katalog.html) ===
+  // ===================================================
+  const katalogDetayButonlari = document.querySelectorAll('.btn-katalog-detay');
+  katalogDetayButonlari.forEach(button => {
+    button.addEventListener('click', function() {
+      const urunAdi = this.dataset.urunAdi;
+      alert(`${urunAdi} için ürün detayları yükleniyor... (Simülasyon)`);
+    });
+  });
+
+  const katalogSiparisButonlari = document.querySelectorAll('.btn-katalog-siparis-ver');
+  katalogSiparisButonlari.forEach(button => {
+    if (!button.disabled) { // Sadece 'disabled' olmayan butonlara listener ekle
+      button.addEventListener('click', function() {
+        const urunAdi = this.dataset.urunAdi;
+        // Ürün adını bir sonraki sayfaya taşımak için localStorage kullan
+        localStorage.setItem('selectedProduct', urunAdi);
+        // Sipariş verme sayfasına yönlendir
+        window.location.href = 'bayi-siparis-ver.html';
+      });
+    }
+  });
 
 }); // DOMContentLoaded'in sonu

@@ -75,7 +75,8 @@
     <div class="tablo-container">
       <h3>Hammadde Stok Tablosu</h3>
       
-      <table id="hammadde-tablosu"> <thead>
+      <table id="hammadde-tablosu"> 
+        <thead>
           <tr>
             <th>Hammadde Adı</th>
             <th>Mevcut Miktar</th>
@@ -224,11 +225,23 @@
           <button id="modal-kapat-btn-hammadde-detay" class="modal-kapat-btn">X</button>
         </div>
         <div class="modal-govde">
-          <div class="form-grid">
-            <div class="form-grup"><label>Mevcut Stok</label><p id="modal-hammadde-stok">...</p></div>
-            <div class="form-grup"><label>Kritik Seviye</label><p id="modal-hammadde-kritik">...</p></div>
-            <div class="form-grup"><label>Son Güncelleme</label><p id="modal-hammadde-tarih">...</p></div>
-            <div class="form-grup"><label>Durum</label><p><span id="modal-hammadde-durum-badge" class="badge">...</span></p></div>
+          <div class="form-grid" style="margin-bottom: 0;">
+            <div class="form-grup" style="margin-bottom: 0;">
+                <label>Mevcut Stok</label>
+                <p id="modal-hammadde-stok" style="font-size: 20px; color: white; font-weight: 600;">...</p>
+            </div>
+            <div class="form-grup" style="margin-bottom: 0;">
+                <label>Kritik Seviye</label>
+                <p id="modal-hammadde-kritik" style="font-size: 20px; color: white; font-weight: 600;">...</p>
+            </div>
+            <div class="form-grup" style="margin-bottom: 0;">
+                <label>Son Güncelleme</label>
+                <p id="modal-hammadde-tarih">...</p>
+            </div>
+            <div class="form-grup" style="margin-bottom: 0;">
+                <label>Durum</label>
+                <p><span id="modal-hammadde-durum-badge" class="badge">...</span></p>
+            </div>
           </div>
 
           <div class="chart-card" style="margin-top: 20px; background: none; border: none; padding: 0; height: 350px;">
@@ -242,14 +255,14 @@
             <p><strong>Tedarik Önerisi:</strong> Bu hammadde 2 hafta içinde kritik seviyeye ulaşacak. Tedarik planlaması yapmanız önerilir.</p>
           </div>
           
-          <div class="form-grup" style="margin-top: 20px;">
+          <div class="form-grup" style="margin-top: 20px; margin-bottom: 0;">
             <label>Tahmini Bitme Süresi</label>
-            <p id="modal-hammadde-bitme-suresi">14 gün (mevcut tüketim hızına göre)</p>
+            <p id="modal-hammadde-bitme-suresi" style="color: white;">14 gün (mevcut tüketim hızına göre)</p>
           </div>
 
           <div class="modal-footer">
             <button id="modal-kapat-btn-hammadde-detay-2" class="btn-detay">Kapat</button>
-            <button class="btn-yeni-bayi">Sipariş Ver</button>
+            <button id="modal-hammadde-siparis-ver-btn" class="btn-yeni-bayi">Sipariş Ver</button>
           </div>
         </div>
       </div>
