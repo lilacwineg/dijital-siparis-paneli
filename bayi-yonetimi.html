@@ -1,131 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dijital Sipariş Köprüsü</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="sidebar">
-    <div class="logo">Yönetim Paneli</div>
+  <div class="sidebar">
+    <div class="logo">Yönetim Paneli</div>
 
-   <div class="panel-secici">
-      <button class="aktif">Fabrika</button>
-      <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
-    </div>
+    <div class="panel-secici">
+      <button class="aktif">Fabrika</button>
+      <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
+    </div>
 
-   <ul>
-  <li><a href="index.html">Ana Sayfa</a></li> 
-  <li><a class="aktif" href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
-  <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
-  <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
-  <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
-  <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
-</ul>
+    <ul>
+      <li><a href="index.html">Ana Sayfa</a></li> 
+      <li><a class="aktif" href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
+      <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
+      <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
+      <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+      <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
+    </ul>
 
-    <div class="footer">
-      © 2025 Yönetim Sistemi
-    </div>
-  </div>
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div> <div class="main-content">
+    
+    <header>
+      <div>
+        <h1>Fabrika Yönetim Paneli</h1>
+        <p>Bayi Yönetimi</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Yönetici
+        <span>9 Kasım 2025 Pazar</span>
+      </div>
+    </header>
 
-  <div class="main-content">
-    
-    <header>
-      <div>
-        <h1>Fabrika Yönetim Paneli</h1>
-        <p>Bayi Yönetimi</p>
-      </div>
-      <div class="kullanici-bilgisi">
-        Yönetici
-        <span>9 Kasım 2025 Pazar</span>
-      </div>
-    </header>
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Bayi Yönetimi</h2>
+        <p>Tüm bayilerinizi buradan yönetin</p>
+      </div>
+      <button id="yeni-bayi-btn" class="btn-yeni-bayi">Yeni Bayi Ekle</button>
+    </div>
 
-    <div class="sayfa-basligi">
-      <div>
-        <h2>Bayi Yönetimi</h2>
-        <p>Tüm bayilerinizi buradan yönetin</p>
-      </div>
-      <button id="yeni-bayi-btn" class="btn-yeni-bayi">Yeni Bayi Ekle</button>
-    </div>
+    <div class="tablo-container">
+      <div class="arama-kutusu">
+        <input type="text" placeholder="Bayi adı veya şehir ara...">
+      </div>
 
-    <div class="tablo-container">
-      <div class="arama-kutusu">
-        <input type="text" placeholder="Bayi adı veya şehir ara...">
-      </div>
-
-      <table id="bayi-tablosu">         <thead>
-          <tr>
-            <th>Bayi Adı</th>
-            <th>Şehir</th>
-            <th>İletişim</th>
-            <th>Sipariş Hacmi</th>
-            <th>Durum</th>
-            <th>İşlem</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Marmara Parfüm</td>
-            <td>İstanbul</td>
-            <td>0212 XXX XXXX</td>
-            <td>145 sipariş</td>
-            <td><span class="badge aktif">Aktif</span></td>
-            <td>
-              <button class="btn-detay" 
-                      data-adi="Marmara Parfüm" 
-                      data-sehir="İstanbul" 
-                      data-iletisim="0212 XXX XXXX"
-                      data-hacim="145 sipariş">Detay</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Ege Kozmetik</td>
-            <td>İzmir</td>
-            <td>0232 XXX XXXX</td>
-            <td>98 sipariş</td>
-            <td><span class="badge aktif">Aktif</span></td>
-            <td>
-              <button class="btn-detay" 
-                      data-adi="Ege Kozmetik" 
-                      data-sehir="İzmir" 
-                      data-iletisim="0232 XXX XXXX"
-                      data-hacim="98 sipariş">Detay</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Ankara Esans</td>
-            <td>Ankara</td>
-            <td>0312 XXX XXXX</td>
-            <td>87 sipariş</td>
-            <td><span class="badge aktif">Aktif</span></td>
-            <td>
-              <button class="btn-detay" 
-                      data-adi="Ankara Esans" 
-                      data-sehir="Ankara" 
-                      data-iletisim="0312 XXX XXXX"
-                      data-hacim="87 sipariş">Detay</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Akdeniz Güzellik</td>
-            <td>Antalya</td>
-            <td>0242 XXX XXXX</td>
-            <td>65 sipariş</td>
-            <td><span class="badge beklemede">Beklemede</span></td>
-            <td>
-              <button class="btn-detay" 
-                      data-adi="Akdeniz Güzellik" 
-                      data-sehir="Antalya" 
-                      data-iletisim="0242 XXX XXXX"
-                      data-hacim="65 sipariş">Detay</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div> <div id="bayi-detay-modal" class="modal-arkaplan">
+      <table id="bayi-tablosu">
+        <thead>
+          <tr>
+            <th>Bayi Adı</th>
+            <th>Şehir</th>
+            <th>İletişim</th>
+            <th>Sipariş Hacmi</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Marmara Parfüm</td>
+            <td>İstanbul</td>
+            <td>0212 XXX XXXX</td>
+            <td>145 sipariş</td>
+            <td><span class="badge aktif">Aktif</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Marmara Parfüm" 
+                      data-sehir="İstanbul" 
+                      data-iletisim="0212 XXX XXXX"
+                      data-hacim="145 sipariş">Detay</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Ege Kozmetik</td>
+            <td>İzmir</td>
+            <td>0232 XXX XXXX</td>
+            <td>98 sipariş</td>
+            <td><span class="badge aktif">Aktif</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Ege Kozmetik" 
+                      data-sehir="İzmir" 
+                      data-iletisim="0232 XXX XXXX"
+                      data-hacim="98 sipariş">Detay</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Ankara Esans</td>
+            <td>Ankara</td>
+            <td>0312 XXX XXXX</td>
+            <td>87 sipariş</td>
+            <td><span class="badge aktif">Aktif</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Ankara Esans" 
+                      data-sehir="Ankara" 
+                      data-iletisim="0312 XXX XXXX"
+                      data-hacim="87 sipariş">Detay</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Akdeniz Güzellik</td>
+            <td>Antalya</td>
+            <td>0242 XXX XXXX</td>
+            <td>65 sipariş</td>
+            <td><span class="badge beklemede">Beklemede</span></td>
+            <td>
+              <button class="btn-detay" 
+                      data-adi="Akdeniz Güzellik" 
+                      data-sehir="Antalya" 
+                      data-iletisim="0242 XXX XXXX"
+                      data-hacim="65 sipariş">Detay</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> 
+    
+    <div id="bayi-detay-modal" class="modal-arkaplan">
       <div class="modal-icerik">
         <div class="modal-header">
           <h2 id="modal-bayi-adi">Bayi Detayları</h2>
@@ -141,7 +142,8 @@
           <div id="tab-siparis-gecmisi" class="tab-content aktif">
             <p id="modal-bayi-sehir">Şehir: </p>
             <p id="modal-bayi-iletisim">İletişim: </p>
-            <p id="modal-bayi-hacim">Sipariş Hacmi: </p> <p>Kayıt Tarihi: 01.01.2023</p>
+            <p id="modal-bayi-hacim">Sipariş Hacmi: </p>
+            <p>Kayıt Tarihi: 01.01.2023</p>
             <h4 style="color: white; margin-top: 20px;">Geçmiş Siparişler</h4>
             
             <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
@@ -253,7 +255,7 @@
       </div>
     </div>
 
-  </div>   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
-  <script src="main.js"></script> 
+  </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+  <script src="main.js"></script> 
 </body>
 </html>

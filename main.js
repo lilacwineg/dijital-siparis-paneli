@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === GLOBAL GRAFİK DEĞİŞKENLERİ ===
   // ===================================================
+  // Modalların içinde yeniden çizilmeleri için referanslarını burada tutuyoruz
   let bayiModalAylikChart = null;
   let bayiModalEnCokUrunChart = null;
   let hammaddeModalChart = null;
@@ -242,7 +243,6 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 8: SEKME (TAB) KONTROL KODLARI (TEK YERDE) ===
   // ===================================================
-  const tabLists = document.querySelectorAll('.tab-list');
   tabLists.forEach(function(tabList) {
     const tabButtons = tabList.querySelectorAll('.tab-button');
     tabButtons.forEach(function(button) {
@@ -403,6 +403,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // === BÖLÜM 11: HAMMADDE DETAY MODALI (hammadde-yonetimi.html) ===
   // ===================================================
   const hammaddeDetayModal = document.getElementById('hammadde-detay-modal');
+  
   if (hammaddeDetayModal) {
     const hammaddeKapatBtn = document.getElementById('modal-kapat-btn-hammadde-detay');
     const hammaddeKapatBtn2 = document.getElementById('modal-kapat-btn-hammadde-detay-2');
@@ -638,7 +639,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (preSelectedProduct) {
       urunSelect.value = preSelectedProduct; 
       miktarInput.value = 1; 
-      localStorage.removeItem('selectedProduct');
+      localStorage.removeItem('selectedProduct'); // Hafızayı temizle
       
       // Gecikmeli olarak sepeteEkle'yi çağır
       setTimeout(sepeteEkle, 100); 
@@ -745,7 +746,10 @@ document.addEventListener("DOMContentLoaded", function() {
       sepetiGuncelle();
     });
     
-    sepetiGuncelle();
+    // Gecikmeli çağırılan sepeteEkle'nin de sepetiGuncelle'yi tetiklemesi için
+    if(!preSelectedProduct) {
+        sepetiGuncelle(); // Sadece localStorage'dan gelmiyorsa anında güncelle
+    }
   }
 
 
@@ -771,6 +775,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 17: SEKME (TAB) KONTROL KODLARI (TEK YERDE) ===
   // ===================================================
+  const tabLists = document.querySelectorAll('.tab-list');
   tabLists.forEach(function(tabList) {
     const tabButtons = tabList.querySelectorAll('.tab-button');
     tabButtons.forEach(function(button) {
