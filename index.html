@@ -1,107 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dijital Sipariş Köprüsü</title>
-    
+    <title>Dijital Sipariş Köprüsü - Giriş</title>
     <link rel="stylesheet" href="style.css">
-    
 </head>
-<body>
+<body class="login-body">
 
-  <div class="sidebar">
-    <div class="logo">Yönetim Paneli</div>
+    <div class="login-bg-blur blur-1"></div>
+    <div class="login-bg-blur blur-2"></div>
+    <div class="login-bg-blur blur-3"></div>
 
-   <div class="panel-secici">
-     <button class="aktif">Fabrika</button>
-     <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
-   </div>
+    <div class="login-card">
+        <div class="login-icon-wrapper">
+            <div class="login-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+            </div>
+        </div>
 
-   <ul>
-    <li><a class="aktif" href="index.html">Ana Sayfa</a></li> 
-    <li><a href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
-    <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
-    <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
-    <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
-    <li><a href="finans-yonetimi.html">Finans Yönetimi</a></li>
-  </ul>
-
-    <div class="footer">
-      © 2025 Yönetim Sistemi
-    </div>
-  </div>
-
-  <div class="main-content">
-    
-    <header>
-      <div>
-        <h1>Fabrika Yönetim Paneli</h1>
-        <p>Ana Sayfa</p> </div>
-      <div class="kullanici-bilgisi">
-        Yönetici
-        <span>9 Kasım 2025 Pazar</span>
-      </div>
-    </header>
-
-    <div class="sayfa-basligi">
-      <div>
         <h2>Hoş Geldiniz</h2>
-        <p>Genel durumu ve performans metriklerini buradan takip edebilirsiniz</p>
-      </div>
+        <p>Hesabınıza giriş yapın</p>
+
+        <form id="login-form">
+            <div class="form-grup">
+                <label>Kullanıcı Tipi</label>
+                <div class="login-user-type-selector">
+                    <button type="button" id="login-type-factory" class="login-type-btn aktif" data-type="factory">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 0 0-8.62-4.9L3 17c-1.1 0-2-.9-2-2v-3c0-1.1.9-2 2-2h2c1.1 0 2-.9 2-2V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v3c0 1.1.9 2 2 2h2c1.1 0 2 .9 2 2v3c0 1.1-.9 2-2 2l-.38-.1A10 10 0 0 0 12 22z"></path></svg>
+                        <span>Fabrika Yönetimi</span>
+                    </button>
+                    <button type="button" id="login-type-dealer" class="login-type-btn" data-type="dealer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16h14z"></path><path d="M12 12H5"></path></svg>
+                        <span>Bayi</span>
+                    </button>
+                </div>
+                <input type="hidden" id="selected-user-type" value="factory">
+            </div>
+
+            <div class="form-grup">
+                <label for="username">Kullanıcı Adı</label>
+                <div class="input-with-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <input type="text" id="username" placeholder="Kullanıcı adınızı girin" required>
+                </div>
+            </div>
+
+            <div class="form-grup">
+                <label for="password">Şifre</label>
+                <div class="input-with-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" id="login-submit-btn" class="btn-yeni-bayi" style="width: 100%; height: 48px; margin-top: 10px;">
+                <span class="btn-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    Giriş Yap
+                </span>
+            </button>
+            
+            <div class="login-demo-info">
+                <p>Demo: Herhangi bir kullanıcı adı ve şifre ile giriş yapabilirsiniz</p>
+            </div>
+        </form>
     </div>
 
-    <div class="kart-grid">
-      
-      <div class="info-card purple">
-        <span class="kart-baslik">Toplam Sipariş</span>
-        <span class="kart-deger">1,247</span>
-        <span class="kart-trend artış">↑ 12% bu ay</span>
-      </div>
-
-      <div class="info-card blue">
-        <span class="kart-baslik">Aktif Bayiler</span>
-        <span class="kart-deger">68</span>
-        <span class="kart-trend artış">↑ 5 yeni bayi</span>
-      </div>
-
-      <div class="info-card orange">
-        <span class="kart-baslik">Kritik Stoklar</span>
-        <span class="kart-deger">7</span>
-        <span class="kart-trend azalış">↓ 2 hammadde</span>
-      </div>
-
-      <div class="info-card green">
-        <span class="kart-baslik">Sevkiyat Durumu</span>
-        <span class="kart-deger">85</span>
-        <span class="kart-trend">Aktif sevkiyat</span>
-      </div>
-
+    <div class="login-footer">
+        © 2025 Yönetim Sistemi - Tüm hakları saklıdır
     </div>
 
-    <div class="grafik-grid">
-      
-      <div class="chart-card">
-        <h3>Şehir Bazlı Sipariş Dağılımı</h3>
-        <canvas id="sehirBazliGrafik"></canvas>
-      </div>
-
-      <div class="chart-card">
-        <h3>Aylık Satış Trendleri</h3>
-        <canvas id="aylikSatisGrafik"></canvas>
-      </div>
-      
-      <div class="chart-card">
-        <h3>Sevkiyat Durumu</h3>
-        <canvas id="sevkiyatDurumGrafik"></canvas>
-      </div>
-
-      <div class="chart-card">
-        <h3>Bayi Aktivitesi</h3>
-        <canvas id="bayiAktiviteGrafik"></canvas>
-      </div>
-
-    </div> </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="main.js"></script> 
+    <script src="main.js"></script> 
 </body>
 </html>

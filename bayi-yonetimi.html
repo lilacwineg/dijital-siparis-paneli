@@ -189,9 +189,15 @@
             </div>
           </div>
           
-          <div class="modal-footer" style="border-top: none; padding-top: 0; margin-top: 20px;">
-            <button id="duzenle-form-ac-btn" class="btn-yeni-bayi" style="background-color: #3B82F6;">Bayi Bilgilerini Düzenle</button>
-            <div id="duzenle-form-alani" style="display: none; width: 100%; border-top: 1px solid #27273A; padding-top: 20px;">
+          <div class="modal-footer">
+            
+            <div id="duzenle-ana-butonlar" style="display: flex; justify-content: flex-end; width: 100%; gap: 12px;">
+                <button id="bayi-sil-btn" class="btn-iptal-et">Bayiyi Sil</button>
+                <button id="duzenle-form-ac-btn" class="btn-onayla" style="background-color: #3B82F6;">Bayi Bilgilerini Düzenle</button> 
+            </div>
+
+            <div id="duzenle-form-alani" style="display: none; width: 100%;">
+                <h4 style="color: white; margin-top: 0; margin-bottom: 20px; border-top: 1px solid #27273A; padding-top: 20px;">Bayi Bilgilerini Düzenle</h4>
                 <form id="bayi-duzenleme-formu">
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="form-grup">
@@ -218,8 +224,7 @@
                 </form>
             </div>
           </div>
-
-        </div>
+          </div>
       </div>
     </div>
     

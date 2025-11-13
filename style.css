@@ -868,7 +868,7 @@ td {
   box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
 }
 
-/* --- YENİ: Sipariş Takip Stepper (bayi-siparislerim.html) --- */
+/* --- Bayi Sipariş Detay Stepper --- */
 .stepper-container {
   display: flex;
   justify-content: space-between;
@@ -928,7 +928,7 @@ td {
   background-color: #10B981; /* Yeşil */
 }
 
-/* --- YENİ: Bayi Sipariş Detay Bilgi Kutusu (mavi) --- */
+/* --- Bayi Sipariş Detay Bilgi Kutusu --- */
 .teslimat-bilgi-kutusu {
   background-color: rgba(59, 130, 246, 0.1);
   border: 1px solid rgba(59, 130, 246, 0.3);
@@ -949,4 +949,208 @@ td {
 }
 .teslimat-bilgi-kutusu p strong {
   color: #E0E0E0;
+}
+
+/* --- YENİ EKLENDİ: LOGIN SAYFASI --- */
+@keyframes pulse {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.25; }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.login-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #0A0A10;
+  overflow: hidden; 
+  position: relative;
+}
+.login-bg-blur {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px); 
+  animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  z-index: 1;
+}
+.login-bg-blur.blur-1 {
+  width: 384px; 
+  height: 384px; 
+  background-color: rgba(124, 58, 237, 0.2); 
+  top: 0;
+  left: 25%;
+}
+.login-bg-blur.blur-2 {
+  width: 384px;
+  height: 384px;
+  background-color: rgba(59, 130, 246, 0.2); 
+  bottom: 0;
+  right: 25%;
+  animation-delay: 4s;
+}
+.login-bg-blur.blur-3 {
+  width: 384px;
+  height: 384px;
+  background-color: rgba(16, 185, 129, 0.1); 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 2s;
+}
+.login-card {
+  background-color: rgba(18, 18, 30, 0.8); 
+  backdrop-filter: blur(16px); 
+  border: 1px solid #27273A;
+  border-radius: 12px;
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 10;
+}
+.login-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.login-icon-wrapper .login-icon {
+  position: relative;
+  background: linear-gradient(to right, #7C3AED, #3B82F6);
+  padding: 16px;
+  border-radius: 50%;
+  color: white;
+  display: flex; /* İkonu ortalamak için */
+  align-items: center;
+  justify-content: center;
+}
+.login-card h2 {
+  color: white;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+.login-card p {
+  color: #A0A0A0;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.login-footer {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #6B7280;
+  font-size: 14px;
+  z-index: 10;
+}
+.login-demo-info {
+  background-color: rgba(31, 29, 54, 0.5); 
+  border: 1px solid #27273A;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+}
+.login-demo-info p {
+  color: #A0A0A0;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+/* Kullanıcı Tipi Seçici */
+.login-user-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.login-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid #27273A; 
+  background-color: rgba(31, 29, 54, 0.5); 
+  color: #A0A0A0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+.login-type-btn svg {
+  color: #A0A0A0;
+  transition: all 0.2s ease;
+}
+.login-type-btn:hover {
+  border-color: #37374A;
+}
+.login-type-btn.aktif {
+  border-color: #7C3AED; 
+  background-color: rgba(124, 58, 237, 0.2); 
+  color: white;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+.login-type-btn.aktif svg {
+  color: #c084fc; /* purple-400 */
+}
+.login-type-btn.aktif[data-type="dealer"] {
+  border-color: #3B82F6; 
+  background-color: rgba(59, 130, 246, 0.2); 
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+.login-type-btn.aktif[data-type="dealer"] svg {
+  color: #60a5fa; /* blue-400 */
+}
+.login-type-btn span {
+  transition: all 0.2s ease;
+}
+
+/* Form İkonlu Input */
+.input-with-icon {
+  position: relative;
+}
+.input-with-icon svg { /* SVG ikonları için */
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6B7280;
+}
+.input-with-icon input {
+  padding-left: 44px; /* pl-10 */
+}
+.form-grup input:focus {
+  border-color: #7C3AED;
+}
+
+/* Yükleniyor Butonu */
+.btn-yeni-bayi.loading {
+  background: #27273A !important; /* Yüklenirken rengi kilitle */
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-yeni-bayi .loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+.btn-yeni-bayi .btn-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

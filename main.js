@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === GLOBAL GRAFİK DEĞİŞKENLERİ ===
   // ===================================================
-  // Modalların içinde yeniden çizilmeleri için referanslarını burada tutuyoruz
   let bayiModalAylikChart = null;
   let bayiModalEnCokUrunChart = null;
   let hammaddeModalChart = null;
@@ -78,10 +77,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalBayiSehir = document.getElementById('modal-bayi-sehir');
     const modalBayiIletisim = document.getElementById('modal-bayi-iletisim');
     const modalBayiHacim = document.getElementById('modal-bayi-hacim'); 
+    
+    // Düzenle/Sil Butonları ve Form Alanı
+    const duzenleAnaButonlar = document.getElementById('duzenle-ana-butonlar');
     const duzenleAcBtn = document.getElementById('duzenle-form-ac-btn');
+    const bayiSilBtn = document.getElementById('bayi-sil-btn'); 
+    
     const duzenleFormAlani = document.getElementById('duzenle-form-alani');
     const duzenleIptalBtn = document.getElementById('duzenle-iptal-btn');
     const bayiDuzenlemeFormu = document.getElementById('bayi-duzenleme-formu');
+    
     const inputAdi = document.getElementById('duzenle-adi');
     const inputSehir = document.getElementById('duzenle-sehir');
     const inputIletisim = document.getElementById('duzenle-iletisim');
@@ -91,8 +96,16 @@ document.addEventListener("DOMContentLoaded", function() {
       const tiklananButon = event.currentTarget;
       const adi = tiklananButon.dataset.adi; const sehir = tiklananButon.dataset.sehir; const iletisim = tiklananButon.dataset.iletisim; const hacim = tiklananButon.dataset.hacim;
       modalBayiAdi.textContent = "Bayi Detayları - " + adi; modalBayiSehir.textContent = "Şehir: " + sehir; modalBayiIletisim.textContent = "İletişim: " + iletisim; modalBayiHacim.textContent = "Sipariş Hacmi: " + hacim;
-      inputAdi.value = adi; inputSehir.value = sehir; inputIletisim.value = iletisim; inputAdres.value = ""; 
-      duzenleFormAlani.style.display = 'none'; duzenleAcBtn.style.display = 'block'; 
+      
+      inputAdi.value = adi; 
+      inputSehir.value = sehir; 
+      inputIletisim.value = iletisim; 
+      inputAdres.value = ""; 
+      
+      duzenleFormAlani.style.display = 'none'; 
+      if(duzenleAnaButonlar) {
+        duzenleAnaButonlar.style.display = 'flex'; 
+      }
       
       bayiModal.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('aktif'));
       bayiModal.querySelector('.tab-button[data-target="tab-siparis-gecmisi"]').classList.add('aktif');
@@ -101,9 +114,42 @@ document.addEventListener("DOMContentLoaded", function() {
       
       bayiModal.style.display = 'flex';
     }
-    duzenleAcBtn.addEventListener('click', function() { duzenleFormAlani.style.display = 'block'; duzenleAcBtn.style.display = 'none'; });
-    duzenleIptalBtn.addEventListener('click', function() { duzenleFormAlani.style.display = 'none'; duzenleAcBtn.style.display = 'block'; });
-    bayiDuzenlemeFormu.addEventListener('submit', function(event) { event.preventDefault(); const kaydedilenAd = inputAdi.value; alert(`Bayi (${kaydedilenAd}) bilgileri güncellendi ve sunucuya gönderildi!`); duzenleFormAlani.style.display = 'none'; duzenleAcBtn.style.display = 'block'; bayiModal.style.display = 'none'; });
+    
+    if(duzenleAcBtn) {
+      duzenleAcBtn.addEventListener('click', function() { 
+        duzenleFormAlani.style.display = 'block'; 
+        duzenleAnaButonlar.style.display = 'none'; 
+      });
+    }
+
+    if(duzenleIptalBtn) {
+      duzenleIptalBtn.addEventListener('click', function() { 
+        duzenleFormAlani.style.display = 'none'; 
+        duzenleAnaButonlar.style.display = 'flex'; 
+      });
+    }
+    
+    if(bayiDuzenlemeFormu) {
+      bayiDuzenlemeFormu.addEventListener('submit', function(event) { 
+        event.preventDefault(); 
+        const kaydedilenAd = inputAdi.value; 
+        alert(`Bayi (${kaydedilenAd}) bilgileri güncellendi! (Simülasyon)`); 
+        
+        duzenleFormAlani.style.display = 'none'; 
+        duzenleAnaButonlar.style.display = 'flex';
+      });
+    }
+    
+    if(bayiSilBtn) {
+      bayiSilBtn.addEventListener('click', function() {
+          const adi = modalBayiAdi.textContent.split(' - ')[1] || "Bu Bayi";
+          if (confirm(`${adi} bayisini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`)) {
+              alert(`${adi} bayisi silindi. (Simülasyon)`);
+              bayiModal.style.display = 'none';
+          }
+      });
+    }
+
     detayButonlari.forEach(function(buton) { buton.addEventListener('click', modalAc); });
     modalKapatBtn.addEventListener('click', function() { bayiModal.style.display = 'none'; });
   }
@@ -126,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 2: FABRİKA DASHBOARD GRAFİKLERİ (index.html) ===
+  // === BÖLÜM 2: FABRİKA DASHBOARD GRAFİKLERİ (panel-fabrika.html) ===
   // ===================================================
   const sehirGrafikTuvali = document.getElementById('sehirBazliGrafik');
   if (sehirGrafikTuvali) {
@@ -243,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 8: SEKME (TAB) KONTROL KODLARI (TEK YERDE) ===
   // ===================================================
+  const tabLists = document.querySelectorAll('.tab-list');
   tabLists.forEach(function(tabList) {
     const tabButtons = tabList.querySelectorAll('.tab-button');
     tabButtons.forEach(function(button) {
@@ -417,6 +464,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalHammaddeUyari = document.getElementById('modal-hammadde-uyari');
     const modalHammaddeBitmeSuresi = document.getElementById('modal-hammadde-bitme-suresi');
     const siparisVerBtn = document.getElementById('modal-hammadde-siparis-ver-btn');
+    const silBtn = document.getElementById('modal-hammadde-sil-btn'); // YENİ BUTONU AL
 
     function hammaddeModalAc(event) {
       const tiklananButon = event.currentTarget;
@@ -460,11 +508,23 @@ document.addEventListener("DOMContentLoaded", function() {
     hammaddeKapatBtn.addEventListener('click', hammaddeModalKapat);
     hammaddeKapatBtn2.addEventListener('click', hammaddeModalKapat); 
     
+    // Sipariş Ver Butonu
     siparisVerBtn.addEventListener('click', function() {
         const hammaddeAdi = modalHammaddeAdi.textContent.split(' - ')[1] || "Seçilen Hammadde";
         alert(`${hammaddeAdi} için tedarik siparişi oluşturuldu! (Simülasyon)`);
         hammaddeModalKapat();
     });
+    
+    // YENİ: Sil Butonu
+    if (silBtn) { // Butonun varlığını kontrol et
+      silBtn.addEventListener('click', function() {
+          const hammaddeAdi = modalHammaddeAdi.textContent.split(' - ')[1] || "Seçilen Hammadde";
+          if (confirm(`${hammaddeAdi} hammaddesini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`)) {
+              alert(`${hammaddeAdi} silindi. (Simülasyon)`);
+              hammaddeModalKapat();
+          }
+      });
+    }
   }
 
 
@@ -775,7 +835,6 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 17: SEKME (TAB) KONTROL KODLARI (TEK YERDE) ===
   // ===================================================
-  const tabLists = document.querySelectorAll('.tab-list');
   tabLists.forEach(function(tabList) {
     const tabButtons = tabList.querySelectorAll('.tab-button');
     tabButtons.forEach(function(button) {
@@ -951,5 +1010,75 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   });
+
+  // ===================================================
+  // === BÖLÜM 21: GİRİŞ FORMU (login.html veya index.html) ===
+  // ===================================================
+  const loginForm = document.getElementById('login-form');
+  if (loginForm) {
+    const seciliTipInput = document.getElementById('selected-user-type');
+    const fabrikaBtn = document.getElementById('login-type-factory');
+    const bayiBtn = document.getElementById('login-type-dealer');
+    const submitBtn = document.getElementById('login-submit-btn');
+    const submitBtnText = submitBtn.querySelector('.btn-text'); // Buton metnini al
+
+    // Kullanıcı tipi seçimi
+    fabrikaBtn.addEventListener('click', function() {
+      seciliTipInput.value = 'factory';
+      fabrikaBtn.classList.add('aktif');
+      bayiBtn.classList.remove('aktif');
+      submitBtn.style.background = ''; // Stili sıfırla, CSS'teki mor gradyan devreye girsin
+      submitBtn.classList.remove('bayi-login'); // Mavi stili kaldır
+    });
+
+    bayiBtn.addEventListener('click', function() {
+      seciliTipInput.value = 'dealer';
+      bayiBtn.classList.add('aktif');
+      fabrikaBtn.classList.remove('aktif');
+      submitBtn.style.background = 'linear-gradient(to right, #3B82F6, #2563EB)'; // Mavi
+      submitBtn.classList.add('bayi-login'); // Mavi stil için bir sınıf
+    });
+
+    // Form gönderimi
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Formun sayfayı yenilemesini engelle
+      
+      const seciliTip = seciliTipInput.value;
+      const kullaniciAdi = document.getElementById('username').value;
+      
+      // Yükleniyor animasyonunu göster
+      submitBtn.disabled = true;
+      // Orijinal metni kaybetmeden "loading" sınıfını ekle
+      submitBtn.classList.add('loading');
+      // İçeriği değiştir
+      submitBtn.innerHTML = `<div class="loading-spinner"></div> <span class="btn-text">Giriş Yapılıyor...</span>`;
+      
+      // Simülasyon: 1 saniye bekle
+      setTimeout(function() {
+        if (seciliTip === 'factory') {
+          alert(`Fabrika Yöneticisi (${kullaniciAdi}) olarak giriş yapıldı!`);
+          
+          // ***** DİKKAT: YÖNLENDİRME LİNKİ *****
+          window.location.href = 'panel-fabrika.html'; // Fabrika ana sayfasına yönlendir
+        
+        } else {
+          alert(`Bayi (${kullaniciAdi}) olarak giriş yapıldı!`);
+          window.location.href = 'bayi-anasayfa.html'; // Bayi ana sayfasına yönlendir
+        }
+        
+        // Butonu eski haline getir (sayfa değişmezse diye)
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+        submitBtn.innerHTML = `<span class="btn-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                                Giriş Yap
+                              </span>`;
+      }, 1000);
+    });
+  }
 
 }); // DOMContentLoaded'in sonu
