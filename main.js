@@ -908,7 +908,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalTutar = document.getElementById('modal-bayi-siparis-tutar');
     const modalDurumBadge = document.getElementById('modal-bayi-siparis-durum-badge');
     const modalNo = document.getElementById('modal-bayi-siparis-no');
-    const modalTakipNo = document.getElementById('modal-bayi-siparis-takipno');
     
     // Stepper elemanları
     const stepOnay = document.getElementById('step-onay');
@@ -936,9 +935,7 @@ document.addEventListener("DOMContentLoaded", function() {
       modalUrunler.textContent = urunAdi;
       modalMiktar.textContent = miktarText;
       modalTutar.textContent = btn.dataset.tutar;
-      
-      // Takip No güncelle
-      modalTakipNo.innerHTML = `<strong>Takip No:</strong> TK-2025-${id}`;
+
       
       // Badge güncelle
       modalDurumBadge.textContent = durum;
@@ -987,32 +984,10 @@ document.addEventListener("DOMContentLoaded", function() {
     kapatBtn2.addEventListener('click', bayiSiparisModalKapat);
   }
 
-  // ===================================================
-  // === BÖLÜM 20: BAYİ KATALOG BUTONLARI (bayi-katalog.html) ===
-  // ===================================================
-  const katalogDetayButonlari = document.querySelectorAll('.btn-katalog-detay');
-  katalogDetayButonlari.forEach(button => {
-    button.addEventListener('click', function() {
-      const urunAdi = this.dataset.urunAdi;
-      alert(`${urunAdi} için ürün detayları yükleniyor... (Simülasyon)`);
-    });
-  });
 
-  const katalogSiparisButonlari = document.querySelectorAll('.btn-katalog-siparis-ver');
-  katalogSiparisButonlari.forEach(button => {
-    if (!button.disabled) { // Sadece 'disabled' olmayan butonlara listener ekle
-      button.addEventListener('click', function() {
-        const urunAdi = this.dataset.urunAdi;
-        // Ürün adını bir sonraki sayfaya taşımak için localStorage kullan
-        localStorage.setItem('selectedProduct', urunAdi);
-        // Sipariş verme sayfasına yönlendir
-        window.location.href = 'bayi-siparis-ver.html';
-      });
-    }
-  });
 
   // ===================================================
-  // === BÖLÜM 21: GİRİŞ FORMU (login.html veya index.html) ===
+  // === BÖLÜM 20: GİRİŞ FORMU (login.html veya index.html) ===
   // ===================================================
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
