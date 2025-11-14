@@ -832,38 +832,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
 
-  // ===================================================
-  // === BÖLÜM 17: SEKME (TAB) KONTROL KODLARI (TEK YERDE) ===
-  // ===================================================
-  tabLists.forEach(function(tabList) {
-    const tabButtons = tabList.querySelectorAll('.tab-button');
-    tabButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-        tabButtons.forEach(btn => btn.classList.remove('aktif'));
-        button.classList.add('aktif');
-        const targetId = button.dataset.target;
-        const parentContainer = button.closest('.tablo-container') || button.closest('.main-content') || button.closest('.modal-govde');
-        
-        if(parentContainer){
-          parentContainer.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('aktif');
-          });
-        }
-        
-        const targetContent = document.getElementById(targetId);
-        if (targetContent) {
-          targetContent.classList.add('aktif');
-        }
-        
-        // Modal içi grafiklerin sadece o sekme tıklandığında çizilmesi için
-        if (targetId === 'tab-trendler') {
-            if (typeof cizBayiModalGrafikleri === 'function') {
-                setTimeout(cizBayiModalGrafikleri, 50); 
-            }
-        }
-      });
-    });
-  });
 
   // ===================================================
   // === BÖLÜM 18: ÜRETİM PLANLAMA BATCH BUTONLARI (uretim-planlama.html) ===
@@ -892,97 +860,203 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 19: BAYİ SİPARİŞ DETAY MODALI (bayi-siparislerim.html) ===
   // ===================================================
-  const bayiSiparisModal = document.getElementById('bayi-siparis-detay-modal');
-  
-  if (bayiSiparisModal) {
-    const kapatBtn1 = document.getElementById('modal-kapat-btn-bayi-siparis');
-    const kapatBtn2 = document.getElementById('modal-kapat-btn-bayi-siparis-2');
-    const detayButonlari = document.querySelectorAll('#bayi-aktif-siparis-tablosu .btn-detay');
-    
-    // Modal içindeki alanlar
-    const modalId = document.getElementById('modal-bayi-siparis-id');
-    const modalTarih = document.getElementById('modal-bayi-siparis-tarih');
-    const modalTeslim = document.getElementById('modal-bayi-siparis-teslim');
-    const modalUrunler = document.getElementById('modal-bayi-siparis-urunler');
-    const modalMiktar = document.getElementById('modal-bayi-siparis-miktar');
-    const modalTutar = document.getElementById('modal-bayi-siparis-tutar');
-    const modalDurumBadge = document.getElementById('modal-bayi-siparis-durum-badge');
-    const modalNo = document.getElementById('modal-bayi-siparis-no');
-    
-    // Stepper elemanları
-    const stepOnay = document.getElementById('step-onay');
-    const stepUretim = document.getElementById('step-uretim');
-    const stepSevkiyat = document.getElementById('step-sevkiyat');
-    const stepTamamlandi = document.getElementById('step-tamamlandi');
 
-    function bayiSiparisModalAc(event) {
-      const btn = event.currentTarget;
-      
-      // Verileri al
-      const id = btn.dataset.id;
-      const durum = btn.dataset.durum;
-      
-      modalId.textContent = "Sipariş Detayları - " + id;
-      modalNo.textContent = id;
-      modalTarih.textContent = btn.dataset.tarih;
+  // Sadece bu tablo varsa (yani bayi-siparislerim.html sayfasındaysak) çalışsın
+  const siparisTablosu = document.getElementById("bayi-aktif-siparis-tablosu");
+
+  if (siparisTablosu) {
+
+    // --- Modal ve alanlar ---
+    const bayiSiparisModal   = document.getElementById("bayi-siparis-detay-modal");
+    const kapatBtn1          = document.getElementById("modal-kapat-btn-bayi-siparis");
+    const kapatBtn2          = document.getElementById("modal-kapat-btn-bayi-siparis-2");
+    const detayButonlari     = siparisTablosu.querySelectorAll(".btn-detay");
+
+    const modalId            = document.getElementById("modal-bayi-siparis-id");
+    const modalTarih         = document.getElementById("modal-bayi-siparis-tarih");
+    const modalTeslim        = document.getElementById("modal-bayi-siparis-teslim");
+    const modalUrunler       = document.getElementById("modal-bayi-siparis-urunler");
+    const modalMiktar        = document.getElementById("modal-bayi-siparis-miktar");
+    const modalTutar         = document.getElementById("modal-bayi-siparis-tutar");
+    const modalDurumBadge    = document.getElementById("modal-bayi-siparis-durum-badge");
+    const modalNo            = document.getElementById("modal-bayi-siparis-no");
+
+    // Stepper elemanları (bu sayfada yoksa sorun değil)
+    const stepOnay       = document.getElementById("step-onay");
+    const stepUretim     = document.getElementById("step-uretim");
+    const stepSevkiyat   = document.getElementById("step-sevkiyat");
+    const stepTamamlandi = document.getElementById("step-tamamlandi");
+
+    // Aksiyon butonları
+    const btnTeslim    = document.getElementById("btn-teslim-alindi");
+    const btnEksik     = document.getElementById("btn-eksik");
+    const btnIptal     = document.getElementById("btn-iptal");
+    const eksikKutusu  = document.getElementById("eksik-aciklama-kutusu");
+    const eksikGonder  = document.getElementById("eksik-gonder");
+    const eksikAciklama= document.getElementById("eksik-aciklama");
+
+    // Seçilen sipariş ID'si burada tutulacak
+    let aktifSiparisId = null;
+
+
+    // -----------------------------
+    // BİLDİRİM KAYIT FONKSİYONU
+    // -----------------------------
+    function bildirimGonder(tip, siparisId, aciklama = "") {
+      let bildirimler = JSON.parse(localStorage.getItem("fabrikaBildirimler") || "[]");
+      const yeni = {
+        siparisId,
+        tip,
+        aciklama,
+        tarih: new Date().toISOString()
+      };
+      bildirimler.push(yeni);
+      localStorage.setItem("fabrikaBildirimler", JSON.stringify(bildirimler));
+      console.log("BİLDİRİM KAYDEDİLDİ →", yeni);
+    }
+
+
+    // -----------------------------
+    // MODAL AÇMA FONKSİYONU
+    // -----------------------------
+    function bayiSiparisModalAc() {
+      // Burada "this" her zaman tıklanan .btn-detay butonu
+      const btn = this;
+
+      // Güvenlik: gerçekten btn-detay mi?
+      if (!btn.classList.contains("btn-detay")) return;
+
+      // SİPARİŞ ID'Yİ KAYDET
+      aktifSiparisId = btn.dataset.id;
+
+      // Modal alanlarını doldur
+      modalId.textContent     = "Sipariş Detayları - " + btn.dataset.id;
+      modalNo.textContent     = btn.dataset.id;
+      modalTarih.textContent  = btn.dataset.tarih;
       modalTeslim.textContent = btn.dataset.teslim;
-      
-      // Ürün ve miktarı ayır
-      const urunText = btn.dataset.urunler; // "Gül Parfümü (50 adet)"
-      const urunAdi = urunText.split('(')[0].trim();
-      const miktarText = urunText.split('(')[1] ? urunText.split('(')[1].replace(')', '') : 'N/A';
-      
+
+      const urunText   = btn.dataset.urunler;           // "Gül Parfümü (50 adet)"
+      const urunAdi    = urunText.split("(")[0].trim();
+      const miktarText = urunText.split("(")[1]
+                        ? urunText.split("(")[1].replace(")", "")
+                        : "N/A";
+
       modalUrunler.textContent = urunAdi;
-      modalMiktar.textContent = miktarText;
-      modalTutar.textContent = btn.dataset.tutar;
+      modalMiktar.textContent  = miktarText;
+      modalTutar.textContent   = btn.dataset.tutar;
 
-      
-      // Badge güncelle
+      // Durum & badge
+      const durum = btn.dataset.durum;
       modalDurumBadge.textContent = durum;
-      modalDurumBadge.className = "badge"; // Önce sıfırla
-      
-      // Stepper (adım takip) güncelle
-      if (stepOnay) { 
-          stepOnay.className = 'step-item';
-          stepUretim.className = 'step-item';
-          stepSevkiyat.className = 'step-item';
-          stepTamamlandi.className = 'step-item';
+      modalDurumBadge.className   = "badge"; // reset
 
-          if(durum === "Onay Bekliyor") {
-            modalDurumBadge.classList.add("onay-bekliyor");
-            stepOnay.classList.add('aktif'); 
-          } 
-          else if(durum === "Üretimde" || durum === "Hazırlanıyor") {
-            modalDurumBadge.classList.add("uretimde");
-            stepOnay.classList.add('tamamlandi');
-            stepUretim.classList.add('aktif');
-          } 
-          else if(durum === "Sevkiyatta") {
-            modalDurumBadge.classList.add("sevkiyatta");
-            stepOnay.classList.add('tamamlandi');
-            stepUretim.classList.add('tamamlandi');
-            stepSevkiyat.classList.add('aktif');
-          } 
-          else if(durum === "Tamamlandı") {
-            modalDurumBadge.classList.add("tamamlandi");
-            stepOnay.classList.add('tamamlandi');
-            stepUretim.classList.add('tamamlandi');
-            stepSevkiyat.classList.add('tamamlandi');
-            stepTamamlandi.classList.add('tamamlandi');
-          }
+      // Stepper reset
+      if (stepOnay) {
+        stepOnay.className       = "step-item";
+        stepUretim.className     = "step-item";
+        stepSevkiyat.className   = "step-item";
+        stepTamamlandi.className = "step-item";
+
+        if (durum === "Onay Bekliyor") {
+          modalDurumBadge.classList.add("onay-bekliyor");
+          stepOnay.classList.add("aktif");
+        } else if (durum === "Üretimde" || durum === "Hazırlanıyor") {
+          modalDurumBadge.classList.add("uretimde");
+          stepOnay.classList.add("tamamlandi");
+          stepUretim.classList.add("aktif");
+        } else if (durum === "Sevkiyatta") {
+          modalDurumBadge.classList.add("sevkiyatta");
+          stepOnay.classList.add("tamamlandi");
+          stepUretim.classList.add("tamamlandi");
+          stepSevkiyat.classList.add("aktif");
+        } else if (durum === "Tamamlandı") {
+          modalDurumBadge.classList.add("tamamlandi");
+          stepOnay.classList.add("tamamlandi");
+          stepUretim.classList.add("tamamlandi");
+          stepSevkiyat.classList.add("tamamlandi");
+          stepTamamlandi.classList.add("tamamlandi");
+        }
       }
 
-      bayiSiparisModal.style.display = 'flex';
-    }
-    
-    function bayiSiparisModalKapat() {
-      bayiSiparisModal.style.display = 'none';
+      // Modalı göster
+      bayiSiparisModal.style.display = "flex";
     }
 
-    detayButonlari.forEach(btn => btn.addEventListener('click', bayiSiparisModalAc));
-    kapatBtn1.addEventListener('click', bayiSiparisModalKapat);
-    kapatBtn2.addEventListener('click', bayiSiparisModalKapat);
-  }
+
+    // -----------------------------
+    // MODAL KAPATMA
+    // -----------------------------
+    function bayiSiparisModalKapat() {
+      bayiSiparisModal.style.display = "none";
+      // Eksik kutusunu da gizle
+      if (eksikKutusu) {
+        eksikKutusu.style.display = "none";
+        eksikAciklama.value = "";
+      }
+    }
+
+
+    // -----------------------------
+    // EVENT LISTENER TANIMLARI
+    // -----------------------------
+
+    // Detay butonları
+    detayButonlari.forEach(btn => {
+      btn.addEventListener("click", bayiSiparisModalAc);
+    });
+
+    // Kapat butonları
+    if (kapatBtn1) kapatBtn1.addEventListener("click", bayiSiparisModalKapat);
+    if (kapatBtn2) kapatBtn2.addEventListener("click", bayiSiparisModalKapat);
+
+    // ✔ Teslim Alındı
+    if (btnTeslim) {
+      btnTeslim.addEventListener("click", () => {
+        if (!aktifSiparisId) return;
+        bildirimGonder("teslim-alindi", aktifSiparisId);
+        alert("Sipariş 'Teslim Alındı' olarak bildirildi.");
+        bayiSiparisModalKapat();
+      });
+    }
+
+    // ✔ Eksik Geldi — Açıklama kutusu açılır
+    if (btnEksik && eksikKutusu) {
+      btnEksik.addEventListener("click", () => {
+        eksikKutusu.style.display = "block";
+      });
+    }
+
+    // ✔ Eksik Sebebi Gönderildi
+    if (eksikGonder) {
+      eksikGonder.addEventListener("click", () => {
+        const sebep = eksikAciklama.value.trim();
+        if (!sebep) {
+          alert("Lütfen eksik nedenini yazın.");
+          return;
+        }
+        if (!aktifSiparisId) return;
+
+        bildirimGonder("eksik", aktifSiparisId, sebep);
+        alert("Eksik bildirimi gönderildi.");
+
+        eksikKutusu.style.display = "none";
+        bayiSiparisModalKapat();
+      });
+    }
+
+    // ✔ İptal Edildi
+    if (btnIptal) {
+      btnIptal.addEventListener("click", () => {
+        if (!aktifSiparisId) return;
+        if (!confirm("Bu siparişi iptal etmek istediğinize emin misiniz?")) return;
+
+        bildirimGonder("iptal", aktifSiparisId);
+        alert("Sipariş 'İptal Edildi' olarak bildirildi.");
+        bayiSiparisModalKapat();
+      });
+    }
+
+  } // siparisTablosu if'inin sonu
 
 
 

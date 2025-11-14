@@ -951,6 +951,11 @@ td {
   color: #E0E0E0;
 }
 
+.btn-yesil { background: #10B981; color:#fff; padding:8px 12px; border-radius:6px; }
+.btn-sari { background:#F59E0B; color:#000; padding:8px 12px; border-radius:6px; }
+.btn-kirmizi { background:#EF4444; color:#fff; padding:8px 12px; border-radius:6px; }
+
+
 /* --- YENİ EKLENDİ: LOGIN SAYFASI --- */
 @keyframes pulse {
   0%, 100% { opacity: 0.1; }
@@ -1153,4 +1158,240 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* --- MODAL YENİ TASARIM (BAYİ SİPARİŞ DETAY) --- */
+
+/* Modal Arkaplan */
+.modal-arkaplan {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    background-color: rgba(0,0,0,0.65);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Kutusu */
+.siparis-modal {
+    width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background-color: #12121E;
+    border: 1px solid #27273A;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+
+    animation: modalFade 0.2s ease-out;
+}
+
+@keyframes modalFade {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Modal Başlık */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #27273A;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 22px;
+}
+
+/* Kapatma Butonu */
+.modal-kapat-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #37374A;
+    background-color: #27273A;
+    color: #A0A0A0;
+    cursor: pointer;
+}
+.modal-kapat-btn:hover {
+    background-color: #37374A;
+    color: white;
+}
+
+/* Grid Bilgi Alanı */
+.modal-govde {
+    color: #A0A0A0;
+}
+
+.modal-govde .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+/* Teslimat Bilgi Kartı */
+.teslimat-bilgi-kutusu {
+    margin-top: 20px;
+    padding: 16px;
+    background-color: rgba(124, 58, 237, 0.12);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 10px;
+}
+
+.teslimat-bilgi-kutusu h4 {
+    margin: 0 0 10px;
+    color: white;
+}
+
+/* Modal Aksiyon Butonları */
+.modal-aksiyon-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-yesil,
+.btn-sari,
+.btn-kirmizi {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Eksik Açıklama Kartı */
+.eksik-kutu {
+    display: none;
+    background-color: #0A0A10;
+    border: 1px solid #27273A;
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+.eksik-kutu textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    border-radius: 8px;
+    background-color: #12121E;
+    border: 1px solid #27273A;
+    color: white;
+    padding: 10px;
+}
+
+/* EKSİK GÖNDER BUTONU */
+.eksik-gonder-btn {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    /* Soluk, karanlık UI */
+    background: rgba(255, 255, 255, 0.07);
+    color: #e4e4e4;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    transition: 0.25s ease;
+
+    /* Hafif sarı aksent */
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.25);
+}
+
+/* Hover efekti */
+.eksik-gonder-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Tıklama efekti */
+.eksik-gonder-btn:active {
+    transform: scale(0.97);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+
+/* Footer */
+.modal-footer {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #27273A;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-footer .btn-detay {
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+
+
+/* --- ORTAK AKSİYON BUTON STİLLERİ --- */
+.modal-aksiyon-container button {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    /* SOLUK & KARANLIK MODERN TASARIM */
+    background: rgba(255, 255, 255, 0.06);
+    color: #d9d9d9;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    transition: 0.25s ease;
+}
+
+/* Hover efekti */
+.modal-aksiyon-container button:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Tıklama efekti */
+.modal-aksiyon-container button:active {
+    transform: scale(0.97);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* --- RENK AKSENTLERİ (çok hafif) --- */
+.btn-yesil {
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+}
+
+.btn-sari {
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+.btn-kirmizi {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.25);
+}
+
+#eksik-aciklama-kutusu textarea {
+    width: 100%;
+    box-sizing: border-box;   /* TAŞMAYI TAMAMEN ENGELLER */
+    resize: none;             /* İstersen kapatıyorum */
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: #ddd;
+    font-size: 14px;
 }
