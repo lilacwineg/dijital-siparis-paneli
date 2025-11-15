@@ -201,8 +201,25 @@ document.addEventListener("DOMContentLoaded", function() {
   const siparisTrendTuvali = document.getElementById('siparisTrendGrafik');
   if (siparisTrendTuvali) {
     const trendVerisi = {labels: ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],datasets: [{label: 'Siparişler', data: [12, 15, 18, 14, 20, 8, 5],borderColor: 'rgba(124, 58, 237, 1)', backgroundColor: 'rgba(124, 58, 237, 0.1)', fill: true, tension: 0.3}]};
-    new Chart(siparisTrendTuvali, { type: 'line', data: trendVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
+    
+    new Chart(siparisTrendTuvali, { 
+      type: 'line', 
+      data: trendVerisi, 
+      options: { // TEK BAŞLANGIÇ NOKTASI BURASI
+        responsive: true, 
+        maintainAspectRatio: false,
+        scales: { 
+          y: { beginAtZero: true, min: 0, max: 30, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, 
+          x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } 
+        }, 
+        plugins: { 
+          legend: { labels: { color: '#A0A0A0' } } 
+        } 
+      } // TEK BİTİŞ NOKTASI BURASI
+    });
   }
+
+  
   const siparisDurumTuvali = document.getElementById('siparisDurumGrafik');
   if (siparisDurumTuvali) {
     const durumVerisi = {labels: ["Tamamlandı", "Üretimde", "Sevkiyatta", "Onay Bekliyor", "İptal"],datasets: [{label: 'Sipariş Durumu', data: [420, 85, 45, 28, 12],backgroundColor: ['rgba(16, 185, 129, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(245, 158, 11, 0.6)', 'rgba(107, 114, 128, 0.6)', 'rgba(239, 68, 68, 0.6)'],borderColor: ['rgba(16, 185, 129, 1)', 'rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)', 'rgba(107, 114, 128, 1)', 'rgba(239, 68, 68, 1)'],borderWidth: 1}]};
@@ -224,19 +241,6 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(kritikStokTuvali, { type: 'doughnut', data: kritikStokVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
   }
 
-  // ===================================================
-  // === BÖLÜM 5: FİNANS YÖNETİMİ GRAFİKLERİ (finans-yonetimi.html) ===
-  // ===================================================
-  const aylikGelirTuvali = document.getElementById('aylikGelirGrafik');
-  if (aylikGelirTuvali) {
-    const gelirVerisi = {labels: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki"],datasets: [{label: 'Gelir (₺)', data: [320000, 345000, 380000, 365000, 420000, 450000, 435000, 480000, 495000, 520000],borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3}]};
-    new Chart(aylikGelirTuvali, { type: 'line', data: gelirVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
-  }
-  const gelirDagilimTuvali = document.getElementById('gelirDagilimGrafik');
-  if (gelirDagilimTuvali) {
-    const dagilimVerisi = {labels: ["Gül Parfümü", "Lavanta Esansı", "Vanilya Kokusu", "Papatya Özü", "Diğer"],datasets: [{label: 'Gelir Dağılımı', data: [30, 25, 20, 15, 10],backgroundColor: ['rgba(124, 58, 237, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(16, 185, 129, 0.6)', 'rgba(245, 158, 11, 0.6)', 'rgba(107, 114, 128, 0.6)'],borderColor: ['rgba(124, 58, 237, 1)', 'rgba(59, 130, 246, 1)', 'rgba(16, 185, 129, 1)', 'rgba(245, 158, 11, 1)', 'rgba(107, 114, 128, 1)'],borderWidth: 1}]};
-    new Chart(gelirDagilimTuvali, { type: 'doughnut', data: dagilimVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
-  }
 
   // ===================================================
   // === BÖLÜM 6: BAYİ ANA SAYFA GRAFİKLERİ (bayi-anasayfa.html) ===
@@ -832,38 +836,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
 
-  // ===================================================
-  // === BÖLÜM 17: SEKME (TAB) KONTROL KODLARI (TEK YERDE) ===
-  // ===================================================
-  tabLists.forEach(function(tabList) {
-    const tabButtons = tabList.querySelectorAll('.tab-button');
-    tabButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-        tabButtons.forEach(btn => btn.classList.remove('aktif'));
-        button.classList.add('aktif');
-        const targetId = button.dataset.target;
-        const parentContainer = button.closest('.tablo-container') || button.closest('.main-content') || button.closest('.modal-govde');
-        
-        if(parentContainer){
-          parentContainer.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('aktif');
-          });
-        }
-        
-        const targetContent = document.getElementById(targetId);
-        if (targetContent) {
-          targetContent.classList.add('aktif');
-        }
-        
-        // Modal içi grafiklerin sadece o sekme tıklandığında çizilmesi için
-        if (targetId === 'tab-trendler') {
-            if (typeof cizBayiModalGrafikleri === 'function') {
-                setTimeout(cizBayiModalGrafikleri, 50); 
-            }
-        }
-      });
-    });
-  });
 
   // ===================================================
   // === BÖLÜM 18: ÜRETİM PLANLAMA BATCH BUTONLARI (uretim-planlama.html) ===
@@ -892,127 +864,208 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 19: BAYİ SİPARİŞ DETAY MODALI (bayi-siparislerim.html) ===
   // ===================================================
-  const bayiSiparisModal = document.getElementById('bayi-siparis-detay-modal');
-  
-  if (bayiSiparisModal) {
-    const kapatBtn1 = document.getElementById('modal-kapat-btn-bayi-siparis');
-    const kapatBtn2 = document.getElementById('modal-kapat-btn-bayi-siparis-2');
-    const detayButonlari = document.querySelectorAll('#bayi-aktif-siparis-tablosu .btn-detay');
-    
-    // Modal içindeki alanlar
-    const modalId = document.getElementById('modal-bayi-siparis-id');
-    const modalTarih = document.getElementById('modal-bayi-siparis-tarih');
-    const modalTeslim = document.getElementById('modal-bayi-siparis-teslim');
-    const modalUrunler = document.getElementById('modal-bayi-siparis-urunler');
-    const modalMiktar = document.getElementById('modal-bayi-siparis-miktar');
-    const modalTutar = document.getElementById('modal-bayi-siparis-tutar');
-    const modalDurumBadge = document.getElementById('modal-bayi-siparis-durum-badge');
-    const modalNo = document.getElementById('modal-bayi-siparis-no');
-    const modalTakipNo = document.getElementById('modal-bayi-siparis-takipno');
-    
-    // Stepper elemanları
-    const stepOnay = document.getElementById('step-onay');
-    const stepUretim = document.getElementById('step-uretim');
-    const stepSevkiyat = document.getElementById('step-sevkiyat');
-    const stepTamamlandi = document.getElementById('step-tamamlandi');
 
-    function bayiSiparisModalAc(event) {
-      const btn = event.currentTarget;
-      
-      // Verileri al
-      const id = btn.dataset.id;
-      const durum = btn.dataset.durum;
-      
-      modalId.textContent = "Sipariş Detayları - " + id;
-      modalNo.textContent = id;
-      modalTarih.textContent = btn.dataset.tarih;
+  // Sadece bu tablo varsa (yani bayi-siparislerim.html sayfasındaysak) çalışsın
+  const siparisTablosu = document.getElementById("bayi-aktif-siparis-tablosu");
+
+  if (siparisTablosu) {
+
+    // --- Modal ve alanlar ---
+    const bayiSiparisModal   = document.getElementById("bayi-siparis-detay-modal");
+    const kapatBtn1          = document.getElementById("modal-kapat-btn-bayi-siparis");
+    const kapatBtn2          = document.getElementById("modal-kapat-btn-bayi-siparis-2");
+    const detayButonlari     = siparisTablosu.querySelectorAll(".btn-detay");
+
+    const modalId            = document.getElementById("modal-bayi-siparis-id");
+    const modalTarih         = document.getElementById("modal-bayi-siparis-tarih");
+    const modalTeslim        = document.getElementById("modal-bayi-siparis-teslim");
+    const modalUrunler       = document.getElementById("modal-bayi-siparis-urunler");
+    const modalMiktar        = document.getElementById("modal-bayi-siparis-miktar");
+    const modalTutar         = document.getElementById("modal-bayi-siparis-tutar");
+    const modalDurumBadge    = document.getElementById("modal-bayi-siparis-durum-badge");
+    const modalNo            = document.getElementById("modal-bayi-siparis-no");
+
+    // Stepper elemanları (bu sayfada yoksa sorun değil)
+    const stepOnay       = document.getElementById("step-onay");
+    const stepUretim     = document.getElementById("step-uretim");
+    const stepSevkiyat   = document.getElementById("step-sevkiyat");
+    const stepTamamlandi = document.getElementById("step-tamamlandi");
+
+    // Aksiyon butonları
+    const btnTeslim    = document.getElementById("btn-teslim-alindi");
+    const btnEksik     = document.getElementById("btn-eksik");
+    const btnIptal     = document.getElementById("btn-iptal");
+    const eksikKutusu  = document.getElementById("eksik-aciklama-kutusu");
+    const eksikGonder  = document.getElementById("eksik-gonder");
+    const eksikAciklama= document.getElementById("eksik-aciklama");
+
+    // Seçilen sipariş ID'si burada tutulacak
+    let aktifSiparisId = null;
+
+
+    // -----------------------------
+    // BİLDİRİM KAYIT FONKSİYONU
+    // -----------------------------
+    function bildirimGonder(tip, siparisId, aciklama = "") {
+      let bildirimler = JSON.parse(localStorage.getItem("fabrikaBildirimler") || "[]");
+      const yeni = {
+        siparisId,
+        tip,
+        aciklama,
+        tarih: new Date().toISOString()
+      };
+      bildirimler.push(yeni);
+      localStorage.setItem("fabrikaBildirimler", JSON.stringify(bildirimler));
+      console.log("BİLDİRİM KAYDEDİLDİ →", yeni);
+    }
+
+
+    // -----------------------------
+    // MODAL AÇMA FONKSİYONU
+    // -----------------------------
+    function bayiSiparisModalAc() {
+      // Burada "this" her zaman tıklanan .btn-detay butonu
+      const btn = this;
+
+      // Güvenlik: gerçekten btn-detay mi?
+      if (!btn.classList.contains("btn-detay")) return;
+
+      // SİPARİŞ ID'Yİ KAYDET
+      aktifSiparisId = btn.dataset.id;
+
+      // Modal alanlarını doldur
+      modalId.textContent     = "Sipariş Detayları - " + btn.dataset.id;
+      modalNo.textContent     = btn.dataset.id;
+      modalTarih.textContent  = btn.dataset.tarih;
       modalTeslim.textContent = btn.dataset.teslim;
-      
-      // Ürün ve miktarı ayır
-      const urunText = btn.dataset.urunler; // "Gül Parfümü (50 adet)"
-      const urunAdi = urunText.split('(')[0].trim();
-      const miktarText = urunText.split('(')[1] ? urunText.split('(')[1].replace(')', '') : 'N/A';
-      
-      modalUrunler.textContent = urunAdi;
-      modalMiktar.textContent = miktarText;
-      modalTutar.textContent = btn.dataset.tutar;
-      
-      // Takip No güncelle
-      modalTakipNo.innerHTML = `<strong>Takip No:</strong> TK-2025-${id}`;
-      
-      // Badge güncelle
-      modalDurumBadge.textContent = durum;
-      modalDurumBadge.className = "badge"; // Önce sıfırla
-      
-      // Stepper (adım takip) güncelle
-      if (stepOnay) { 
-          stepOnay.className = 'step-item';
-          stepUretim.className = 'step-item';
-          stepSevkiyat.className = 'step-item';
-          stepTamamlandi.className = 'step-item';
 
-          if(durum === "Onay Bekliyor") {
-            modalDurumBadge.classList.add("onay-bekliyor");
-            stepOnay.classList.add('aktif'); 
-          } 
-          else if(durum === "Üretimde" || durum === "Hazırlanıyor") {
-            modalDurumBadge.classList.add("uretimde");
-            stepOnay.classList.add('tamamlandi');
-            stepUretim.classList.add('aktif');
-          } 
-          else if(durum === "Sevkiyatta") {
-            modalDurumBadge.classList.add("sevkiyatta");
-            stepOnay.classList.add('tamamlandi');
-            stepUretim.classList.add('tamamlandi');
-            stepSevkiyat.classList.add('aktif');
-          } 
-          else if(durum === "Tamamlandı") {
-            modalDurumBadge.classList.add("tamamlandi");
-            stepOnay.classList.add('tamamlandi');
-            stepUretim.classList.add('tamamlandi');
-            stepSevkiyat.classList.add('tamamlandi');
-            stepTamamlandi.classList.add('tamamlandi');
-          }
+      const urunText   = btn.dataset.urunler;           // "Gül Parfümü (50 adet)"
+      const urunAdi    = urunText.split("(")[0].trim();
+      const miktarText = urunText.split("(")[1]
+                        ? urunText.split("(")[1].replace(")", "")
+                        : "N/A";
+
+      modalUrunler.textContent = urunAdi;
+      modalMiktar.textContent  = miktarText;
+      modalTutar.textContent   = btn.dataset.tutar;
+
+      // Durum & badge
+      const durum = btn.dataset.durum;
+      modalDurumBadge.textContent = durum;
+      modalDurumBadge.className   = "badge"; // reset
+
+      // Stepper reset
+      if (stepOnay) {
+        stepOnay.className       = "step-item";
+        stepUretim.className     = "step-item";
+        stepSevkiyat.className   = "step-item";
+        stepTamamlandi.className = "step-item";
+
+        if (durum === "Onay Bekliyor") {
+          modalDurumBadge.classList.add("onay-bekliyor");
+          stepOnay.classList.add("aktif");
+        } else if (durum === "Üretimde" || durum === "Hazırlanıyor") {
+          modalDurumBadge.classList.add("uretimde");
+          stepOnay.classList.add("tamamlandi");
+          stepUretim.classList.add("aktif");
+        } else if (durum === "Sevkiyatta") {
+          modalDurumBadge.classList.add("sevkiyatta");
+          stepOnay.classList.add("tamamlandi");
+          stepUretim.classList.add("tamamlandi");
+          stepSevkiyat.classList.add("aktif");
+        } else if (durum === "Tamamlandı") {
+          modalDurumBadge.classList.add("tamamlandi");
+          stepOnay.classList.add("tamamlandi");
+          stepUretim.classList.add("tamamlandi");
+          stepSevkiyat.classList.add("tamamlandi");
+          stepTamamlandi.classList.add("tamamlandi");
+        }
       }
 
-      bayiSiparisModal.style.display = 'flex';
+      // Modalı göster
+      bayiSiparisModal.style.display = "flex";
     }
-    
+
+
+    // -----------------------------
+    // MODAL KAPATMA
+    // -----------------------------
     function bayiSiparisModalKapat() {
-      bayiSiparisModal.style.display = 'none';
+      bayiSiparisModal.style.display = "none";
+      // Eksik kutusunu da gizle
+      if (eksikKutusu) {
+        eksikKutusu.style.display = "none";
+        eksikAciklama.value = "";
+      }
     }
 
-    detayButonlari.forEach(btn => btn.addEventListener('click', bayiSiparisModalAc));
-    kapatBtn1.addEventListener('click', bayiSiparisModalKapat);
-    kapatBtn2.addEventListener('click', bayiSiparisModalKapat);
-  }
 
-  // ===================================================
-  // === BÖLÜM 20: BAYİ KATALOG BUTONLARI (bayi-katalog.html) ===
-  // ===================================================
-  const katalogDetayButonlari = document.querySelectorAll('.btn-katalog-detay');
-  katalogDetayButonlari.forEach(button => {
-    button.addEventListener('click', function() {
-      const urunAdi = this.dataset.urunAdi;
-      alert(`${urunAdi} için ürün detayları yükleniyor... (Simülasyon)`);
+    // -----------------------------
+    // EVENT LISTENER TANIMLARI
+    // -----------------------------
+
+    // Detay butonları
+    detayButonlari.forEach(btn => {
+      btn.addEventListener("click", bayiSiparisModalAc);
     });
-  });
 
-  const katalogSiparisButonlari = document.querySelectorAll('.btn-katalog-siparis-ver');
-  katalogSiparisButonlari.forEach(button => {
-    if (!button.disabled) { // Sadece 'disabled' olmayan butonlara listener ekle
-      button.addEventListener('click', function() {
-        const urunAdi = this.dataset.urunAdi;
-        // Ürün adını bir sonraki sayfaya taşımak için localStorage kullan
-        localStorage.setItem('selectedProduct', urunAdi);
-        // Sipariş verme sayfasına yönlendir
-        window.location.href = 'bayi-siparis-ver.html';
+    // Kapat butonları
+    if (kapatBtn1) kapatBtn1.addEventListener("click", bayiSiparisModalKapat);
+    if (kapatBtn2) kapatBtn2.addEventListener("click", bayiSiparisModalKapat);
+
+    // ✔ Teslim Alındı
+    if (btnTeslim) {
+      btnTeslim.addEventListener("click", () => {
+        if (!aktifSiparisId) return;
+        bildirimGonder("teslim-alindi", aktifSiparisId);
+        alert("Sipariş 'Teslim Alındı' olarak bildirildi.");
+        bayiSiparisModalKapat();
       });
     }
-  });
+
+    // ✔ Eksik Geldi — Açıklama kutusu açılır
+    if (btnEksik && eksikKutusu) {
+      btnEksik.addEventListener("click", () => {
+        eksikKutusu.style.display = "block";
+      });
+    }
+
+    // ✔ Eksik Sebebi Gönderildi
+    if (eksikGonder) {
+      eksikGonder.addEventListener("click", () => {
+        const sebep = eksikAciklama.value.trim();
+        if (!sebep) {
+          alert("Lütfen eksik nedenini yazın.");
+          return;
+        }
+        if (!aktifSiparisId) return;
+
+        bildirimGonder("eksik", aktifSiparisId, sebep);
+        alert("Eksik bildirimi gönderildi.");
+
+        eksikKutusu.style.display = "none";
+        bayiSiparisModalKapat();
+      });
+    }
+
+    // ✔ İptal Edildi
+    if (btnIptal) {
+      btnIptal.addEventListener("click", () => {
+        if (!aktifSiparisId) return;
+        if (!confirm("Bu siparişi iptal etmek istediğinize emin misiniz?")) return;
+
+        bildirimGonder("iptal", aktifSiparisId);
+        alert("Sipariş 'İptal Edildi' olarak bildirildi.");
+        bayiSiparisModalKapat();
+      });
+    }
+
+  } // siparisTablosu if'inin sonu
+
+
 
   // ===================================================
-  // === BÖLÜM 21: GİRİŞ FORMU (login.html veya index.html) ===
+  // === BÖLÜM 20: GİRİŞ FORMU (login.html veya index.html) ===
   // ===================================================
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
