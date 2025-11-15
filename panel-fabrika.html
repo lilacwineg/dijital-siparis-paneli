@@ -7,7 +7,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<style>
+  .bayi-aktivitesi-table {
+  
+    border-radius: 12px;
 
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .bayi-aktivitesi-table:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .bayi-aktivitesi-table h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    
+  }
+
+  .bayi-aktivitesi-table canvas {
+    
+  }
+</style>
   <div class="sidebar">
     <div class="logo">Yönetim Paneli</div>
 
@@ -36,7 +63,7 @@
       </div>
       <div class="kullanici-bilgisi">
         Yönetici
-        <span>9 Kasım 2025 Pazar</span>
+        <span>17 Kasım 2025 Pazar</span>
       </div>
     </header>
 
@@ -50,23 +77,19 @@
     <div class="kart-grid">
       <div class="info-card purple">
         <span class="kart-baslik">Toplam Sipariş</span>
-        <span class="kart-deger">1,247</span>
-        <span class="kart-trend artış">↑ 12% bu ay</span>
+        <span class="kart-deger"></span>
       </div>
       <div class="info-card blue">
         <span class="kart-baslik">Aktif Bayiler</span>
-        <span class="kart-deger">68</span>
-        <span class="kart-trend artış">↑ 5 yeni bayi</span>
+        <span class="kart-deger"></span>
       </div>
       <div class="info-card red">
         <span class="kart-baslik">Kritik Stoklar</span>
-        <span class="kart-deger">7</span>
-        <span class="kart-trend azalış">↓ 2 hammadde</span>
+        <span class="kart-deger"></span>
       </div>
       <div class="info-card green">
         <span class="kart-baslik">Sevkiyat Durumu</span>
-        <span class="kart-deger">85</span>
-        <span class="kart-trend">↑ 1 Aktif sevkiyat</span>
+        <span class="kart-deger"></span>
       </div>
     </div>
 
@@ -80,16 +103,301 @@
         <canvas id="aylikSatisGrafik"></canvas>
       </div>
       <div class="chart-card">
-        <h3>Sevkiyat Durumu</h3>
+        <h3>Sipariş Durumu</h3>
         <canvas id="sevkiyatDurumGrafik"></canvas>
       </div>
-      <div class="chart-card">
-        <h3>Bayi Aktivitesi (Top 5)</h3>
-        <canvas id="bayiAktiviteGrafik"></canvas>
-      </div>
+
+
+  <div class="chart-card bayi-aktivitesi-table">
+    <h3>Bayi Aktivitesi (Top 5)</h3>
+    <canvas id="bayiChart"></canvas>
+  </div>
     </div>
     
   </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
   <script src="main.js"></script> 
+  <script src="fabrika-anasayfa.js"></script>
+  <script>
+ async function loadTopBayiler() {
+    try {
+      const response = await fetch('http://localhost:3000/fabrika/top-bayiler');
+      const data = await response.json();
+
+      const labels = data.map(bayi => bayi.bayi_adi);
+      const siparisler = data.map(bayi => bayi.siparis_sayisi);
+
+      renderBayiChart(labels, siparisler);
+
+    } catch (error) {
+      console.error('Veri çekme hatası:', error);
+    }
+  }
+
+  function renderBayiChart(labels, siparisler) {
+    const ctx = document.getElementById('bayiChart');
+
+    // Chart.js'in kendi destroy metodu
+    if (Chart.getChart('bayiChart')) {
+      Chart.getChart('bayiChart').destroy();
+    }
+
+    // Gradient oluştur
+    const gradient1 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    gradient1.addColorStop(0, 'rgba(99, 102, 241, 0.8)');
+    gradient1.addColorStop(1, 'rgba(99, 102, 241, 0.2)');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels.map(label => label.length > 25 ? label.substring(0, 25) + '...' : label),
+        datasets: [
+          {
+            label: 'Sipariş Sayısı',
+            data: siparisler,
+            backgroundColor: gradient1,
+            borderColor: 'rgba(99, 102, 241, 1)',
+            borderWidth: 2,
+            borderRadius: 8,
+            borderSkipped: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              padding: 15,
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              usePointStyle: true,
+              pointStyle: 'circle'
+            }
+          },
+          title: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            padding: 12,
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
+            cornerRadius: 8,
+            displayColors: true,
+            callbacks: {
+              label: function(context) {
+                return 'Sipariş Sayısı: ' + context.parsed.y + ' sipariş';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 11
+              },
+              maxRotation: 45,
+              minRotation: 45
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              font: {
+                size: 11
+              }
+            },
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          }
+        },
+        animation: {
+          duration: 1500,
+          easing: 'easeInOutQuart'
+        }
+      }
+    });
+  }
+
+
+  // 2️⃣ SİPARİŞ DURUM
+  async function loadSiparisDurum() {
+    try {
+      const response = await fetch('http://localhost:3000/fabrika/siparis-durum');
+      const data = await response.json();
+
+      const labels = data.map(item => item.durum);
+      const values = data.map(item => item.adet);
+
+      renderSiparisDurumChart(labels, values);
+
+    } catch (error) {
+      console.error('Sipariş durum hatası:', error);
+    }
+  }
+
+  function renderSiparisDurumChart(labels, values) {
+    const ctx = document.getElementById('sevkiyatDurumGrafik');
+
+    // Chart.js'in kendi destroy metodu
+    if (Chart.getChart('sevkiyatDurumGrafik')) {
+      Chart.getChart('sevkiyatDurumGrafik').destroy();
+    }
+
+    // KESIN FARKLI RENKLER - HER BİRİ BELİRGİN
+    const colors = labels.map(durum => {
+      switch(durum) {
+        case 'Tamamlandı':
+        case 'Tamamlandi':
+          return {
+            bg: 'rgba(34, 197, 94, 0.85)',      // 🟢 PARLAK YEŞİL
+            border: 'rgba(34, 197, 94, 1)'
+          };
+        case 'Sevkiyatta':
+          return {
+            bg: 'rgba(20, 184, 166, 0.85)',     // 🟦 TURKUAZ
+            border: 'rgba(20, 184, 166, 1)'
+          };
+        case 'Üretimde':
+          return {
+            bg: 'rgba(59, 130, 246, 0.85)',     // 🔵 PARLAK MAVİ
+            border: 'rgba(59, 130, 246, 1)'
+          };
+        case 'Onay Bekliyor':
+          return {
+            bg: 'rgba(251, 146, 60, 0.85)',     // 🟠 PARLAK TURUNCU
+            border: 'rgba(251, 146, 60, 1)'
+          };
+        case 'Onaylandı':
+          return {
+            bg: 'rgba(234, 179, 8, 0.85)',      // 🟡 SARI
+            border: 'rgba(234, 179, 8, 1)'
+          };
+        case 'Beklemede':
+          return {
+            bg: 'rgba(148, 163, 184, 0.85)',    // ⚪ GRİ
+            border: 'rgba(148, 163, 184, 1)'
+          };
+        case 'İptal':
+        case 'Iptal':
+          return {
+            bg: 'rgba(239, 68, 68, 0.85)',      // 🔴 KIRMIZI
+            border: 'rgba(239, 68, 68, 1)'
+          };
+        default:
+          return {
+            bg: 'rgba(168, 85, 247, 0.85)',     // 🟣 MOR
+            border: 'rgba(168, 85, 247, 1)'
+          };
+      }
+    });
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colors.map(c => c.bg),
+          borderColor: colors.map(c => c.border),
+          borderWidth: 2,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 10,
+              font: {
+                size: 11,
+                weight: '500'
+              },
+              color: '#ffffff',
+              usePointStyle: true,
+              pointStyle: 'circle',
+              generateLabels: function(chart) {
+                const data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map((label, i) => {
+                    const value = data.datasets[0].data[i];
+                    return {
+                      text: `${label} (${value})`,
+                      fillStyle: data.datasets[0].backgroundColor[i],
+                      strokeStyle: data.datasets[0].borderColor[i],
+                      fontColor: '#ffffff',
+                      lineWidth: 2,
+                      hidden: false,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            padding: 12,
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
+            cornerRadius: 8,
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                return `${label}: ${value} sipariş (${percentage}%)`;
+              }
+            }
+          }
+        },
+        animation: {
+          animateRotate: true,
+          animateScale: true,
+          duration: 1500,
+          easing: 'easeInOutQuart'
+        },
+        cutout: '65%'
+      }
+    });
+  }
+
+  // 3️⃣ SAYFA YÜKLENDİĞİNDE ÇAĞIR
+  window.addEventListener('DOMContentLoaded', () => {
+    loadTopBayiler();
+    loadSiparisDurum();
+  });
+
+  </script>
 </body>
 </html>

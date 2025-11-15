@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tablo.innerHTML = "";
       veriler.forEach(h => {
         // 📊 stok yüzdesini hesapla
-        const stokYuzde = ((h.stok_miktari / h.kritik_stok_seviyesi) * 100).toFixed(0);
+        const stokYuzde = ((parseFloat(h.stok_miktari) / parseFloat(h.kritik_stok_seviyesi)) * 100).toFixed(0);
 
         // ⚙️ durum hesapla
         let durum = "";
@@ -120,10 +120,14 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.style.display = "none";
       hammaddeleriGetir();
       hammaddeIstatistikleriGetir();
+      grafikCiz(); // Grafikleri de güncelle
     } catch (err) {
       console.error("❌ Hata:", err);
     }
   });
+
+  // 📈 Grafikleri DOM yüklendikten sonra çiz
+  grafikCiz();
 });
 
 // 📈 Grafikler
@@ -131,15 +135,32 @@ let kullanimGrafik, kritikGrafik;
 
 async function grafikCiz() {
   try {
+    console.log("🎨 grafikCiz() çağrıldı");
+    console.log("📦 Chart.js yüklü mü?", typeof Chart !== 'undefined' ? "✅ Evet" : "❌ Hayır");
+
     const res = await fetch("http://localhost:3000/hammadde");
     const veriler = await res.json();
+    console.log("📊 Gelen veri sayısı:", veriler.length);
 
     // ---- Aylık Kullanım Grafiği ----
-    const ctx1 = document.getElementById("hammadeKullanimGrafik").getContext("2d");
+    const canvas1 = document.getElementById("hammadeKullanimGrafik");
+    console.log("🖼️ Canvas 1:", canvas1);
+    if (!canvas1) {
+      console.error("❌ hammadeKullanimGrafik canvas bulunamadı!");
+      return;
+    }
+    const ctx1 = canvas1.getContext("2d");
     const labels = veriler.map(v => v.hammadde_adi);
-    const stoklar = veriler.map(v => v.stok_miktari);
+    const stoklar = veriler.map(v => parseFloat(v.stok_miktari));
+    console.log("📋 Label sayısı:", labels.length);
 
-    if (kullanimGrafik) kullanimGrafik.destroy(); // Yeniden çizmeden önce sıfırla
+    // Mevcut chart varsa yok et
+    const mevcutChart1 = Chart.getChart("hammadeKullanimGrafik");
+    if (mevcutChart1) {
+      console.log("🗑️ Mevcut Chart 1 yok ediliyor...");
+      mevcutChart1.destroy();
+    }
+
     kullanimGrafik = new Chart(ctx1, {
       type: "bar",
       data: {
@@ -163,20 +184,32 @@ async function grafikCiz() {
     });
 
     // ---- Kritik Stok Dağılımı ----
-    const ctx2 = document.getElementById("kritikStokGrafik").getContext("2d");
+    const canvas2 = document.getElementById("kritikStokGrafik");
+    console.log("🖼️ Canvas 2:", canvas2);
+    if (!canvas2) {
+      console.error("❌ kritikStokGrafik canvas bulunamadı!");
+      return;
+    }
+    const ctx2 = canvas2.getContext("2d");
 
     let kritik = 0,
       yakin = 0,
       normal = 0;
 
     veriler.forEach(v => {
-      const stokYuzde = (v.stok_miktari / v.kritik_stok_seviyesi) * 100;
+      const stokYuzde = (parseFloat(v.stok_miktari) / parseFloat(v.kritik_stok_seviyesi)) * 100;
       if (stokYuzde <= 60) kritik++;
       else if (stokYuzde <= 90) yakin++;
       else normal++;
     });
 
-    if (kritikGrafik) kritikGrafik.destroy();
+    // Mevcut chart varsa yok et
+    const mevcutChart2 = Chart.getChart("kritikStokGrafik");
+    if (mevcutChart2) {
+      console.log("🗑️ Mevcut Chart 2 yok ediliyor...");
+      mevcutChart2.destroy();
+    }
+
     kritikGrafik = new Chart(ctx2, {
       type: "doughnut",
       data: {
@@ -195,11 +228,11 @@ async function grafikCiz() {
         },
       },
     });
+
+    console.log("✅ Her iki grafik başarıyla oluşturuldu!");
+    console.log("📊 Kritik Dağılım - Normal:", normal, "Yakın:", yakin, "Kritik:", kritik);
   } catch (err) {
     console.error("❌ Grafik çizme hatası:", err);
   }
 }
-
-// Sayfa yüklenince grafik çiz
-grafikCiz();
 

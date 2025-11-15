@@ -28,29 +28,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const siparisNo = `SP-${s.siparis_id.toString().padStart(3, "0")}`;
         const bayiAdi = s.bayi_adi || "Bayi Bilinmiyor";
-        const urunAdi = s.urun_adi || "Gül Parfümü"; // İstersen tabloya kolon ekleyip gerçek veri kullanırsın
+        const urunAdi = s.urun_adi || "Gül Parfümü";
         const miktar = s.miktar || "-";
         const durum = s.durum || "Onay Bekliyor";
         const siparisTarihi = (s.tarih || "").toISOString
           ? s.tarih.toISOString().split("T")[0]
           : (s.tarih || "").toString().slice(0, 10);
-        const tahminiTeslim = s.tahmini_teslim
-          ? s.tahmini_teslim.toString().slice(0, 10)
-          : "-";
+
+        // Tahmini teslim: Sipariş tarihine +7 gün ekle
+        let tahminiTeslim = "-";
+        if (s.tahmini_teslim) {
+          tahminiTeslim = s.tahmini_teslim.toString().slice(0, 10);
+        } else if (s.tarih) {
+          // Sipariş tarihinden 7 gün sonrası
+          const siparisTarihiObj = new Date(s.tarih);
+          siparisTarihiObj.setDate(siparisTarihiObj.getDate() + 7);
+          tahminiTeslim = siparisTarihiObj.toISOString().split("T")[0];
+        }
 
         tr.innerHTML = `
           <td>${siparisNo}</td>
           <td>${bayiAdi}</td>
-          <td>${urunAdi}</td>
-          <td>${miktar}</td>
           <td>
             <span class="badge ${badgeClass(durum)}">${durum}</span>
           </td>
           <td>${siparisTarihi}</td>
           <td>${tahminiTeslim}</td>
           <td>
-            <button 
-              class="btn-detay" 
+            <button
+              class="btn-detay"
               data-id="${s.siparis_id}"
               data-bayi="${bayiAdi}"
               data-urun="${urunAdi}"
@@ -80,6 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return "uretimde";
       case "Sevkiyatta":
         return "sevkiyatta";
+      case "Onaylandı":
+        return "tamamlandi";
       case "Tamamlandı":
         return "tamamlandi";
       case "İptal":
@@ -108,6 +116,188 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔹 Sayfa ilk açıldığında "Tümü" getir
   siparisleriGetir();
+
+  // =============== 📋 DETAY BUTONU EVENT DELEGATION ======================
+  // Dinamik olarak eklenen butonlar için event delegation kullan
+  siparisTablosu.addEventListener('click', function(e) {
+    // Eğer tıklanan element .btn-detay ise
+    if (e.target.classList.contains('btn-detay')) {
+      const btn = e.target;
+
+      // Modal elementlerini bul
+      const siparisModal = document.getElementById('siparis-detay-modal');
+      const modalSiparisId = document.getElementById('modal-siparis-id');
+      const modalSiparisBayi = document.getElementById('modal-siparis-bayi');
+      const modalSiparisTarih = document.getElementById('modal-siparis-tarih');
+      const modalSiparisUrun = document.getElementById('modal-siparis-urun');
+      const modalSiparisMiktar = document.getElementById('modal-siparis-miktar');
+      const modalSiparisBadge = document.getElementById('modal-siparis-durum-badge');
+      const modalSiparisTeslim = document.getElementById('modal-siparis-teslim');
+
+      if (!siparisModal) {
+        console.error('❌ Sipariş detay modal bulunamadı!');
+        return;
+      }
+
+      // Modal alanlarını doldur
+      const id = btn.dataset.id;
+      const bayi = btn.dataset.bayi;
+      const urun = btn.dataset.urun;
+      const miktar = btn.dataset.miktar;
+      const durum = btn.dataset.durum;
+      const tarih = btn.dataset.tarih;
+      const teslim = btn.dataset.teslim;
+
+      if (modalSiparisId) modalSiparisId.textContent = "Sipariş Detayları - SP-" + id.toString().padStart(3, '0');
+      if (modalSiparisBayi) modalSiparisBayi.textContent = bayi;
+      if (modalSiparisTarih) modalSiparisTarih.textContent = tarih;
+      if (modalSiparisUrun) modalSiparisUrun.textContent = urun;
+      if (modalSiparisMiktar) modalSiparisMiktar.textContent = miktar + " adet";
+      if (modalSiparisTeslim) modalSiparisTeslim.textContent = teslim;
+
+      if (modalSiparisBadge) {
+        modalSiparisBadge.textContent = durum;
+        modalSiparisBadge.className = "badge";
+
+        if (durum === "Onay Bekliyor") modalSiparisBadge.classList.add("onay-bekliyor");
+        else if (durum === "Üretimde") modalSiparisBadge.classList.add("uretimde");
+        else if (durum === "Sevkiyatta") modalSiparisBadge.classList.add("sevkiyatta");
+        else if (durum === "Onaylandı") modalSiparisBadge.classList.add("tamamlandi");
+        else if (durum === "Tamamlandı") modalSiparisBadge.classList.add("tamamlandi");
+        else if (durum === "İptal") modalSiparisBadge.classList.add("iptal");
+      }
+
+      // Durum select'te mevcut durumu seç
+      const durumSelect = document.getElementById('durum-guncelle');
+      if (durumSelect) {
+        console.log('🔍 Mevcut durum:', durum);
+        console.log('📋 Select options:', Array.from(durumSelect.options).map(o => o.value));
+
+        // Durumu seç
+        durumSelect.value = durum;
+
+        // Kontrol et
+        console.log('✅ Seçilen değer:', durumSelect.value);
+
+        // Eğer seçilmediyse manuel seç
+        if (durumSelect.value !== durum) {
+          for (let i = 0; i < durumSelect.options.length; i++) {
+            if (durumSelect.options[i].value === durum) {
+              durumSelect.selectedIndex = i;
+              console.log('✅ Manuel olarak seçildi:', i);
+              break;
+            }
+          }
+        }
+      } else {
+        console.error('❌ Durum select elementi bulunamadı!');
+      }
+
+      // Sipariş detaylarını çek ve göster
+      siparisDetaylariniGetir(id);
+
+      // Modalı aç
+      siparisModal.style.display = 'flex';
+    }
+  });
+
+  // =============== 📦 SİPARİŞ DETAYLARINI GETIR ======================
+  async function siparisDetaylariniGetir(siparisId) {
+    try {
+      const res = await fetch(`http://localhost:3000/siparisler/${siparisId}/detay`);
+      const detaylar = await res.json();
+
+      console.log('📦 Sipariş detayları:', detaylar);
+
+      // Detayları göstermek için bir tablo veya liste oluştur
+      const detayTablosu = document.querySelector('#siparis-detay-tablosu tbody');
+      if (detayTablosu) {
+        detayTablosu.innerHTML = '';
+
+        if (detaylar.length === 0) {
+          detayTablosu.innerHTML = `
+            <tr>
+              <td colspan="2" style="text-align: center; color: #888;">
+                Bu sipariş için detay bulunamadı.
+              </td>
+            </tr>
+          `;
+        } else {
+          detaylar.forEach(d => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${d.urun_adi || 'Ürün adı bulunamadı'}</td>
+              <td style="text-align: center;">${d.miktar} adet</td>
+            `;
+            detayTablosu.appendChild(tr);
+          });
+        }
+      } else {
+        console.warn('⚠️ #siparis-detay-tablosu bulunamadı. HTML\'de bu ID\'ye sahip bir tablo olmalı.');
+      }
+    } catch (err) {
+      console.error('❌ Sipariş detayları yüklenemedi:', err);
+    }
+  }
+
+  // =============== 💾 DURUM GÜNCELLEME ======================
+  const modalKaydetBtn = document.getElementById('modal-kaydet-btn-siparis');
+  const durumSelect = document.getElementById('durum-guncelle');
+
+  if (modalKaydetBtn && durumSelect) {
+    modalKaydetBtn.addEventListener('click', async function() {
+      const modalSiparisId = document.getElementById('modal-siparis-id');
+      if (!modalSiparisId) return;
+
+      const siparisIdText = modalSiparisId.textContent;
+      const siparisId = siparisIdText.split('SP-')[1]?.replace(/^0+/, '') || siparisIdText.split(' - ')[1];
+      const yeniDurum = durumSelect.value;
+
+      if (!siparisId || !yeniDurum) {
+        alert('Sipariş ID veya durum bulunamadı!');
+        return;
+      }
+
+      try {
+        console.log('🔄 Durum güncelleniyor:', { siparisId, yeniDurum });
+
+        const res = await fetch(`http://localhost:3000/siparisler/${siparisId}/durum`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ durum: yeniDurum })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert('Hata: ' + (data?.error || 'Durum güncellenemedi'));
+          return;
+        }
+
+        console.log('✅ Durum güncellendi:', data);
+        alert(`Sipariş durumu "${yeniDurum}" olarak güncellendi!`);
+
+        // Modalı kapat
+        const siparisModal = document.getElementById('siparis-detay-modal');
+        if (siparisModal) siparisModal.style.display = 'none';
+
+        // Tabloyu yenile
+        siparisleriGetir();
+      } catch (err) {
+        console.error('❌ Durum güncelleme hatası:', err);
+        alert('Sunucuya bağlanırken hata oluştu.');
+      }
+    });
+  }
+
+  // =============== ❌ MODAL KAPAT ======================
+  const modalKapatBtn = document.getElementById('modal-kapat-btn-siparis');
+  if (modalKapatBtn) {
+    modalKapatBtn.addEventListener('click', function() {
+      const siparisModal = document.getElementById('siparis-detay-modal');
+      if (siparisModal) siparisModal.style.display = 'none';
+    });
+  }
 });
 
 // 📄 PDF Rapor Oluşturma

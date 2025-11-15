@@ -7,6 +7,89 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ Üretim.js yüklendi.");
 
   // ==============================
+  // ÜRETİMDEKİ SİPARİŞLERİ GETİR
+  // ==============================
+  async function uretimdekiSiparisleriGetir() {
+    try {
+      const res = await fetch("http://localhost:3000/uretim");
+      if (!res.ok) throw new Error("Veri alınamadı");
+
+      const siparisler = await res.json();
+      console.log("📦 Üretimdeki siparişler:", siparisler);
+
+      const tablo = document.querySelector("#uretim-tablosu tbody");
+      if (!tablo) {
+        console.error("❌ Tablo bulunamadı!");
+        return;
+      }
+
+      tablo.innerHTML = "";
+
+      siparisler.forEach((s, index) => {
+        // İlerleme yüzdesi (rastgele simüle ediyoruz - ileride gerçek veri kullanılabilir)
+        const ilerleme = Math.floor(Math.random() * 100);
+
+        // Kalan gün hesaplama
+        const bitisTarihi = new Date(s.bitis_tarihi);
+        const bugun = new Date();
+        const kalanGun = Math.ceil((bitisTarihi - bugun) / (1000 * 60 * 60 * 24));
+
+        // Durum belirleme
+        let durum = "Devam Ediyor";
+        let durumClass = "uretimde";
+        if (ilerleme === 0) {
+          durum = "Beklemede";
+          durumClass = "onay-bekliyor";
+        } else if (ilerleme >= 100) {
+          durum = "Tamamlandı";
+          durumClass = "tamamlandi";
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>ÜE-${String(s.siparis_id).padStart(3, "0")}</td>
+          <td>${s.urun_adi || "-"}</td>
+          <td>${ilerleme > 0 ? Math.floor(s.miktar * (ilerleme / 100)) : 0} / ${s.miktar}</td>
+          <td>
+            <div class="progress-bar">
+              <div class="progress-bar-inner" style="width: ${ilerleme}%;">${ilerleme}%</div>
+            </div>
+          </td>
+          <td>${new Date(s.baslangic_tarihi).toISOString().split("T")[0]}</td>
+          <td>${new Date(s.bitis_tarihi).toISOString().split("T")[0]}</td>
+          <td>${kalanGun} gün</td>
+          <td><span class="badge ${durumClass}">${durum}</span></td>
+          <td><button class="btn-detay" data-id="ÜE-${String(s.siparis_id).padStart(3, "0")}">Detay</button></td>
+        `;
+        tablo.appendChild(tr);
+      });
+
+      // İstatistikleri güncelle
+      document.querySelector(".info-card.purple .kart-deger").textContent = siparisler.length;
+
+      // Progress bar renklerini güncelle
+      const progressBars = document.querySelectorAll(".progress-bar-inner");
+      progressBars.forEach((bar) => {
+        const width = parseInt(bar.style.width);
+        if (width >= 100) {
+          bar.style.backgroundColor = "#10B981";
+        } else if (width < 20) {
+          bar.style.backgroundColor = "#F59E0B";
+        } else {
+          bar.style.backgroundColor = "#7C3AED";
+        }
+      });
+
+      // Detay butonlarını yeniden bağla
+      detayButonlariEkle();
+    } catch (err) {
+      console.error("❌ Üretimdeki siparişler alınamadı:", err);
+    }
+  }
+
+  uretimdekiSiparisleriGetir();
+
+  // ==============================
   // TAB SİSTEMİ
   // ==============================
   const tabButtons = document.querySelectorAll(".tab-button");
@@ -23,26 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ==============================
-  // PROGRESS BAR GÜNCELLEME ÖRNEĞİ
-  // ==============================
-  const progressBars = document.querySelectorAll(".progress-bar-inner");
-  progressBars.forEach((bar) => {
-    const width = parseInt(bar.style.width);
-    if (width >= 100) {
-      bar.style.backgroundColor = "#10B981";
-    } else if (width < 20) {
-      bar.style.backgroundColor = "#F59E0B";
-    } else {
-      bar.style.backgroundColor = "#7C3AED";
-    }
-  });
-
   // ===========================================================
-  // EKLENDİ: DETAY MODAL KODLARI
+  // DETAY MODAL KODLARI
   // ===========================================================
-
-  const detayButonlari = document.querySelectorAll(".btn-detay");
   const modal = document.getElementById("siparisDetayModal");
   const closeBtn = modal ? modal.querySelector(".close-btn") : null;
 
@@ -57,56 +123,114 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnTamamla = document.getElementById("btnTamamla");
   const btnBeklemede = document.getElementById("btnBeklemede");
 
-  if (detayButonlari.length > 0 && modal) {
-    detayButonlari.forEach((buton) => {
-      buton.addEventListener("click", () => {
-        const satir = buton.closest("tr");
+  let secilenSiparisId = null; // Seçilen siparişin ID'sini sakla
 
-        if (!satir) return;
+  function detayButonlariEkle() {
+    const detayButonlari = document.querySelectorAll(".btn-detay");
 
-        // Satır verilerini al
-        detayEmirNo.textContent = satir.children[0].textContent;
-        detayUrun.textContent = satir.children[1].textContent;
-        detayMiktar.textContent = satir.children[2].textContent;
-        const ilerlemeYazi = satir.querySelector(".progress-bar-inner")
-          ? satir.querySelector(".progress-bar-inner").textContent
-          : "%0";
-        detayIlerleme.textContent = ilerlemeYazi;
-        detayBaslangic.textContent = satir.children[4].textContent;
-        detayBitis.textContent = satir.children[5].textContent;
-        detayDurum.textContent = satir.children[7].innerText;
+    if (detayButonlari.length > 0 && modal) {
+      detayButonlari.forEach((buton) => {
+        buton.addEventListener("click", () => {
+          const satir = buton.closest("tr");
 
-        // Modalı aç
-        modal.style.display = "flex";
+          if (!satir) return;
+
+          // Sipariş ID'sini al (ÜE-047 formatından 47'yi çıkar)
+          const emirNo = satir.children[0].textContent;
+          secilenSiparisId = parseInt(emirNo.replace("ÜE-", ""));
+
+          // Satır verilerini al
+          detayEmirNo.textContent = emirNo;
+          detayUrun.textContent = satir.children[1].textContent;
+          detayMiktar.textContent = satir.children[2].textContent;
+          const ilerlemeYazi = satir.querySelector(".progress-bar-inner")
+            ? satir.querySelector(".progress-bar-inner").textContent
+            : "%0";
+          detayIlerleme.textContent = ilerlemeYazi;
+          detayBaslangic.textContent = satir.children[4].textContent;
+          detayBitis.textContent = satir.children[5].textContent;
+          detayDurum.textContent = satir.children[7].innerText;
+
+          // Modalı aç
+          modal.style.display = "flex";
+        });
       });
+    }
+  }
+
+  // Modal kapatma
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
     });
+  }
 
-    // Modal kapatma
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
+  // "Tamamlandı" Butonu
+  if (btnTamamla) {
+    btnTamamla.addEventListener("click", async () => {
+      if (!secilenSiparisId) {
+        alert("❌ Sipariş ID bulunamadı!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:3000/uretim/${secilenSiparisId}/tamamla`, {
+          method: "POST",
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert("❌ Hata: " + (data.error || "Bilinmeyen hata"));
+          return;
+        }
+
+        alert("✅ " + data.message);
         modal.style.display = "none";
-      });
-    }
 
-    window.addEventListener("click", (e) => {
-      if (e.target === modal) modal.style.display = "none";
+        // Tabloyu yenile
+        await uretimdekiSiparisleriGetir();
+      } catch (err) {
+        console.error("❌ İstek hatası:", err);
+        alert("❌ Sunucuya bağlanırken hata oluştu.");
+      }
     });
+  }
 
-    // “Tamamlandı” Butonu
-    if (btnTamamla) {
-      btnTamamla.addEventListener("click", () => {
-        alert("✅ Üretim tamamlandı olarak işaretlendi!");
-        modal.style.display = "none";
-      });
-    }
+  // "Beklemede" Butonu
+  if (btnBeklemede) {
+    btnBeklemede.addEventListener("click", async () => {
+      if (!secilenSiparisId) {
+        alert("❌ Sipariş ID bulunamadı!");
+        return;
+      }
 
-    // “Beklemede” Butonu
-    if (btnBeklemede) {
-      btnBeklemede.addEventListener("click", () => {
-        alert("⏳ Sipariş beklemeye alındı!");
+      try {
+        const res = await fetch(`http://localhost:3000/uretim/${secilenSiparisId}/beklet`, {
+          method: "POST",
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert("❌ Hata: " + (data.error || "Bilinmeyen hata"));
+          return;
+        }
+
+        alert("⏳ " + data.message);
         modal.style.display = "none";
-      });
-    }
+
+        // Tabloyu yenile
+        await uretimdekiSiparisleriGetir();
+      } catch (err) {
+        console.error("❌ İstek hatası:", err);
+        alert("❌ Sunucuya bağlanırken hata oluştu.");
+      }
+    });
   }
 
   // ===========================================================

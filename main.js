@@ -155,21 +155,9 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ===================================================
-  // === BÖLÜM 1.5: YENİ BAYİ MODALI (bayi-yonetimi.html) ===
+  // === BÖLÜM 1.5: YENİ BAYİ MODALI - KALDIRILDI ===
+  // === Bu bölüm bayi.js'de gerçek backend entegrasyonu ile yönetiliyor ===
   // ===================================================
-  const yeniBayiBtn = document.getElementById('yeni-bayi-btn');
-  const yeniBayiModal = document.getElementById('yeni-bayi-modal');
-  if (yeniBayiBtn) {
-    const yeniModalKapatBtn = document.getElementById('modal-kapat-btn-yeni');
-    const yeniModalIptalBtn = document.getElementById('modal-iptal-btn-yeni');
-    const yeniBayiFormu = document.getElementById('yeni-bayi-formu');
-    yeniBayiBtn.addEventListener('click', function() { yeniBayiModal.style.display = 'flex'; });
-    yeniModalKapatBtn.addEventListener('click', function() { yeniBayiModal.style.display = 'none'; });
-    yeniModalIptalBtn.addEventListener('click', function() { yeniBayiModal.style.display = 'none'; });
-    if (yeniBayiFormu) {
-      yeniBayiFormu.addEventListener('submit', function(event) { event.preventDefault(); alert(`Yeni Bayi verileri başarıyla sunucuya (Backend/Yusuf) gönderildi ve kaydedildi.`); yeniBayiFormu.reset(); yeniBayiModal.style.display = 'none'; });
-    }
-  }
 
   // ===================================================
   // === BÖLÜM 2: FABRİKA DASHBOARD GRAFİKLERİ (panel-fabrika.html) ===
@@ -423,32 +411,9 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 10: YENİ HAMMADDE MODALI (hammadde-yonetimi.html) ===
   // ===================================================
-  const yeniHammaddeBtn = document.getElementById('yeni-hammadde-btn');
-  const yeniHammaddeModal = document.getElementById('yeni-hammadde-modal');
-  if (yeniHammaddeBtn) {
-    const yeniHammaddeKapatBtn = document.getElementById('modal-kapat-btn-hammadde');
-    const yeniHammaddeIptalBtn = document.getElementById('modal-iptal-btn-hammadde');
-    const yeniHammaddeFormu = document.getElementById('yeni-hammadde-formu');
-    
-    yeniHammaddeBtn.addEventListener('click', function() {
-      yeniHammaddeModal.style.display = 'flex';
-    });
-    yeniHammaddeKapatBtn.addEventListener('click', function() {
-      yeniHammaddeModal.style.display = 'none';
-    });
-    yeniHammaddeIptalBtn.addEventListener('click', function() {
-      yeniHammaddeModal.style.display = 'none';
-    });
-
-    if (yeniHammaddeFormu) {
-      yeniHammaddeFormu.addEventListener('submit', function(event) {
-          event.preventDefault();
-          alert('Yeni hammadde eklendi! (Simülasyon)');
-          yeniHammaddeFormu.reset();
-          yeniHammaddeModal.style.display = 'none';
-      });
-    }
-  }
+  // === BÖLÜM 10: YENİ HAMMADDE MODALI - KALDIRILDI ===
+  // === Bu bölüm hammadde.js'de gerçek backend entegrasyonu ile yönetiliyor ===
+  // ===================================================
 
   // ===================================================
   // === BÖLÜM 11: HAMMADDE DETAY MODALI (hammadde-yonetimi.html) ===

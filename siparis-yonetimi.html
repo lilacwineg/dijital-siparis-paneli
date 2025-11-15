@@ -67,8 +67,6 @@
           <tr>
             <th>Sipariş No</th>
             <th>Bayi Adı</th>
-            <th>Ürün</th>
-            <th>Miktar</th>
             <th>Durum</th>
             <th>Sipariş Tarihi</th>
             <th>Tahmini Teslim</th>
@@ -95,16 +93,45 @@
           <button id="modal-kapat-btn-siparis" class="modal-kapat-btn">X</button>
         </div>
         <div class="modal-govde">
+          <!-- Gizli elementler - JavaScript için gerekli -->
+          <p id="modal-siparis-bayi" style="display: none;"></p>
+          <p id="modal-siparis-tarih" style="display: none;"></p>
+          <p id="modal-siparis-urun" style="display: none;"></p>
+          <p id="modal-siparis-miktar" style="display: none;"></p>
+          <p id="modal-siparis-teslim" style="display: none;"></p>
+          <span id="modal-siparis-durum-badge" style="display: none;"></span>
+
           <div class="form-grup" style="margin-bottom: 20px;">
             <label for="durum-guncelle">Durum Güncelle</label>
             <select id="durum-guncelle">
               <option value="Onay Bekliyor">Onay Bekliyor</option>
               <option value="Üretimde">Üretimde</option>
               <option value="Sevkiyatta">Sevkiyatta</option>
+              <option value="Onaylandı">Onaylandı</option>
               <option value="Tamamlandı">Tamamlandı</option>
               <option value="İptal">İptal</option>
             </select>
           </div>
+
+          <h4 style="color: white; margin-top: 25px; margin-bottom: 15px; border-top: 1px solid #27273A; padding-top: 20px;">
+            📦 Sipariş İçeriği
+          </h4>
+          <table id="siparis-detay-tablosu" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+              <tr style="border-bottom: 1px solid #27273A;">
+                <th style="padding: 10px 0; color: #6B7280; text-align: left;">Ürün</th>
+                <th style="padding: 10px 0; color: #6B7280; text-align: center;">Miktar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" style="text-align: center; padding: 20px; color: #888;">
+                  Yükleniyor...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
           <div class="modal-footer">
             <button id="modal-iptal-et-btn" class="btn-iptal-et">İptal Et</button>
             <button id="modal-kaydet-btn-siparis" class="btn-onayla">Kaydet</button>
