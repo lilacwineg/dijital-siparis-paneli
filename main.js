@@ -201,8 +201,25 @@ document.addEventListener("DOMContentLoaded", function() {
   const siparisTrendTuvali = document.getElementById('siparisTrendGrafik');
   if (siparisTrendTuvali) {
     const trendVerisi = {labels: ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],datasets: [{label: 'Siparişler', data: [12, 15, 18, 14, 20, 8, 5],borderColor: 'rgba(124, 58, 237, 1)', backgroundColor: 'rgba(124, 58, 237, 0.1)', fill: true, tension: 0.3}]};
-    new Chart(siparisTrendTuvali, { type: 'line', data: trendVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
+    
+    new Chart(siparisTrendTuvali, { 
+      type: 'line', 
+      data: trendVerisi, 
+      options: { // TEK BAŞLANGIÇ NOKTASI BURASI
+        responsive: true, 
+        maintainAspectRatio: false,
+        scales: { 
+          y: { beginAtZero: true, min: 0, max: 30, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, 
+          x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } 
+        }, 
+        plugins: { 
+          legend: { labels: { color: '#A0A0A0' } } 
+        } 
+      } // TEK BİTİŞ NOKTASI BURASI
+    });
   }
+
+  
   const siparisDurumTuvali = document.getElementById('siparisDurumGrafik');
   if (siparisDurumTuvali) {
     const durumVerisi = {labels: ["Tamamlandı", "Üretimde", "Sevkiyatta", "Onay Bekliyor", "İptal"],datasets: [{label: 'Sipariş Durumu', data: [420, 85, 45, 28, 12],backgroundColor: ['rgba(16, 185, 129, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(245, 158, 11, 0.6)', 'rgba(107, 114, 128, 0.6)', 'rgba(239, 68, 68, 0.6)'],borderColor: ['rgba(16, 185, 129, 1)', 'rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)', 'rgba(107, 114, 128, 1)', 'rgba(239, 68, 68, 1)'],borderWidth: 1}]};
@@ -224,19 +241,6 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(kritikStokTuvali, { type: 'doughnut', data: kritikStokVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
   }
 
-  // ===================================================
-  // === BÖLÜM 5: FİNANS YÖNETİMİ GRAFİKLERİ (finans-yonetimi.html) ===
-  // ===================================================
-  const aylikGelirTuvali = document.getElementById('aylikGelirGrafik');
-  if (aylikGelirTuvali) {
-    const gelirVerisi = {labels: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki"],datasets: [{label: 'Gelir (₺)', data: [320000, 345000, 380000, 365000, 420000, 450000, 435000, 480000, 495000, 520000],borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3}]};
-    new Chart(aylikGelirTuvali, { type: 'line', data: gelirVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
-  }
-  const gelirDagilimTuvali = document.getElementById('gelirDagilimGrafik');
-  if (gelirDagilimTuvali) {
-    const dagilimVerisi = {labels: ["Gül Parfümü", "Lavanta Esansı", "Vanilya Kokusu", "Papatya Özü", "Diğer"],datasets: [{label: 'Gelir Dağılımı', data: [30, 25, 20, 15, 10],backgroundColor: ['rgba(124, 58, 237, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(16, 185, 129, 0.6)', 'rgba(245, 158, 11, 0.6)', 'rgba(107, 114, 128, 0.6)'],borderColor: ['rgba(124, 58, 237, 1)', 'rgba(59, 130, 246, 1)', 'rgba(16, 185, 129, 1)', 'rgba(245, 158, 11, 1)', 'rgba(107, 114, 128, 1)'],borderWidth: 1}]};
-    new Chart(gelirDagilimTuvali, { type: 'doughnut', data: dagilimVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
-  }
 
   // ===================================================
   // === BÖLÜM 6: BAYİ ANA SAYFA GRAFİKLERİ (bayi-anasayfa.html) ===
