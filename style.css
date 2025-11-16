@@ -5,7 +5,7 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  display: flex; /* İki sütunlu yapı için (EN ÖNEMLİ KURAL) */
+  display: flex; 
 }
 
 a {
@@ -16,8 +16,8 @@ a {
 /* --- 1. BÖLÜM: SOL MENÜ (SIDEBAR) --- */
 .sidebar {
   width: 260px;
-  background-color: #12121E; /* Sol menü arka planı */
-  height: 100vh; /* Tam ekran yüksekliği */
+  background-color: #12121E; 
+  height: 100vh; 
   padding: 24px;
   box-sizing: border-box; 
   display: flex;
@@ -960,7 +960,7 @@ td {
 .btn-kirmizi { background:#EF4444; color:#fff; padding:8px 12px; border-radius:6px; }
 
 
-/* --- YENİ EKLENDİ: LOGIN SAYFASI --- */
+/* --- LOGIN SAYFASI --- */
 @keyframes pulse {
   0%, 100% { opacity: 0.1; }
   50% { opacity: 0.25; }
@@ -1144,7 +1144,7 @@ td {
 
 /* Yükleniyor Butonu */
 .btn-yeni-bayi.loading {
-  background: #27273A !important; /* Yüklenirken rengi kilitle */
+  background: #27273A !important; 
   cursor: not-allowed;
   display: flex;
   align-items: center;
@@ -1376,7 +1376,7 @@ td {
     background: rgba(255, 255, 255, 0.22);
 }
 
-/* --- RENK AKSENTLERİ (çok hafif) --- */
+/* --- RENK AKSENTLERİ --- */
 .btn-yesil {
     box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
 }
@@ -1401,9 +1401,7 @@ td {
     font-size: 14px;
 }
 /* --- GENEL AYARLAR --- */
-  /* senin tüm mevcut kodların aynı şekilde burada kalıyor */
-
-/* --- RENK AKSENTLERİ (çok hafif) --- */
+/* --- RENK AKSENTLERİ --- */
 .btn-yesil {
     box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
 }
