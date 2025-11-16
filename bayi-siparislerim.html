@@ -37,8 +37,7 @@
                 <p>Siparişlerim</p>
             </div>
             <div class="kullanici-bilgisi">
-                Marmara Parfüm
-                <span>10 Kasım 2025 Pazartesi</span>
+                <!-- Kullanıcı bilgileri JavaScript ile yüklenecek -->
             </div>
         </header>
 
@@ -57,15 +56,15 @@
         <div class="kart-grid-3">
             <div class="info-card gradient orange-gradient">
                 <span class="kart-baslik">Onay Bekleyen Siparişler</span>
-                <span class="kart-deger">2</span>
+                <span class="kart-deger">-</span>
             </div>
             <div class="info-card gradient blue-gradient">
                 <span class="kart-baslik">Hazırlanan Siparişler</span>
-                <span class="kart-deger">1</span>
+                <span class="kart-deger">-</span>
             </div>
             <div class="info-card gradient green-gradient">
                 <span class="kart-baslik">Tamamlanan Siparişler (Son 30 Gün)</span>
-                <span class="kart-deger">8</span>
+                <span class="kart-deger">-</span>
             </div>
         </div>
 
@@ -80,75 +79,20 @@
             <!-- AKTİF SİPARİŞLER -->
             <div id="tab-aktif-siparisler" class="tab-content aktif">
                 <div class="arama-kutusu">
-                    <input type="text" placeholder="Aktif siparişlerde ara...">
+                    <input type="text" class="bayi-siparislerim" placeholder="Aktif siparişlerde ara...">
                 </div>
 
-                <table id="bayi-aktif-siparis-tablosu">
+                <table id="aktif-siparisler-tablo">
                     <thead>
                         <tr>
                             <th>Sipariş No</th>
-                            <th>Tarih</th>
-                            <th>Ürünler</th>
-                            <th>Tutar</th>
                             <th>Durum</th>
-                            <th>Tahmini Teslim</th>
+                            <th>Tarih</th>
                             <th>İşlem</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>SP-001</td>
-                            <td>2025-11-08</td>
-                            <td>Gül Parfümü (+1)</td>
-                            <td>₺4,250</td>
-                            <td><span class="badge onay-bekliyor">Onay Bekliyor</span></td>
-                            <td>2025-11-15</td>
-                            <td>
-                                <button class="btn-detay"
-                                    data-id="SP-001"
-                                    data-durum="Onay Bekliyor"
-                                    data-tarih="2025-11-08"
-                                    data-teslim="2025-11-15"
-                                    data-tutar="₺4,250"
-                                    data-urunler="Gül Parfümü (50 adet)">Detay</button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-002</td>
-                            <td>2025-11-07</td>
-                            <td>Lavanta Esansı</td>
-                            <td>₺2,160</td>
-                            <td><span class="badge uretimde">Üretimde</span></td>
-                            <td>2025-11-14</td>
-                            <td>
-                                <button class="btn-detay"
-                                    data-id="SP-002"
-                                    data-durum="Üretimde"
-                                    data-tarih="2025-11-07"
-                                    data-teslim="2025-11-14"
-                                    data-tutar="₺2,160"
-                                    data-urunler="Lavanta Esansı (30 adet)">Detay</button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-003</td>
-                            <td>2025-11-06</td>
-                            <td>Vanilya Kokusu</td>
-                            <td>₺1,700</td>
-                            <td><span class="badge sevkiyatta">Sevkiyatta</span></td>
-                            <td>2025-11-10</td>
-                            <td>
-                                <button class="btn-detay"
-                                    data-id="SP-003"
-                                    data-durum="Sevkiyatta"
-                                    data-tarih="2025-11-06"
-                                    data-teslim="2025-11-10"
-                                    data-tutar="₺1,700"
-                                    data-urunler="Vanilya Kokusu (25 adet)">Detay</button>
-                            </td>
-                        </tr>
+                        <!-- Veriler JavaScript ile yüklenecek -->
                     </tbody>
                 </table>
             </div>
@@ -159,24 +103,18 @@
                     <input type="text" placeholder="Geçmiş siparişlerde ara...">
                 </div>
 
-                <table>
+                <table id="gecmis-siparisler-tablo">
                     <thead>
                         <tr>
                             <th>Sipariş No</th>
-                            <th>Tarih</th>
-                            <th>Ürünler</th>
-                            <th>Tutar</th>
                             <th>Durum</th>
+                            <th>Tarih</th>
+                            <th>Toplam Tutar</th>
+                            <th>İşlem</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>SP-004</td>
-                            <td>2025-11-05</td>
-                            <td>Papatya Özü</td>
-                            <td>₺2,360</td>
-                            <td><span class="badge tamamlandi">Tamamlandı</span></td>
-                        </tr>
+                        <!-- Veriler JavaScript ile yüklenecek -->
                     </tbody>
                 </table>
             </div>
@@ -189,63 +127,31 @@
             <div class="modal-icerik siparis-modal">
 
                 <div class="modal-header">
-                    <h2 id="modal-bayi-siparis-id">Sipariş Detayları - #ID</h2>
+                    <h2 id="modal-bayi-siparis-id">Sipariş Detayları - #<span id="modal-siparis-no">ID</span></h2>
                     <button id="modal-kapat-btn-bayi-siparis" class="modal-kapat-btn">X</button>
                 </div>
 
                 <div class="modal-govde">
-                    <p class="modal-aciklama">Siparişinize ait detaylı bilgileri görüntüleyin</p>
+                    <p class="modal-aciklama">Siparişinize ait ürün bilgileri</p>
 
-                    <div class="form-grid">
-                        <div class="form-grup">
-                            <label>Sipariş Numarası</label>
-                            <p id="modal-bayi-siparis-no">...</p>
-                        </div>
-                        <div class="form-grup">
-                            <label>Sipariş Tarihi</label>
-                            <p id="modal-bayi-siparis-tarih">...</p>
-                        </div>
-                        <div class="form-grup">
-                            <label>Ürün</label>
-                            <p id="modal-bayi-siparis-urunler">...</p>
-                        </div>
-                        <div class="form-grup">
-                            <label>Miktar</label>
-                            <p id="modal-bayi-siparis-miktar">...</p>
-                        </div>
-                        <div class="form-grup">
-                            <label>Toplam Tutar</label>
-                            <p id="modal-bayi-siparis-tutar">...</p>
-                        </div>
-                        <div class="form-grup">
-                            <label>Tahmini Teslim</label>
-                            <p id="modal-bayi-siparis-teslim">...</p>
-                        </div>
-                    </div>
-
-                    <div class="form-grup">
-                        <label>Durum</label>
-                        <p><span id="modal-bayi-siparis-durum-badge" class="badge">...</span></p>
-                    </div>
-
-                    <div class="teslimat-bilgi-kutusu">
-                        <h4>Teslimat Bilgileri</h4>
-                        <p><strong>Adres:</strong> Merkez Depo - İstanbul</p>
-                    </div>
-
-                    <!-- Aksiyon Butonları -->
-                    <div class="modal-aksiyon-container">
-                        <button id="btn-teslim-alindi" class="btn-yesil">Teslim Alındı</button>
-                        <button id="btn-eksik" class="btn-sari">Eksik Geldi</button>
-                        <button id="btn-iptal" class="btn-kirmizi">İptal Edildi</button>
-                    </div>
-
-                    <!-- Eksik Açıklama -->
-                    <div id="eksik-aciklama-kutusu" class="eksik-kutu">
-                        <label>Eksik Sebebi:</label>
-                        <textarea id="eksik-aciklama" placeholder="Eksik ürün / sorun açıklaması yazın..."></textarea>
-                        <button id="eksik-gonder" class="btn-sari eksik-gonder-btn">Gönder</button>
-                    </div>
+                    <h4 style="color: white; margin-bottom: 15px; margin-top: 20px;">📦 Sipariş İçeriği</h4>
+                    <table id="siparis-urun-tablosu" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #27273A;">
+                                <th style="padding: 10px 0; color: #6B7280; text-align: left;">Ürün Adı</th>
+                                <th style="padding: 10px 0; color: #6B7280; text-align: center;">Kategori</th>
+                                <th style="padding: 10px 0; color: #6B7280; text-align: center;">Miktar</th>
+                                <th style="padding: 10px 0; color: #6B7280; text-align: center;">Birim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 20px; color: #888;">
+                                    Yükleniyor...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <div class="modal-footer">
                         <button id="modal-kapat-btn-bayi-siparis-2" class="btn-detay">Kapat</button>
@@ -258,6 +164,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="main.js"></script>
+    <script src="bayi-siparislerim.js"></script>
 
 </body>
 </html>

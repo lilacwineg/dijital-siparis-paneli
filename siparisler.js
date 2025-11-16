@@ -298,6 +298,92 @@ document.addEventListener("DOMContentLoaded", () => {
       if (siparisModal) siparisModal.style.display = 'none';
     });
   }
+
+  // =============== 🔴 İPTAL ET BUTONU ======================
+  let aktifIptalSiparisId = null;
+
+  const iptalEtBtn = document.getElementById('modal-iptal-et-btn');
+  const iptalModal = document.getElementById('iptal-nedeni-modal');
+  const iptalKapatBtn = document.getElementById('modal-kapat-btn-iptal');
+  const iptalVazgecBtn = document.getElementById('modal-vazgec-btn-iptal');
+  const iptalFormu = document.getElementById('iptal-formu');
+
+  if (iptalEtBtn) {
+    iptalEtBtn.addEventListener('click', function() {
+      // Aktif sipariş ID'sini al
+      const modalSiparisId = document.getElementById('modal-siparis-id');
+      if (!modalSiparisId) return;
+
+      const siparisIdText = modalSiparisId.textContent;
+      aktifIptalSiparisId = siparisIdText.split('SP-')[1]?.replace(/^0+/, '') || siparisIdText.split(' - ')[1];
+
+      // Detay modalını kapat
+      const siparisModal = document.getElementById('siparis-detay-modal');
+      if (siparisModal) siparisModal.style.display = 'none';
+
+      // İptal modalını aç
+      if (iptalModal) {
+        iptalModal.style.display = 'flex';
+        // Formu temizle
+        const iptalNedeniTextarea = document.getElementById('iptal-nedeni');
+        if (iptalNedeniTextarea) iptalNedeniTextarea.value = '';
+      }
+    });
+  }
+
+  // İptal modalı kapat butonları
+  [iptalKapatBtn, iptalVazgecBtn].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', function() {
+        if (iptalModal) iptalModal.style.display = 'none';
+        aktifIptalSiparisId = null;
+      });
+    }
+  });
+
+  // İptal formu submit
+  if (iptalFormu) {
+    iptalFormu.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!aktifIptalSiparisId) {
+        alert('Sipariş ID bulunamadı!');
+        return;
+      }
+
+      const iptalNedeni = document.getElementById('iptal-nedeni').value.trim();
+
+      try {
+        console.log('🔴 Sipariş iptal ediliyor:', { siparisId: aktifIptalSiparisId, nedeni: iptalNedeni });
+
+        const res = await fetch(`http://localhost:3000/siparisler/${aktifIptalSiparisId}/durum`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ durum: 'İptal' })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert('Hata: ' + (data?.error || 'Sipariş iptal edilemedi'));
+          return;
+        }
+
+        console.log('✅ Sipariş iptal edildi:', data);
+        alert('Sipariş başarıyla iptal edildi!');
+
+        // Modalı kapat
+        if (iptalModal) iptalModal.style.display = 'none';
+        aktifIptalSiparisId = null;
+
+        // Tabloyu yenile
+        siparisleriGetir();
+      } catch (err) {
+        console.error('❌ Sipariş iptal hatası:', err);
+        alert('Sunucuya bağlanırken hata oluştu.');
+      }
+    });
+  }
 });
 
 // 📄 PDF Rapor Oluşturma
@@ -361,12 +447,12 @@ async function grafikVerileriniOlustur() {
     const siparisler = await res.json();
 
     // ---------------------------------------------
-    // 🟦 1) SON 7 GÜNLÜK SİPARİŞ TRENDİ
+    // 🟦 1) SON 30 GÜNLÜK (1 AY) SİPARİŞ TRENDİ
     // ---------------------------------------------
     const gunler = [];
     const siparisSayilari = [];
 
-    for (let i = 6; i >= 0; i--) {
+    for (let i = 29; i >= 0; i--) {
         const tarih = new Date();
         tarih.setDate(tarih.getDate() - i);
 
@@ -377,12 +463,15 @@ async function grafikVerileriniOlustur() {
         siparisSayilari.push(sayi);
     }
 
-    // Mevcut grafik varsa sil
-    if (siparisTrendChart) siparisTrendChart.destroy();
-
     const ctx1 = document.getElementById("siparisTrendGrafik");
 
     if (ctx1) {
+        // Mevcut grafik varsa sil
+        const mevcutChart = Chart.getChart(ctx1);
+        if (mevcutChart) {
+            mevcutChart.destroy();
+        }
+
         siparisTrendChart = new Chart(ctx1, {
             type: "line",
             data: {
@@ -417,15 +506,19 @@ async function grafikVerileriniOlustur() {
     const durumlar = ["Onay Bekliyor", "Üretimde", "Sevkiyatta", "Tamamlandı", "İptal"];
     const renkler = ["#F59E0B", "#3B82F6", "#10B981", "#6EE7B7", "#EF4444"];
 
-    const durumSayilari = durumlar.map(d => 
+    const durumSayilari = durumlar.map(d =>
         siparisler.filter(s => s.durum === d).length
     );
-
-    if (siparisDurumChart) siparisDurumChart.destroy();
 
     const ctx2 = document.getElementById("siparisDurumGrafik");
 
     if (ctx2) {
+        // Mevcut grafik varsa sil
+        const mevcutChart = Chart.getChart(ctx2);
+        if (mevcutChart) {
+            mevcutChart.destroy();
+        }
+
         siparisDurumChart = new Chart(ctx2, {
             type: "doughnut",
             data: {

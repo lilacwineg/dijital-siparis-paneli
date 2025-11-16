@@ -8,13 +8,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🟦 Kart verilerini getir
   async function hammaddeIstatistikleriGetir() {
     try {
-      const res = await fetch("http://localhost:3000/hammadde/istatistikler");
-      const data = await res.json();
+      const res = await fetch("http://localhost:3000/hammadde");
+      const veriler = await res.json();
 
-      document.querySelector(".info-card.purple .kart-deger").textContent = data.toplam;
-      document.querySelector(".info-card.red .kart-deger").textContent = data.kritik;
-      document.querySelector(".info-card.blue .kart-deger").textContent = data.ortalamaTuketim + " lt";
-      document.querySelector(".info-card.orange .kart-deger").textContent = data.tedarikIhtiyaci;
+      // Toplam hammadde sayısı
+      document.getElementById("toplam-hammadde-sayisi").textContent = veriler.length;
+
+      // Kritik stoktaki hammadde sayısı
+      const kritikSayisi = veriler.filter(h => {
+        const stokYuzde = (parseFloat(h.stok_miktari) / parseFloat(h.kritik_stok_seviyesi)) * 100;
+        return stokYuzde <= 60;
+      }).length;
+      document.getElementById("kritik-hammadde-sayisi").textContent = kritikSayisi;
+
     } catch (err) {
       console.error("❌ İstatistik çekme hatası:", err);
     }
@@ -73,15 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
           </td>
-          <td>${new Date().toISOString().split("T")[0]}</td>
           <td><span class="badge ${durum === "Normal" ? "tamamlandi" : durum === "Yakın" ? "onay-bekliyor" : "gecikmis"}">${durum}</span></td>
           <td>
-            <button class="btn-detay" 
-              data-adi="${h.hammadde_adi}" 
-              data-stok="${h.stok_miktari} ${h.birim}" 
-              data-kritik="${h.kritik_stok_seviyesi} ${h.birim}" 
-              data-durum="${durum}" 
-              data-tarih="${new Date().toISOString().split("T")[0]}">Detay</button>
+            <button class="btn-iptal-et hammadde-sil-btn" data-id="${h.hammadde_id}" data-adi="${h.hammadde_adi}">Sil</button>
           </td>
         `;
 
@@ -90,6 +90,36 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (durum === "Yakın") tr.style.backgroundColor = "rgba(139,92,246,0.07)";
 
         tablo.appendChild(tr);
+      });
+
+      // Sil butonlarına event listener ekle
+      document.querySelectorAll('.hammadde-sil-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const hammaddeId = this.getAttribute('data-id');
+          const hammaddeAdi = this.getAttribute('data-adi');
+
+          if (!confirm(`"${hammaddeAdi}" hammaddesini silmek istediğinizden emin misiniz?`)) {
+            return;
+          }
+
+          try {
+            const res = await fetch(`http://localhost:3000/hammadde/${hammaddeId}`, {
+              method: 'DELETE'
+            });
+
+            if (res.ok) {
+              alert('Hammadde başarıyla silindi!');
+              hammaddeleriGetir();
+              hammaddeIstatistikleriGetir();
+              grafikCiz();
+            } else {
+              alert('Hammadde silinemedi!');
+            }
+          } catch (err) {
+            console.error('❌ Silme hatası:', err);
+            alert('Sunucuya bağlanırken hata oluştu.');
+          }
+        });
       });
     } catch (err) {
       console.error("❌ Veri çekme hatası:", err);
@@ -142,7 +172,7 @@ async function grafikCiz() {
     const veriler = await res.json();
     console.log("📊 Gelen veri sayısı:", veriler.length);
 
-    // ---- Aylık Kullanım Grafiği ----
+    // ---- Aylık Kullanım Grafiği (sadece esans içerenler) ----
     const canvas1 = document.getElementById("hammadeKullanimGrafik");
     console.log("🖼️ Canvas 1:", canvas1);
     if (!canvas1) {
@@ -150,9 +180,15 @@ async function grafikCiz() {
       return;
     }
     const ctx1 = canvas1.getContext("2d");
-    const labels = veriler.map(v => v.hammadde_adi);
-    const stoklar = veriler.map(v => parseFloat(v.stok_miktari));
-    console.log("📋 Label sayısı:", labels.length);
+
+    // Sadece "esans" içeren hammaddeleri filtrele
+    const esansVerileri = veriler.filter(v =>
+      v.hammadde_adi && v.hammadde_adi.toLowerCase().includes('esans')
+    );
+
+    const labels = esansVerileri.map(v => v.hammadde_adi);
+    const stoklar = esansVerileri.map(v => parseFloat(v.stok_miktari));
+    console.log("📋 Esans sayısı:", labels.length);
 
     // Mevcut chart varsa yok et
     const mevcutChart1 = Chart.getChart("hammadeKullanimGrafik");
@@ -169,17 +205,72 @@ async function grafikCiz() {
           {
             label: "Mevcut Stok",
             data: stoklar,
-            borderRadius: 6,
-            backgroundColor: "#8B5CF6",
+            borderRadius: 8,
+            backgroundColor: "rgba(139, 92, 246, 0.8)",
+            borderColor: "rgba(139, 92, 246, 1)",
+            borderWidth: 2,
           },
         ],
       },
       options: {
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: "#DDD" }, grid: { color: "#222" } },
-          y: { ticks: { color: "#DDD" }, grid: { color: "#222" } },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: "#FFFFFF",
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              padding: 15,
+              usePointStyle: true
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            padding: 12,
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
+            cornerRadius: 8
+          }
         },
+        scales: {
+          x: {
+            ticks: {
+              color: "#DDDDDD",
+              font: {
+                size: 11
+              }
+            },
+            grid: {
+              display: false
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: "#DDDDDD",
+              font: {
+                size: 11
+              }
+            },
+            grid: {
+              color: "rgba(255, 255, 255, 0.1)"
+            }
+          },
+        },
+        animation: {
+          duration: 1500,
+          easing: 'easeInOutQuart'
+        }
       },
     });
 
@@ -217,15 +308,85 @@ async function grafikCiz() {
         datasets: [
           {
             data: [normal, yakin, kritik],
-            backgroundColor: ["#10B981", "#8B5CF6", "#EF4444"],
-            borderWidth: 0,
+            backgroundColor: [
+              "rgba(16, 185, 129, 0.8)",
+              "rgba(139, 92, 246, 0.8)",
+              "rgba(239, 68, 68, 0.8)"
+            ],
+            borderColor: [
+              "rgba(16, 185, 129, 1)",
+              "rgba(139, 92, 246, 1)",
+              "rgba(239, 68, 68, 1)"
+            ],
+            borderWidth: 2,
+            hoverOffset: 8
           },
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
-          legend: { labels: { color: "#DDD" } },
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: "#FFFFFF",
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              padding: 15,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              generateLabels: function(chart) {
+                const data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map((label, i) => {
+                    const value = data.datasets[0].data[i];
+                    return {
+                      text: `${label} (${value})`,
+                      fillStyle: data.datasets[0].backgroundColor[i],
+                      strokeStyle: data.datasets[0].borderColor[i],
+                      fontColor: '#FFFFFF',
+                      lineWidth: 2,
+                      hidden: false,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            padding: 12,
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
+            cornerRadius: 8,
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                return `${label}: ${value} hammadde (${percentage}%)`;
+              }
+            }
+          }
         },
+        animation: {
+          animateRotate: true,
+          animateScale: true,
+          duration: 1500,
+          easing: 'easeInOutQuart'
+        },
+        cutout: '65%'
       },
     });
 

@@ -2,6 +2,33 @@
 document.addEventListener("DOMContentLoaded", function() {
 
   // ===================================================
+  // === PANEL SEKMELERİNİ KULLANICI ID'YE GÖRE GİZLE ===
+  // ===================================================
+  const aktifKullanici = JSON.parse(localStorage.getItem('aktifKullanici'));
+
+  if (aktifKullanici && aktifKullanici.kullanici_id) {
+    const panelSecici = document.querySelector('.panel-secici');
+
+    if (panelSecici) {
+      const fabrikaBtn = panelSecici.querySelector('button:nth-child(1)'); // Fabrika butonu
+      const bayiBtn = panelSecici.querySelector('button:nth-child(2)'); // Bayi butonu
+
+      const fabrikaIdler = [5, 6, 7, 8]; // Fabrika kullanıcı ID'leri
+      const isFabrika = fabrikaIdler.includes(parseInt(aktifKullanici.kullanici_id));
+
+      // Eğer bayi girişi yaptıysa (ID 5,6,7,8 değilse), fabrika sekmesini gizle
+      if (!isFabrika) {
+        if (fabrikaBtn) fabrikaBtn.style.display = 'none';
+      }
+
+      // Eğer fabrika girişi yaptıysa (ID 5,6,7,8 ise), bayi sekmesini gizle
+      if (isFabrika) {
+        if (bayiBtn) bayiBtn.style.display = 'none';
+      }
+    }
+  }
+
+  // ===================================================
   // === GLOBAL GRAFİK DEĞİŞKENLERİ ===
   // ===================================================
   let bayiModalAylikChart = null;
@@ -182,39 +209,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const bayiVerisi = {labels: ["Bayi A", "Bayi B", "Bayi C", "Bayi D", "Bayi E"],datasets: [{label: 'Siparişler', data: [45, 38, 32, 28, 25],backgroundColor: 'rgba(16, 185, 129, 0.6)', borderColor: 'rgba(16, 185, 129, 1)', borderWidth: 1}]};
     new Chart(bayiAktiviteTuvali, { type: 'bar', data: bayiVerisi, options: { indexAxis: 'y', scales: { y: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { display: false } } } });
   }
-  
+
   // ===================================================
   // === BÖLÜM 3: SİPARİŞ YÖNETİMİ GRAFİKLERİ (siparis-yonetimi.html) ===
   // ===================================================
-  const siparisTrendTuvali = document.getElementById('siparisTrendGrafik');
-  if (siparisTrendTuvali) {
-    const trendVerisi = {labels: ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],datasets: [{label: 'Siparişler', data: [12, 15, 18, 14, 20, 8, 5],borderColor: 'rgba(124, 58, 237, 1)', backgroundColor: 'rgba(124, 58, 237, 0.1)', fill: true, tension: 0.3}]};
-    
-    new Chart(siparisTrendTuvali, { 
-      type: 'line', 
-      data: trendVerisi, 
-      options: { // TEK BAŞLANGIÇ NOKTASI BURASI
-        responsive: true, 
-        maintainAspectRatio: false,
-        scales: { 
-          y: { beginAtZero: true, min: 0, max: 30, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, 
-          x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } 
-        }, 
-        plugins: { 
-          legend: { labels: { color: '#A0A0A0' } } 
-        } 
-      } // TEK BİTİŞ NOKTASI BURASI
-    });
-  }
+  // Grafikler siparisler.js tarafından oluşturulacak (gerçek verilerle)
 
-  
-  const siparisDurumTuvali = document.getElementById('siparisDurumGrafik');
-  if (siparisDurumTuvali) {
-    const durumVerisi = {labels: ["Tamamlandı", "Üretimde", "Sevkiyatta", "Onay Bekliyor", "İptal"],datasets: [{label: 'Sipariş Durumu', data: [420, 85, 45, 28, 12],backgroundColor: ['rgba(16, 185, 129, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(245, 158, 11, 0.6)', 'rgba(107, 114, 128, 0.6)', 'rgba(239, 68, 68, 0.6)'],borderColor: ['rgba(16, 185, 129, 1)', 'rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)', 'rgba(107, 114, 128, 1)', 'rgba(239, 68, 68, 1)'],borderWidth: 1}]};
-    new Chart(siparisDurumTuvali, { type: 'pie', data: durumVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
-  }
 
-  
   // ===================================================
   // === BÖLÜM 4: HAMMADDE YÖNETİMİ GRAFİKLERİ (hammadde-yonetimi.html) ===
   // ===================================================
@@ -233,49 +234,124 @@ document.addEventListener("DOMContentLoaded", function() {
   // ===================================================
   // === BÖLÜM 6: BAYİ ANA SAYFA GRAFİKLERİ (bayi-anasayfa.html) ===
   // ===================================================
-  const bayiHaftalikTuvali = document.getElementById('bayiHaftalikGrafik');
-  if (bayiHaftalikTuvali) {
-    const haftalikVeri = {labels: ["Hf 1", "Hf 2", "Hf 3", "Hf 4"],datasets: [{label: 'Sipariş', data: [8, 12, 15, 10],borderColor: 'rgba(124, 58, 237, 1)', backgroundColor: 'rgba(124, 58, 237, 0.1)', fill: true, tension: 0.3}]};
-    new Chart(bayiHaftalikTuvali, { type: 'line', data: haftalikVeri, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
-  }
-  const bayiEnCokUrunTuvali = document.getElementById('bayiEnCokUrunGrafik');
-  if (bayiEnCokUrunTuvali) {
-    const enCokUrunVerisi = {labels: ["Gül Parfümü", "Lavanta", "Vanilya", "Papatya"],datasets: [{label: 'Sipariş Sayısı', data: [25, 18, 12, 8],backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1}]};
-    new Chart(bayiEnCokUrunTuvali, { type: 'bar', data: enCokUrunVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
-  }
-  const bayiKategoriTuvali = document.getElementById('bayiKategoriGrafik');
-  if (bayiKategoriTuvali) {
-    const kategoriVerisi = {labels: ["Parfüm", "Esans", "Koku"],datasets: [{label: 'Kategori Dağılımı', data: [45, 30, 25],backgroundColor: ['rgba(124, 58, 237, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(16, 185, 129, 0.6)'],borderColor: ['rgba(124, 58, 237, 1)', 'rgba(59, 130, 246, 1)', 'rgba(16, 185, 129, 1)'],borderWidth: 1}]};
-    new Chart(bayiKategoriTuvali, { type: 'pie', data: kategoriVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
-  }
+  // NOT: Bu grafikler artık bayi-anasayfa.js tarafından gerçek API verileri ile yönetiliyor.
+  // Çakışmayı önlemek için buradan kaldırıldı.
 
   // ===================================================
-  // === BÖLÜM 7: BAYİ TRENDLER GRAFİKLERİ (bayi-trendler.html) ===
+  // === BÖLÜM 7: BAYİ TRENDLER GRAFİKLERİ VE KARTLARI (bayi-trendler.html) ===
   // ===================================================
-  const trendAylikTuvali = document.getElementById('trendAylikGrafik');
-  if (trendAylikTuvali) {
-    const trendAylikVeri = {labels: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki"],datasets: [{ label: 'Sipariş Sayısı', data: [8, 10, 12, 11, 14, 16, 15, 18, 20, 21], borderColor: 'rgba(124, 58, 237, 1)', yAxisID: 'y', tension: 0.3 },{ label: 'Toplam Gelir (₺)', data: [68000, 85000, 102000, 93500, 119000, 136000, 127500, 153000, 170000, 178500], borderColor: 'rgba(16, 185, 129, 1)', yAxisID: 'y1', tension: 0.3 }]};
-    new Chart(trendAylikTuvali, {type: 'line', data: trendAylikVeri,options: { scales: { y: { type: 'linear', display: true, position: 'left', ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, y1: { type: 'linear', display: true, position: 'right', ticks: { color: '#A0A0A0' }, grid: { drawOnChartArea: false } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } }});
+  const trendSayfasi = document.getElementById('trendEnCokUrunGrafik');
+  if (trendSayfasi) {
+    const aktifKullanici = JSON.parse(localStorage.getItem('aktifKullanici'));
+
+    // Kullanıcı bilgilerini göster
+    const kullaniciBilgisi = document.getElementById('kullanici-bilgisi-trendler');
+    if (kullaniciBilgisi && aktifKullanici) {
+      const bayiAd = aktifKullanici.bayi_adi || aktifKullanici.kullanici_adi;
+      const bugun = new Date().toLocaleDateString("tr-TR", {
+        day: "2-digit", month: "long", year: "numeric", weekday: "long"
+      });
+      kullaniciBilgisi.innerHTML = `${bayiAd}<span>${bugun}</span>`;
+    }
+
+    if (aktifKullanici && aktifKullanici.bayi_id) {
+      // Kartları ve grafikleri yükle
+      bayiTrendleriniYukle(aktifKullanici.bayi_id);
+    }
   }
-  const trendEnCokUrunTuvali = document.getElementById('trendEnCokUrunGrafik');
-  if (trendEnCokUrunTuvali) {
-    const trendEnCokUrunVerisi = {labels: ["Gül P.", "Lavanta E.", "Vanilya K.", "Papatya Ö.", "Yasemin A."],datasets: [{ label: 'Sipariş Sayısı', data: [45, 38, 32, 28, 25], backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1 }]};
-    new Chart(trendEnCokUrunTuvali, { type: 'bar', data: trendEnCokUrunVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
-  }
-  const trendGelirDagilimTuvali = document.getElementById('trendGelirDagilimGrafik');
-  if (trendGelirDagilimTuvali) {
-    const trendGelirDagilimVerisi = {labels: ["Gül P.", "Lavanta E.", "Vanilya K.", "Papatya Ö.", "Yasemin A."],datasets: [{ label: 'Toplam Gelir (₺)', data: [38250, 27360, 21760, 16520, 23000], backgroundColor: 'rgba(16, 185, 129, 0.6)', borderColor: 'rgba(16, 185, 129, 1)', borderWidth: 1 }]};
-    new Chart(trendGelirDagilimTuvali, { type: 'bar', data: trendGelirDagilimVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
-  }
-  const trendKategoriTuvali = document.getElementById('trendKategoriGrafik');
-  if (trendKategoriTuvali) {
-    const trendKategoriVerisi = {labels: ["Parfüm", "Esans", "Koku"],datasets: [{ label: 'Kategori Dağılımı', data: [45, 30, 25], backgroundColor: ['rgba(124, 58, 237, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(16, 185, 129, 0.6)'], borderColor: ['rgba(124, 58, 237, 1)', 'rgba(59, 130, 246, 1)', 'rgba(16, 185, 129, 1)'], borderWidth: 1 }]};
-    new Chart(trendKategoriTuvali, { type: 'pie', data: trendKategoriVerisi, options: { plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } } } });
-  }
-  const trendHaftalikTuvali = document.getElementById('trendHaftalikGrafik');
-  if (trendHaftalikTuvali) {
-    const trendHaftalikVerisi = {labels: ["1. Hafta", "2. Hafta", "3. Hafta", "4. Hafta"],datasets: [{ label: 'Sipariş Sayısı', data: [4, 6, 5, 6], backgroundColor: 'rgba(124, 58, 237, 0.6)', borderColor: 'rgba(124, 58, 237, 1)', borderWidth: 1 }]};
-    new Chart(trendHaftalikTuvali, { type: 'bar', data: trendHaftalikVerisi, options: { scales: { y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }, x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } } }, plugins: { legend: { labels: { color: '#A0A0A0' } } } } });
+
+  async function bayiTrendleriniYukle(bayiId) {
+    try {
+      const res = await fetch(`http://localhost:3000/siparisler?bayi_id=${bayiId}`);
+      const siparisler = await res.json();
+
+      // Son 1 yılın tarih aralığını hesapla
+      const bugun = new Date();
+      const birYilOnce = new Date();
+      birYilOnce.setFullYear(bugun.getFullYear() - 1);
+
+      const birYillikSiparisler = siparisler.filter(s => {
+        const siparisTarihi = new Date(s.tarih);
+        return siparisTarihi >= birYilOnce;
+      });
+
+      // 1. Toplam Sipariş (1 Yıl)
+      const toplamSiparis = birYillikSiparisler.length;
+
+      // 2. Toplam Harcama (1 Yıl)
+      const toplamHarcama = birYillikSiparisler.reduce((sum, s) => {
+        return sum + (parseFloat(s.toplam_tutar) || 0);
+      }, 0);
+
+      // Kartları güncelle
+      document.querySelector('.info-card.purple .kart-deger').textContent = toplamSiparis;
+      document.querySelector('.info-card.blue .kart-deger').textContent = '₺' + toplamHarcama.toLocaleString('tr-TR');
+
+      // En Çok Sipariş Edilen Ürünler grafiğini çiz
+      const resUrunler = await fetch(`http://localhost:3000/siparisler/en-cok-siparis-edilen-urunler?bayi_id=${bayiId}`);
+      const urunler = await resUrunler.json();
+
+      const trendEnCokUrunTuvali = document.getElementById('trendEnCokUrunGrafik');
+      if (trendEnCokUrunTuvali && urunler.length > 0) {
+        const top5 = urunler.slice(0, 5);
+        new Chart(trendEnCokUrunTuvali, {
+          type: 'bar',
+          data: {
+            labels: top5.map(u => u.urun_adi),
+            datasets: [{
+              label: 'Toplam Miktar',
+              data: top5.map(u => u.toplam_miktar),
+              backgroundColor: 'rgba(59, 130, 246, 0.6)',
+              borderColor: 'rgba(59, 130, 246, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              y: { beginAtZero: true, ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } },
+              x: { ticks: { color: '#A0A0A0' }, grid: { color: '#27273A' } }
+            },
+            plugins: { legend: { labels: { color: '#A0A0A0' } } }
+          }
+        });
+      }
+
+      // Kategori Bazlı Dağılım (dummy data - gerçek kategori verisi yoksa)
+      const trendKategoriTuvali = document.getElementById('trendKategoriGrafik');
+      if (trendKategoriTuvali) {
+        new Chart(trendKategoriTuvali, {
+          type: 'pie',
+          data: {
+            labels: ["Parfüm", "Esans", "Koku"],
+            datasets: [{
+              label: 'Kategori Dağılımı',
+              data: [45, 30, 25],
+              backgroundColor: [
+                'rgba(124, 58, 237, 0.6)',
+                'rgba(59, 130, 246, 0.6)',
+                'rgba(16, 185, 129, 0.6)'
+              ],
+              borderColor: [
+                'rgba(124, 58, 237, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(16, 185, 129, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { position: 'top', labels: { color: '#A0A0A0' } } }
+          }
+        });
+      }
+
+    } catch (err) {
+      console.error('❌ Trendler yüklenirken hata:', err);
+    }
   }
   
   // ===================================================
@@ -385,13 +461,19 @@ document.addEventListener("DOMContentLoaded", function() {
     siparisDetayButonlari.forEach(function(buton) {
       buton.addEventListener('click', siparisModalAc);
     });
-    siparisKapatBtn.addEventListener('click', siparisModalKapat);
+
+    if(siparisKapatBtn){
+      siparisKapatBtn.addEventListener('click', siparisModalKapat);
+    }
     
-    modalIptalEtBtn.addEventListener('click', iptalModalAc);
+    if(modalIptalEtBtn){
+        modalIptalEtBtn.addEventListener('click', iptalModalAc);
     iptalKapatBtn.addEventListener('click', iptalModalKapat);
     iptalVazgecBtn.addEventListener('click', iptalModalKapat);
+    }
+  
     
-    iptalFormu.addEventListener('submit', function(event) {
+    iptalFormu?.addEventListener('submit', function(event) {
         event.preventDefault();
         alert('Sipariş iptal edildi ve sunucuya bildirildi!');
         iptalFormu.reset();
@@ -399,7 +481,7 @@ document.addEventListener("DOMContentLoaded", function() {
         siparisModalKapat(); 
     });
 
-    modalKaydetBtn.addEventListener('click', function() {
+    modalKaydetBtn?.addEventListener('click', function() {
         const yeniDurum = modalSiparisSelect.value;
         const siparisID = modalSiparisId.textContent.split(' - ')[1]; 
         
@@ -407,13 +489,6 @@ document.addEventListener("DOMContentLoaded", function() {
         siparisModalKapat();
     });
   }
-
-  // ===================================================
-  // === BÖLÜM 10: YENİ HAMMADDE MODALI (hammadde-yonetimi.html) ===
-  // ===================================================
-  // === BÖLÜM 10: YENİ HAMMADDE MODALI - KALDIRILDI ===
-  // === Bu bölüm hammadde.js'de gerçek backend entegrasyonu ile yönetiliyor ===
-  // ===================================================
 
   // ===================================================
   // === BÖLÜM 11: HAMMADDE DETAY MODALI (hammadde-yonetimi.html) ===
@@ -498,99 +573,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
   // ===================================================
-  // === BÖLÜM 12: YENİ FATURA MODALI (finans-yonetimi.html) ===
-  // ===================================================
-  const yeniFaturaBtn = document.getElementById('yeni-fatura-btn');
-  const yeniFaturaModal = document.getElementById('yeni-fatura-modal');
-  
-  if (yeniFaturaBtn) {
-    const yeniFaturaKapatBtn = document.getElementById('modal-kapat-btn-yeni-fatura');
-    const yeniFaturaIptalBtn = document.getElementById('modal-iptal-btn-yeni-fatura');
-    const yeniFaturaFormu = document.getElementById('yeni-fatura-formu');
-
-    yeniFaturaBtn.addEventListener('click', function() {
-      yeniFaturaModal.style.display = 'flex';
-    });
-    yeniFaturaKapatBtn.addEventListener('click', function() {
-      yeniFaturaModal.style.display = 'none';
-    });
-    yeniFaturaIptalBtn.addEventListener('click', function() {
-      yeniFaturaModal.style.display = 'none';
-    });
-
-    if (yeniFaturaFormu) {
-      yeniFaturaFormu.addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        alert('Yeni Fatura verileri başarıyla sunucuya (Backend/Yusuf) gönderildi ve kaydedildi.');
-        yeniFaturaFormu.reset(); 
-        yeniFaturaModal.style.display = 'none';
-      });
-    }
-  }
-
-
-  // ===================================================
-  // === BÖLÜM 13: FATURA DETAY MODALI (finans-yonetimi.html) ===
-  // ===================================================
-  const faturaDetayModal = document.getElementById('fatura-detay-modal');
-  
-  if (faturaDetayModal) {
-    const faturaDetayButonlari = document.querySelectorAll('#fatura-tablosu .btn-detay'); 
-    const faturaKapatBtn = document.getElementById('modal-kapat-btn-fatura');
-    const faturaKapatBtn2 = document.getElementById('modal-kapat-btn-fatura-2');
-    const faturaIndirBtn = faturaDetayModal.querySelector('.btn-rapor'); 
-    
-    const modalFaturaId = document.getElementById('modal-fatura-id');
-    const modalFaturaBayi = document.getElementById('modal-fatura-bayi');
-    const modalFaturaSehir = document.getElementById('modal-fatura-sehir');
-    const modalFaturaTutar = document.getElementById('modal-fatura-tutar');
-    const modalFaturaTarih = document.getElementById('modal-fatura-tarih');
-    const modalFaturaBadge = document.getElementById('modal-fatura-durum-badge');
-    
-    function faturaModalAc(event) {
-      const tiklananButon = event.currentTarget;
-      
-      const id = tiklananButon.dataset.id;
-      const bayi = tiklananButon.dataset.bayi;
-      const sehir = tiklananButon.dataset.sehir;
-      const tutar = tiklananButon.dataset.tutar;
-      const durum = tiklananButon.dataset.durum;
-      const tarih = tiklananButon.dataset.tarih;
-
-      modalFaturaId.textContent = "Fatura Detayları - " + id;
-      modalFaturaBayi.textContent = bayi;
-      modalFaturaSehir.textContent = sehir;
-      modalFaturaTutar.textContent = tutar;
-      modalFaturaTarih.textContent = tarih;
-      
-      modalFaturaBadge.textContent = durum;
-      modalFaturaBadge.className = "badge"; 
-      if(durum === "Ödendi") modalFaturaBadge.classList.add("tamamlandi");
-      else if(durum === "Bekliyor") modalFaturaBadge.classList.add("onay-bekliyor");
-      else if(durum === "Gecikmiş") modalFaturaBadge.classList.add("gecikmis");
-
-      faturaDetayModal.style.display = 'flex';
-    }
-
-    function faturaModalKapat() {
-      faturaDetayModal.style.display = 'none';
-    }
-
-    faturaDetayButonlari.forEach(function(buton) {
-      buton.addEventListener('click', faturaModalAc);
-    });
-
-    faturaKapatBtn.addEventListener('click', faturaModalKapat);
-    faturaKapatBtn2.addEventListener('click', faturaModalKapat); 
-    
-    faturaIndirBtn.addEventListener('click', function() {
-        const faturaID = modalFaturaId.textContent.split(' - ')[1];
-        alert(`${faturaID} numaralı fatura indiriliyor... (Simülasyon)`);
-    });
-  }
-
-
-  // ===================================================
   // === BÖLÜM 14: SİPARİŞ FİLTRELEME (siparis-yonetimi.html) ===
   // ===================================================
   const siparisYonetimiTablo = document.getElementById('siparis-tablosu');
@@ -649,8 +631,11 @@ document.addEventListener("DOMContentLoaded", function() {
   // === BÖLÜM 15: CANLI SEPET HESAPLAMA (bayi-siparis-ver.html) ===
   // ===================================================
   const siparisVerKarti = document.querySelector('.urun-secim-karti'); // Sayfa kontrolü için
-  
+
   if (siparisVerKarti) {
+    // Önce aktif kullanıcıyı al
+    const aktifKullanici = JSON.parse(localStorage.getItem('aktifKullanici'));
+
     const urunSelect = document.getElementById('urun-sec');
     const miktarInput = document.getElementById('urun-miktar');
     const sepeteEkleBtn = document.getElementById('sepete-ekle-btn');
@@ -659,19 +644,99 @@ document.addEventListener("DOMContentLoaded", function() {
     const ozetToplamAdet = document.getElementById('ozet-toplam-adet');
     const ozetToplamTutar = document.getElementById('ozet-toplam-tutar');
     const siparisOnaylaBtn = document.getElementById('siparis-onayla-btn');
-    const urunSecBtnler = document.querySelectorAll('.urun-sec-btn'); 
+    const urunSecBtnler = document.querySelectorAll('.urun-sec-btn');
+    const teslimTarihiInput = document.getElementById('teslim-tarihi');
+    const adresInput = document.getElementById('adres-sec');
 
     let sepetUrunleri = [];
+
+    // Ürünleri veritabanından yükle
+    async function urunleriYukle() {
+      try {
+        const res = await fetch('http://localhost:3000/urunler');
+        const urunler = await res.json();
+
+        urunSelect.innerHTML = '<option value="" data-price="0">-- Ürün Seçin --</option>';
+
+        urunler.forEach(urun => {
+          const option = document.createElement('option');
+          option.value = urun.urun_adi;
+          option.setAttribute('data-price', urun.fiyat || 0);
+          option.setAttribute('data-id', urun.urun_id);
+          option.textContent = `${urun.urun_adi} ${urun.urun_tip ? '(' + urun.urun_tip + ')' : ''}`;
+          urunSelect.appendChild(option);
+        });
+
+        console.log('✅ Ürünler yüklendi:', urunler.length);
+      } catch (err) {
+        console.error('❌ Ürünler yüklenirken hata:', err);
+        urunSelect.innerHTML = '<option value="">Ürünler yüklenemedi</option>';
+      }
+    }
+
+    // Kullanıcı bilgilerini göster
+    const kullaniciBilgisi = document.getElementById('kullanici-bilgisi-siparis');
+    if (kullaniciBilgisi && aktifKullanici) {
+      const bayiAd = aktifKullanici.bayi_adi || aktifKullanici.kullanici_adi;
+      const bugun = new Date().toLocaleDateString("tr-TR", {
+        day: "2-digit", month: "long", year: "numeric", weekday: "long"
+      });
+      kullaniciBilgisi.innerHTML = `${bayiAd}<span>${bugun}</span>`;
+    }
+
+    // Sayfa yüklendiğinde ürünleri getir
+    urunleriYukle();
+
+    // Teslimat tarihi ve adresi ayarla
+
+    // 1. Teslimat tarihini 7 gün sonrası olarak ayarla
+    if (teslimTarihiInput) {
+      const bugün = new Date();
+      bugün.setDate(bugün.getDate() + 7);
+      const tarihStr = bugün.toISOString().split('T')[0];
+      teslimTarihiInput.value = tarihStr;
+    }
+
+    // 2. Bayinin adresini çek
+    if (aktifKullanici && aktifKullanici.bayi_id) {
+      fetch(`http://localhost:3000/bayiler?bayi_id=${aktifKullanici.bayi_id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            const bayi = data[0];
+            if (adresInput) {
+              // Adres parçalarını birleştir
+              const adresParcalari = [];
+              if (bayi.mahalle) adresParcalari.push(bayi.mahalle + ' Mah.');
+              if (bayi.cadde) adresParcalari.push(bayi.cadde + ' Cad.');
+              if (bayi.sokak) adresParcalari.push(bayi.sokak + ' Sok.');
+              if (bayi.no) adresParcalari.push('No:' + bayi.no);
+              if (bayi.ilce) adresParcalari.push(bayi.ilce);
+              if (bayi.sehir) adresParcalari.push(bayi.sehir);
+
+              const tamAdres = adresParcalari.length > 0
+                ? adresParcalari.join(', ')
+                : 'Adres bilgisi bulunamadı';
+
+              adresInput.value = tamAdres;
+            }
+          }
+        })
+        .catch(err => {
+          console.error('❌ Bayi adresi alınamadı:', err);
+          if (adresInput) adresInput.value = 'Adres yüklenemedi';
+        });
+    }
 
     // Sayfa yüklendiğinde katalogdan gelen ürünü kontrol et
     const preSelectedProduct = localStorage.getItem('selectedProduct');
     if (preSelectedProduct) {
-      urunSelect.value = preSelectedProduct; 
-      miktarInput.value = 1; 
+      urunSelect.value = preSelectedProduct;
+      miktarInput.value = 1;
       localStorage.removeItem('selectedProduct'); // Hafızayı temizle
-      
+
       // Gecikmeli olarak sepeteEkle'yi çağır
-      setTimeout(sepeteEkle, 100); 
+      setTimeout(sepeteEkle, 100);
     }
 
     function sepetiGuncelle() {
@@ -767,12 +832,54 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 3. "Siparişi Onayla" butonu simülasyonu
-    siparisOnaylaBtn.addEventListener('click', function() {
-      if (sepetUrunleri.length === 0) return;
-      alert('Siparişiniz başarıyla oluşturuldu ve Fabrika paneline iletildi!');
-      sepetUrunleri = []; 
-      sepetiGuncelle();
+    // 3. "Siparişi Onayla" butonu - Gerçek sipariş oluşturma
+    siparisOnaylaBtn.addEventListener('click', async function() {
+      if (sepetUrunleri.length === 0) {
+        alert('Sepetiniz boş! Lütfen önce ürün ekleyin.');
+        return;
+      }
+
+      if (!aktifKullanici || !aktifKullanici.bayi_id) {
+        alert('Bayi bilgisi bulunamadı. Lütfen tekrar giriş yapın.');
+        return;
+      }
+
+      const toplamTutar = sepetUrunleri.reduce((sum, item) => sum + item.totalPrice, 0);
+      const teslimatTarihi = teslimTarihiInput.value;
+
+      const siparisData = {
+        bayi_id: aktifKullanici.bayi_id,
+        sepet: sepetUrunleri,
+        toplam_tutar: toplamTutar,
+        teslimat_tarihi: teslimatTarihi
+      };
+
+      try {
+        siparisOnaylaBtn.disabled = true;
+        siparisOnaylaBtn.textContent = 'Gönderiliyor...';
+
+        const res = await fetch('http://localhost:3000/siparisler/olustur', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(siparisData)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert(`✅ Siparişiniz başarıyla oluşturuldu!\nSipariş No: ${data.siparis_id}`);
+          sepetUrunleri = [];
+          sepetiGuncelle();
+        } else {
+          alert('❌ Sipariş oluşturulurken hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+        }
+      } catch (err) {
+        console.error('❌ Sipariş gönderilirken hata:', err);
+        alert('❌ Sipariş gönderilirken bir hata oluştu. Lütfen tekrar deneyin.');
+      } finally {
+        siparisOnaylaBtn.disabled = false;
+        siparisOnaylaBtn.textContent = 'Siparişi Onayla';
+      }
     });
     
     // Gecikmeli çağırılan sepeteEkle'nin de sepetiGuncelle'yi tetiklemesi için
@@ -1029,74 +1136,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
   // ===================================================
-  // === BÖLÜM 20: GİRİŞ FORMU (login.html veya index.html) ===
   // ===================================================
-  const loginForm = document.getElementById('login-form');
-  if (loginForm) {
-    const seciliTipInput = document.getElementById('selected-user-type');
-    const fabrikaBtn = document.getElementById('login-type-factory');
-    const bayiBtn = document.getElementById('login-type-dealer');
-    const submitBtn = document.getElementById('login-submit-btn');
-    const submitBtnText = submitBtn.querySelector('.btn-text'); // Buton metnini al
-
-    // Kullanıcı tipi seçimi
-    fabrikaBtn.addEventListener('click', function() {
-      seciliTipInput.value = 'factory';
-      fabrikaBtn.classList.add('aktif');
-      bayiBtn.classList.remove('aktif');
-      submitBtn.style.background = ''; // Stili sıfırla, CSS'teki mor gradyan devreye girsin
-      submitBtn.classList.remove('bayi-login'); // Mavi stili kaldır
-    });
-
-    bayiBtn.addEventListener('click', function() {
-      seciliTipInput.value = 'dealer';
-      bayiBtn.classList.add('aktif');
-      fabrikaBtn.classList.remove('aktif');
-      submitBtn.style.background = 'linear-gradient(to right, #3B82F6, #2563EB)'; // Mavi
-      submitBtn.classList.add('bayi-login'); // Mavi stil için bir sınıf
-    });
-
-    // Form gönderimi
-    loginForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Formun sayfayı yenilemesini engelle
-      
-      const seciliTip = seciliTipInput.value;
-      const kullaniciAdi = document.getElementById('username').value;
-      
-      // Yükleniyor animasyonunu göster
-      submitBtn.disabled = true;
-      // Orijinal metni kaybetmeden "loading" sınıfını ekle
-      submitBtn.classList.add('loading');
-      // İçeriği değiştir
-      submitBtn.innerHTML = `<div class="loading-spinner"></div> <span class="btn-text">Giriş Yapılıyor...</span>`;
-      
-      // Simülasyon: 1 saniye bekle
-      setTimeout(function() {
-        if (seciliTip === 'factory') {
-          alert(`Fabrika Yöneticisi (${kullaniciAdi}) olarak giriş yapıldı!`);
-          
-          // ***** DİKKAT: YÖNLENDİRME LİNKİ *****
-          window.location.href = 'panel-fabrika.html'; // Fabrika ana sayfasına yönlendir
-        
-        } else {
-          alert(`Bayi (${kullaniciAdi}) olarak giriş yapıldı!`);
-          window.location.href = 'bayi-anasayfa.html'; // Bayi ana sayfasına yönlendir
-        }
-        
-        // Butonu eski haline getir (sayfa değişmezse diye)
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('loading');
-        submitBtn.innerHTML = `<span class="btn-text">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                                    <polyline points="10 17 15 12 10 7"></polyline>
-                                    <line x1="15" y1="12" x2="3" y2="12"></line>
-                                </svg>
-                                Giriş Yap
-                              </span>`;
-      }, 1000);
-    });
-  }
+  // === BÖLÜM 20: GİRİŞ FORMU - KALDIRILDI ===
+  // === Bu bölüm login.js'de gerçek backend entegrasyonu ile yönetiliyor ===
+  // ===================================================
 
 }); // DOMContentLoaded'in sonu
+
+

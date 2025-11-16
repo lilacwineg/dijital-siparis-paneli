@@ -34,9 +34,8 @@
         <h1>Bayi Paneli</h1>
         <p>Trendler ve Raporlar</p>
       </div>
-      <div class="kullanici-bilgisi">
-        Marmara Parfüm
-        <span>9 Kasım 2025 Pazar</span>
+      <div class="kullanici-bilgisi" id="kullanici-bilgisi-trendler">
+        <!-- JavaScript ile doldurulacak -->
       </div>
     </header>
 
@@ -47,27 +46,17 @@
       </div>
     </div>
 
-    <div class="kart-grid-3">
-      <div class="info-card gradient purple-gradient">
-        <span class="kart-baslik">Toplam Sipariş (Bu Yıl)</span>
-        <span class="kart-deger">145</span>
-        <span class="kart-trend artış">↑ %35 artış</span>
+    <div class="kart-grid">
+      <div class="info-card purple">
+        <span class="kart-baslik">Toplam Sipariş (1 Yıl)</span>
+        <span class="kart-deger">0</span>
+        <span class="kart-trend">Son 1 yıl</span>
       </div>
-      <div class="info-card gradient blue-gradient">
-        <span class="kart-baslik">Toplam Harcama</span>
-        <span class="kart-deger">₺1,234,500</span>
-        <span class="kart-trend artış">↑ %28 artış</span>
+      <div class="info-card blue">
+        <span class="kart-baslik">Toplam Harcama (1 Yıl)</span>
+        <span class="kart-deger">₺0</span>
+        <span class="kart-trend">Son 1 yıl</span>
       </div>
-      <div class="info-card gradient green-gradient">
-        <span class="kart-baslik">Ortalama Sipariş Değeri</span>
-        <span class="kart-deger">₺8,514</span>
-        <span class="kart-trend azalış">↓ %5 azalış</span>
-      </div>
-    </div>
-
-    <div class="chart-card" style="margin-top: 24px;">
-      <h3>Aylık Sipariş ve Gelir Trendi</h3>
-      <canvas id="trendAylikGrafik" height="120"></canvas>
     </div>
 
     <div class="grafik-grid">
@@ -76,16 +65,8 @@
         <canvas id="trendEnCokUrunGrafik"></canvas>
       </div>
       <div class="chart-card">
-        <h3>Ürün Bazlı Gelir Dağılımı</h3>
-        <canvas id="trendGelirDagilimGrafik"></canvas>
-      </div>
-      <div class="chart-card">
         <h3>Kategori Bazlı Sipariş Dağılımı</h3>
         <canvas id="trendKategoriGrafik"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3>Bu Ayki Haftalık Siparişler</h3>
-        <canvas id="trendHaftalikGrafik"></canvas>
       </div>
     </div>
 

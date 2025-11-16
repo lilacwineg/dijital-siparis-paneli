@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Sipariş Köprüsü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Yönetim Paneli</div>
+
+    <div class="panel-secici">
+      <button class="aktif">Fabrika</button>
+      <button onclick="window.location.href='bayi-anasayfa.html'">Bayi</button>
+    </div>
+
+    <ul>
+      <li><a href="panel-fabrika.html">Ana Sayfa</a></li>
+      <li><a href="bayi-yonetimi.html">Bayi Yönetimi</a></li>
+      <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
+      <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
+      <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+      <li><a class="aktif" href="urun-yonetimi.html">Ürün Yönetimi</a></li>
+    </ul>
+
+    <div class="footer">
+      © 2025 Yönetim Sistemi
+    </div>
+  </div>
+
+  <div class="main-content">
+
+    <header>
+      <div>
+        <h1>Fabrika Yönetim Paneli</h1>
+        <p>Ürün Yönetimi</p>
+      </div>
+      <div class="kullanici-bilgisi">
+        Yönetici
+        <span id="tarih-span">9 Kasım 2025 Pazar</span>
+      </div>
+    </header>
+
+    <div class="sayfa-basligi">
+      <div>
+        <h2>Ürün Yönetimi</h2>
+        <p>Tüm ürünlerinizi buradan yönetin</p>
+      </div>
+      <button id="yeni-urun-btn" class="btn-yeni-bayi">Yeni Ürün Ekle</button>
+    </div>
+
+    <div class="tablo-container">
+      <div class="arama-kutusu">
+        <input type="text" id="urun-arama" placeholder="Ürün adı veya tip ara...">
+      </div>
+
+      <table id="urun-tablosu">
+        <thead>
+          <tr>
+            <th>Ürün ID</th>
+            <th>Ürün Kodu</th>
+            <th>Ürün Adı</th>
+            <th>Ürün Tipi</th>
+            <th>Birim</th>
+            <th>Fiyat</th>
+            <th>Mevcut Stok</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Ürünler buraya dinamik olarak eklenecek -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Yeni Ürün Ekleme Modalı -->
+    <div id="yeni-urun-modal" class="modal-arkaplan">
+      <div class="modal-icerik">
+        <div class="modal-header">
+          <h2>Yeni Ürün Ekle</h2>
+          <button id="modal-kapat-btn" class="modal-kapat-btn">X</button>
+        </div>
+        <div class="modal-govde">
+          <form id="yeni-urun-formu">
+            <div class="form-grid">
+              <div class="form-grup">
+                <label for="urun-kodu">Ürün Kodu</label>
+                <input type="text" id="urun-kodu" placeholder="Örn: PRF-001" required>
+              </div>
+              <div class="form-grup">
+                <label for="urun-adi">Ürün Adı</label>
+                <input type="text" id="urun-adi" placeholder="Örn: Gül Parfümü" required>
+              </div>
+              <div class="form-grup">
+                <label for="urun-tip">Ürün Tipi</label>
+                <input type="text" id="urun-tip" placeholder="Örn: Parfüm" required>
+              </div>
+              <div class="form-grup">
+                <label for="urun-birim">Birim</label>
+                <select id="urun-birim" required>
+                  <option value="">Seçiniz</option>
+                  <option value="Adet">Adet</option>
+                  <option value="Litre">Litre</option>
+                  <option value="ML">ML</option>
+                  <option value="Kg">Kg</option>
+                  <option value="Gr">Gr</option>
+                  <option value="Paket">Paket</option>
+                  <option value="Kutu">Kutu</option>
+                </select>
+              </div>
+              <div class="form-grup">
+                <label for="urun-fiyat">Fiyat (₺)</label>
+                <input type="number" id="urun-fiyat" placeholder="Örn: 150.00" step="0.01" required>
+              </div>
+              <div class="form-grup">
+                <label for="urun-stok">Mevcut Stok</label>
+                <input type="number" id="urun-stok" placeholder="Örn: 100" min="0" required>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" id="modal-iptal-btn" class="btn-detay">İptal</button>
+              <button type="submit" class="btn-onayla">Kaydet</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script>
+  <script src="urunler.js"></script>
+</body>
+</html>

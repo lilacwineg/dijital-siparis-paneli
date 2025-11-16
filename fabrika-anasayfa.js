@@ -1,5 +1,30 @@
 // fabrika-anasayfa.js
 document.addEventListener("DOMContentLoaded", async () => {
+  // 🔒 Oturum kontrolü
+  const aktifKullanici = JSON.parse(localStorage.getItem("aktifKullanici"));
+  if (!aktifKullanici) {
+    alert("Oturum bulunamadı. Lütfen giriş yapın.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  // Kullanıcı bilgilerini göster
+  const kullaniciSpan = document.getElementById("fabrika-kullanici");
+  const tarihSpan = document.getElementById("fabrika-tarih");
+
+  if (kullaniciSpan) {
+    kullaniciSpan.textContent = aktifKullanici.kullanici_adi || "Yönetici";
+  }
+
+  if (tarihSpan) {
+    tarihSpan.textContent = new Date().toLocaleDateString("tr-TR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      weekday: "long"
+    });
+  }
+
   await fabrikaOzetGetir();
   // Grafiklerin biraz gecikmeli yüklenmesi flicker hatalarını engeller
   setTimeout(() => {
@@ -7,6 +32,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     aylikSatisGrafikCiz();
   }, 300);
 });
+
+// 🚪 Çıkış yapma fonksiyonu
+function cikisYap() {
+  if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+    localStorage.removeItem("aktifKullanici");
+    console.log("🚪 Çıkış yapıldı");
+    window.location.href = "index.html";
+  }
+}
 
 
 // 🔹 1. Fabrika Özet Verileri

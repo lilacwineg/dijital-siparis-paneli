@@ -20,6 +20,7 @@
       <li><a class="aktif" href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
       <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
       <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+      <li><a href="urun-yonetimi.html">Ürün Yönetimi</a></li>
     </ul>
     <div class="footer">
       © 2025 Yönetim Sistemi
@@ -77,7 +78,7 @@
       </table>
     </div> <div class="grafik-grid">
       <div class="chart-card">
-        <h3>Son 7 Gün Sipariş Trendi</h3>
+        <h3>Son 1 Ay Sipariş Trendi</h3>
         <canvas id="siparisTrendGrafik"></canvas>
       </div>
       <div class="chart-card">
@@ -93,14 +94,6 @@
           <button id="modal-kapat-btn-siparis" class="modal-kapat-btn">X</button>
         </div>
         <div class="modal-govde">
-          <!-- Gizli elementler - JavaScript için gerekli -->
-          <p id="modal-siparis-bayi" style="display: none;"></p>
-          <p id="modal-siparis-tarih" style="display: none;"></p>
-          <p id="modal-siparis-urun" style="display: none;"></p>
-          <p id="modal-siparis-miktar" style="display: none;"></p>
-          <p id="modal-siparis-teslim" style="display: none;"></p>
-          <span id="modal-siparis-durum-badge" style="display: none;"></span>
-
           <div class="form-grup" style="margin-bottom: 20px;">
             <label for="durum-guncelle">Durum Güncelle</label>
             <select id="durum-guncelle">
@@ -147,7 +140,12 @@
           <button id="modal-kapat-btn-iptal" class="modal-kapat-btn">X</button>
         </div>
         <div class="modal-govde">
+          <p style="color: #9CA3AF; margin-bottom: 20px;">Bu siparişi iptal etmek istediğinizden emin misiniz?</p>
           <form id="iptal-formu">
+            <div class="form-grup" style="margin-bottom: 20px;">
+              <label for="iptal-nedeni">İptal Nedeni (Opsiyonel)</label>
+              <textarea id="iptal-nedeni" rows="4" placeholder="İptal nedenini buraya yazabilirsiniz..." style="width: 100%; padding: 12px; background: #1E1E2E; border: 1px solid #27273A; border-radius: 8px; color: white; font-family: inherit; resize: vertical;"></textarea>
+            </div>
             <div class="modal-footer">
               <button type="button" id="modal-vazgec-btn-iptal" class="btn-detay">Vazgeç</button>
               <button type="submit" class="btn-iptal-et">Onayla ve İptal Et</button>
@@ -158,7 +156,9 @@
     </div>
 
   </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="main.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="main.js"></script>
   <script src="siparisler.js"></script>
 </body>
 </html>

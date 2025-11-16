@@ -50,11 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>ÜE-${String(s.siparis_id).padStart(3, "0")}</td>
           <td>${s.urun_adi || "-"}</td>
           <td>${ilerleme > 0 ? Math.floor(s.miktar * (ilerleme / 100)) : 0} / ${s.miktar}</td>
-          <td>
-            <div class="progress-bar">
-              <div class="progress-bar-inner" style="width: ${ilerleme}%;">${ilerleme}%</div>
-            </div>
-          </td>
           <td>${new Date(s.baslangic_tarihi).toISOString().split("T")[0]}</td>
           <td>${new Date(s.bitis_tarihi).toISOString().split("T")[0]}</td>
           <td>${kalanGun} gün</td>
@@ -146,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const ilerlemeYazi = satir.querySelector(".progress-bar-inner")
             ? satir.querySelector(".progress-bar-inner").textContent
             : "%0";
-          detayIlerleme.textContent = ilerlemeYazi;
+          //detayIlerleme.textContent = ilerlemeYazi;
           detayBaslangic.textContent = satir.children[4].textContent;
           detayBitis.textContent = satir.children[5].textContent;
           detayDurum.textContent = satir.children[7].innerText;

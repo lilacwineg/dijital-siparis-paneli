@@ -23,6 +23,7 @@
       <li><a href="siparis-yonetimi.html">Sipariş Yönetimi</a></li>
       <li><a href="uretim-planlama.html">Üretim Planlama</a></li>
       <li><a href="hammadde-yonetimi.html">Hammadde Yönetimi</a></li>
+      <li><a href="urun-yonetimi.html">Ürün Yönetimi</a></li>
     </ul>
 
     <div class="footer">
@@ -60,7 +61,6 @@
             <th>Bayi Adı</th>
             <th>Şehir</th>
             <th>İletişim</th>
-            <th>Sipariş Hacmi</th>
             <th>Durum</th>
             <th>İşlem</th>
           </tr>
@@ -134,60 +134,35 @@
         </div>
         
         <div class="modal-govde">
-          <div class="tab-list" style="margin-bottom: 20px;">
-            <button class="tab-button aktif" data-target="tab-siparis-gecmisi">Sipariş Geçmişi</button>
-            <button class="tab-button" data-target="tab-trendler">Trendler / Analiz</button>
-          </div>
+          <p id="modal-bayi-sehir">Şehir: </p>
+          <p id="modal-bayi-iletisim">İletişim: </p>
+          <p>Kayıt Tarihi: 01.01.2023</p>
+          <h4 style="color: white; margin-top: 20px;">Geçmiş Siparişler</h4>
 
-          <div id="tab-siparis-gecmisi" class="tab-content aktif">
-            <p id="modal-bayi-sehir">Şehir: </p>
-            <p id="modal-bayi-iletisim">İletişim: </p>
-            <p id="modal-bayi-hacim">Sipariş Hacmi: </p>
-            <p>Kayıt Tarihi: 01.01.2023</p>
-            <h4 style="color: white; margin-top: 20px;">Geçmiş Siparişler</h4>
-            
-            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
-              <thead>
-                <tr style="border-bottom: 1px solid #27273A;">
-                  <th style="padding: 10px 0; color: #6B7280; text-align: left;">Tarih</th>
-                  <th style="padding: 10px 0; color: #6B7280; text-align: left;">Ürün</th>
-                  <th style="padding: 10px 0; color: #6B7280; text-align: left;">Miktar</th>
-                  <th style="padding: 10px 0; color: #6B7280; text-align: left;">Durum</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom: 1px solid #27273A;">
-                  <td style="padding: 10px 0;">20.10.2025</td>
-                  <td style="padding: 10px 0;">Gül Parfümü</td>
-                  <td style="padding: 10px 0;">150 adet</td>
-                  <td style="padding: 10px 0;"><span class="badge tamamlandi">Tamamlandı</span></td>
-                </tr>
-                <tr style="border-bottom: 1px solid #27273A;">
-                  <td style="padding: 10px 0;">18.09.2025</td>
-                  <td style="padding: 10px 0;">Lavanta Esansı</td>
-                  <td style="padding: 10px 0;">30 adet</td>
-                  <td style="padding: 10px 0;"><span class="badge sevkiyatta">Kargoda</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div id="tab-trendler" class="tab-content">
-            <div class="grafik-grid">
-                <div class="chart-card" style="padding: 0; background: none; border: none; height: 350px;">
-                    <h4 style="color: white; margin-bottom: 10px;">Aylık Sipariş Grafiği</h4>
-                    <div style="height: 300px; width: 100%;">
-                        <canvas id="bayiModalAylikGrafik"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card" style="padding: 0; background: none; border: none; height: 350px;">
-                    <h4 style="color: white; margin-bottom: 10px;">En Çok Sipariş Edilen Ürünler</h4>
-                    <div style="height: 300px; width: 100%;">
-                        <canvas id="bayiModalEnCokUrunGrafik"></canvas>
-                    </div>
-                </div>
-            </div>
-          </div>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
+            <thead>
+              <tr style="border-bottom: 1px solid #27273A;">
+                <th style="padding: 10px 0; color: #6B7280; text-align: left;">Tarih</th>
+                <th style="padding: 10px 0; color: #6B7280; text-align: left;">Ürün</th>
+                <th style="padding: 10px 0; color: #6B7280; text-align: left;">Miktar</th>
+                <th style="padding: 10px 0; color: #6B7280; text-align: left;">Durum</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #27273A;">
+                <td style="padding: 10px 0;">20.10.2025</td>
+                <td style="padding: 10px 0;">Gül Parfümü</td>
+                <td style="padding: 10px 0;">150 adet</td>
+                <td style="padding: 10px 0;"><span class="badge tamamlandi">Tamamlandı</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #27273A;">
+                <td style="padding: 10px 0;">18.09.2025</td>
+                <td style="padding: 10px 0;">Lavanta Esansı</td>
+                <td style="padding: 10px 0;">30 adet</td>
+                <td style="padding: 10px 0;"><span class="badge sevkiyatta">Kargoda</span></td>
+              </tr>
+            </tbody>
+          </table>
           
           <div class="modal-footer">
             

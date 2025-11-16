@@ -12,9 +12,10 @@
     <div class="logo">Bayi Paneli</div>
 
     <div class="panel-secici">
-<button onclick="window.location.href='panel-fabrika.html'">Fabrika</button>      <button class="aktif">Bayi</button>
+<button onclick="window.location.href='panel-fabrika.html'">Fabrika</button>      
+<button class="aktif">Bayi</button>
     </div>
-
+      
     <ul>
       <li><a class="aktif" href="bayi-anasayfa.html">Ana Sayfa</a></li> 
       <li><a href="bayi-siparis-ver.html">Sipariş Ver</a></li>
@@ -35,14 +36,15 @@
         <p>Ana Sayfa</p>
       </div>
       <div class="kullanici-bilgisi">
-        Marmara Parfüm
-        <span>9 Kasım 2025 Pazar</span>
+        <span id="bayi-ad">Bayi Adı</span>
+        <span id="bugun-tarih">Tarih</span>
+        <button id="logout-btn" class="btn-detay" style="margin-left: 16px; padding: 8px 16px;">Çıkış Yap</button>
       </div>
     </header>
 
     <div class="sayfa-basligi">
       <div>
-        <h2>Hoş Geldiniz, Marmara Parfüm</h2>
+        <h2>Hoş Geldiniz, <span id="hos-geldiniz-bayi">Bayi Adı</span></h2>
         <p>Sipariş ve trend bilgilerinizi buradan takip edebilirsiniz</p>
       </div>
     </div>
@@ -50,81 +52,80 @@
     <div class="kart-grid">
       <div class="info-card purple">
         <span class="kart-baslik">Toplam Siparişlerim</span>
-        <span class="kart-deger">145</span>
-        <span class="kart-trend artış">↑ 12 bu ay</span>
+        <span class="kart-deger">0</span>
+        <span class="kart-trend">Bugüne kadar</span>
       </div>
-      <div class="info-card orange">
-        <span class="kart-baslik">Bekleyen Siparişler</span>
-        <span class="kart-deger">3</span>
-        <span class="kart-trend"></span>
+      <div class="info-card brown">
+        <span class="kart-baslik">Bekleyen Siparişlerim</span>
+        <span class="kart-deger">0</span>
+        <span class="kart-trend">Onay bekliyor</span>
       </div>
       <div class="info-card green">
         <span class="kart-baslik">Teslim Edilen</span>
-        <span class="kart-deger">138</span>
-        <span class="kart-trend artış">↑ Bu ay 12</span>
-      </div>
-      <div class="info-card blue">
-        <span class="kart-baslik">Aylık Artış</span>
-        <span class="kart-deger">%18</span>
-        <span class="kart-trend">Önceki aya göre</span>
+        <span class="kart-deger">0</span>
+        <span class="kart-trend">Son 1 ay</span>
       </div>
     </div>
 
     <div class="tablo-container">
       <h3>Son Siparişlerim</h3>
-      <table>
+      <table id="son-siparisler">
         <thead>
           <tr>
             <th>Sipariş No</th>
-            <th>Ürün</th>
-            <th>Miktar</th>
             <th>Durum</th>
             <th>Tarih</th>
+            <th>İşlem</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>SP-045</td>
-            <td>Gül Parfümü</td>
-            <td>50</td>
-            <td><span class="badge hazirlaniyor">Hazırlanıyor</span></td>
-            <td>2025-11-07</td>
-          </tr>
-          <tr>
-            <td>SP-044</td>
-            <td>Lavanta Esansı</td>
-            <td>30</td>
-            <td><span class="badge sevkiyatta">Sevkiyatta</span></td>
-            <td>2025-11-05</td>
-          </tr>
-          <tr>
-            <td>SP-043</td>
-            <td>Vanilya Kokusu</td>
-            <td>25</td>
-            <td><span class="badge tamamlandi">Teslim Edildi</span></td>
-            <td>2025-11-03</td>
-          </tr>
+          <!-- Veriler JavaScript ile yüklenecek -->
         </tbody>
       </table>
     </div>
 
+
     <div class="grafik-grid">
-      <div class="chart-card">
-        <h3>Haftalık Sipariş Trendi</h3>
-        <canvas id="bayiHaftalikGrafik"></canvas>
-      </div>
       <div class="chart-card">
         <h3>En Çok Sipariş Ettiğim Ürünler</h3>
         <canvas id="bayiEnCokUrunGrafik"></canvas>
       </div>
-      <div class="chart-card">
-        <h3>Kategori Bazlı Dağılım</h3>
-        <canvas id="bayiKategoriGrafik"></canvas>
-      </div>
     </div>
 
-  </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="main.js"></script> 
+  </div>
+
+  <!-- Sipariş Detay Modal -->
+  <div id="siparis-detay-modal" class="modal-arkaplan">
+    <div class="modal-icerik">
+      <div class="modal-header">
+        <h2>Sipariş Detayları - <span id="modal-siparis-no"></span></h2>
+        <button id="modal-kapat-btn" class="modal-kapat-btn">X</button>
+      </div>
+      <div class="modal-govde">
+        <h4 style="color: white; margin-bottom: 15px;">📦 Sipariş İçeriği</h4>
+        <table id="siparis-detay-tablosu" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr style="border-bottom: 1px solid #27273A;">
+              <th style="padding: 10px 0; color: #6B7280; text-align: left;">Ürün</th>
+              <th style="padding: 10px 0; color: #6B7280; text-align: center;">Ürün Tipi</th>
+              <th style="padding: 10px 0; color: #6B7280; text-align: center;">Miktar</th>
+              <th style="padding: 10px 0; color: #6B7280; text-align: center;">Birim</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: #888;">
+                Yükleniyor...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="main.js"></script>
   <script src="bayi-anasayfa.js"></script>
 </body>
 </html>
