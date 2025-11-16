@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dijital Sipariş Köprüsü - Bayi Paneli</title>
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
-
+  <style>
+  .bayi-anasayfa-kart {
+    grid-template-columns: repeat(3, 1fr);
+  } 
+  </style>
   <div class="sidebar">
     <div class="logo">Bayi Paneli</div>
 
@@ -49,7 +54,7 @@
       </div>
     </div>
 
-    <div class="kart-grid">
+    <div class="kart-grid bayi-anasayfa-kart">
       <div class="info-card purple">
         <span class="kart-baslik">Toplam Siparişlerim</span>
         <span class="kart-deger">0</span>

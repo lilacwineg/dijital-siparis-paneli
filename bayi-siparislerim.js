@@ -222,6 +222,30 @@ async function siparisDetayGoster(siparisId) {
     siparisDetayModal.style.display = "flex";
     document.getElementById("modal-siparis-no").textContent = siparisId;
 
+    // Önce sipariş bilgisini al (durum kontrolü için)
+    const aktifKullanici = JSON.parse(localStorage.getItem("aktifKullanici"));
+    const siparisRes = await fetch(`http://localhost:3000/siparisler?bayi_id=${aktifKullanici.bayi_id}`);
+    if (!siparisRes.ok) throw new Error("Sipariş bilgisi alınamadı");
+
+    const siparisler = await siparisRes.json();
+    const siparis = siparisler.find(s => s.siparis_id == siparisId);
+
+    // Butonları kontrol et - "Onaylandı" ve "Sevkiyatta" durumlarında göster
+    const btnTeslimAlindi = document.getElementById("btn-teslim-alindi");
+    const btnEksikGeldi = document.getElementById("btn-eksik-geldi");
+
+    if (siparis && (siparis.durum === "Onaylandı" || siparis.durum === "Sevkiyatta")) {
+      btnTeslimAlindi.style.display = "inline-block";
+      btnEksikGeldi.style.display = "inline-block";
+
+      // Buton event listener'larını ekle (önce varsa eski listener'ları kaldır)
+      btnTeslimAlindi.onclick = () => siparisOnayDurumuGuncelle(siparisId, "Tamamlandı");
+      btnEksikGeldi.onclick = () => siparisOnayDurumuGuncelle(siparisId, "İptal");
+    } else {
+      btnTeslimAlindi.style.display = "none";
+      btnEksikGeldi.style.display = "none";
+    }
+
     // Detayları getir
     const res = await fetch(`http://localhost:3000/siparisler/${siparisId}/detay`);
     if (!res.ok) throw new Error("Sipariş detayları alınamadı");
@@ -257,5 +281,44 @@ async function siparisDetayGoster(siparisId) {
   } catch (err) {
     console.error("❌ Sipariş detayları yüklenirken hata:", err);
     alert("Sipariş detayları yüklenirken hata oluştu.");
+  }
+}
+
+// Sipariş onay durumunu güncelle (Teslim Alındı / Eksik Geldi)
+async function siparisOnayDurumuGuncelle(siparisId, yeniDurum) {
+  const mesaj = yeniDurum === "Tamamlandı"
+    ? "Bu siparişi teslim aldığınızı onaylıyor musunuz?"
+    : "Bu siparişin eksik geldiğini bildirmek istiyor musunuz?";
+
+  if (!confirm(mesaj)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:3000/siparisler/${siparisId}/durum`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ durum: yeniDurum })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || "Durum güncellenemedi");
+    }
+
+    const basariMesaji = yeniDurum === "Tamamlandı"
+      ? "✅ Sipariş teslim alındı olarak işaretlendi"
+      : "⚠️ Sipariş eksik geldi olarak işaretlendi";
+
+    alert(basariMesaji);
+
+    // Modal'ı kapat ve sayfayı yenile
+    siparisDetayModal.style.display = "none";
+    const aktifKullanici = JSON.parse(localStorage.getItem("aktifKullanici"));
+    bayiSiparisleriniYukle(aktifKullanici.bayi_id);
+
+  } catch (err) {
+    console.error("❌ Sipariş durumu güncellenirken hata:", err);
+    alert("Hata: " + err.message);
   }
 }

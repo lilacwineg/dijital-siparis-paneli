@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tr.innerHTML = `
           <td>ÜE-${String(s.siparis_id).padStart(3, "0")}</td>
           <td>${s.urun_adi || "-"}</td>
-          <td>${ilerleme > 0 ? Math.floor(s.miktar * (ilerleme / 100)) : 0} / ${s.miktar}</td>
+        
           <td>${new Date(s.baslangic_tarihi).toISOString().split("T")[0]}</td>
           <td>${new Date(s.bitis_tarihi).toISOString().split("T")[0]}</td>
           <td>${kalanGun} gün</td>
